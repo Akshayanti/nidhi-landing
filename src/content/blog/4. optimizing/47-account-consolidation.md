@@ -27,7 +27,8 @@ glossary:
     definition: "Moving investments themselves from one broker to another, instead of selling them and moving cash."
   - term: "Expense ratio"
     definition: "A fund's yearly running cost, as a percentage of the money invested: 0.75% costs €75 a year on €10,000."
-  - term: "Credit utilisation"
+  - term: "Credit utilization"
+    anchor: "Credit utilisation"
     definition: "Your card balances divided by your total credit limits. Many credit scores weigh it heavily."
   - term: "Dormant account"
     definition: "An account that still exists but no longer has a job, sometimes charging a fee for being inactive."
@@ -81,7 +82,7 @@ For Jiri the leak is about €570 a year, illustratively:
 | Higher pension fund fees | 0.70 points more on €30,000 | €210 |
 | Idle cash | €6,000 earning nothing instead of about 3% | €180 |
 
-The [cash management post](/blog/cash-management/) covered where cash fits; [account sprawl](#term-account-sprawl) is what keeps it from sitting there. The other costs do not show up as a number. Every open card is one more place for fraud to go unnoticed until a statement arrives. Every forgotten account makes the picture wrong: if an old pension is missing from the list, the allocation, the rebalancing targets and the projections built on them are wrong too.
+The [cash management lesson](/blog/cash-management/) covered where cash fits; [account sprawl](#term-account-sprawl) is what keeps it from sitting there. The other costs do not show up as a number. Every open card is one more place for fraud to go unnoticed until a statement arrives. Every forgotten account makes the picture wrong: if an old pension is missing from the list, the allocation, the rebalancing targets and the projections built on them are wrong too.
 
 <figure>
 <svg viewBox="0 0 720 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fig-sprawl-title fig-sprawl-desc">
@@ -186,7 +187,7 @@ No. In many systems the money stops being pension money the moment it is paid to
 
 In countries with scores that weigh how much of your credit you use (the US, UK, Canada, India and others; many European systems work differently), closing a card can lower a score in two ways, and the effect is usually smaller than the warnings suggest.
 
-**[Credit utilization](#term-credit-utilisation)** is the card balances reported to the credit bureau divided by the reported limits. Closing a card lowers the limits, so if balances are reported, utilization rises: €10,000 against €50,000 of limits is 20%; close a card with a €10,000 limit and it becomes 25%. A rise of a few points usually moves a score by a few points, not tens. Paying in full avoids interest but does not always make reported utilization zero, because issuers often report the statement balance.
+**[Credit utilization](#term-credit-utilization)** is the card balances reported to the credit bureau divided by the reported limits. Closing a card lowers the limits, so if balances are reported, utilization rises: €10,000 against €50,000 of limits is 20%; close a card with a €10,000 limit and it becomes 25%. A rise of a few points usually moves a score by a few points, not tens. Paying in full avoids interest but does not always make reported utilization zero, because issuers often report the statement balance.
 
 **History length** is handled differently by each scoring model. In common US models, a closed account in good standing can stay on the report and keep counting towards account age for up to ten years. UK lenders use their own models, and closed accounts usually stay on credit files for about six years, so an immediate effect should not be assumed.
 
@@ -230,6 +231,6 @@ The steps are the same everywhere; the names and paperwork are local.
 
 ## A weekend of work, then a yearly look
 
-For most households the first pass is two to four hours of inventory, an hour or two of sorting, a few hours over a week starting transfers and closures, then four to eight weeks of waiting while they settle. The result is a picture that fits in one view, upkeep measured in minutes a month, and cleaner inputs for every decision later in this series. The next post covers growing your income, one of the largest levers while you are building wealth.
+For most households the first pass is two to four hours of inventory, an hour or two of sorting, a few hours over a week starting transfers and closures, then four to eight weeks of waiting while they settle. The result is a picture that fits in one view, upkeep measured in minutes a month, and cleaner inputs for every decision later in this series. The next lesson covers growing your income, one of the largest levers while you are building wealth.
 
 Which of your accounts would you struggle to remember if you had to list them from memory today?

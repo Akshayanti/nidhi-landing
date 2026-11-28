@@ -136,6 +136,17 @@ export function fromMinor(units: number, currencyCode: string): number {
 }
 
 /**
+ * A number rounded to the digits it is written with, and never minus zero:
+ * −0.03 at one digit is 0, where `Intl` and `toFixed` both write "-0" (#888).
+ * Rounded here rather than with `signDisplay: 'negative'`, which throws before
+ * Safari 15.4 and Firefox 116. Adding zero turns −0 into 0 and leaves
+ * everything else, a value that is not a number included, as it was.
+ */
+export function shownNumber(value: number, digits: number): number {
+  return Number(value.toFixed(digits)) + 0;
+}
+
+/**
  * The locale and symbol style for a tool's amount: the page's own style when
  * it has one, otherwise the currency's. A page style writes the narrow symbol
  * ("$", "£", "₹"), since the Spanish default spells most currencies as a code

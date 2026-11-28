@@ -52,7 +52,7 @@ referentialReading:
     type: "book"
 ---
 
-Remember the friend from the very first post in this series, the one who sold everything in the crash of March 2020 even though she knew better?
+Remember the friend from the very first lesson in this series, the one who sold everything in the crash of March 2020 even though she knew better?
 
 She did not fix the problem by becoming braver or smarter. She fixed it by changing two things. She set her investments to buy automatically every month, and she deleted the trading app from her phone. She has not made the same mistake since, not because the fear went away, but because she arranged her life so the fear no longer had a button to press.
 
@@ -60,7 +60,7 @@ That is the entire lesson of this series, compressed into one move. You cannot w
 
 ## The premise: you cannot fix the brain, so fix the situation
 
-Let us be honest about where the last nine posts have left us. The brain runs a [fast, emotional system](/blog/why-smart-people-make-dumb-money-decisions/) that acts before the slow, rational one shows up. [Losses hurt roughly twice as much as gains](/blog/loss-aversion-and-the-disposition-effect/). We file identical euros into [different mental folders](/blog/mental-accounting/). We rob our [future selves](/blog/present-bias-and-your-future-self/), overrate our [own judgement](/blog/overconfidence-and-the-planning-fallacy/), get swayed by [wording and stray numbers](/blog/framing-anchoring-and-price-psychology/), follow [the crowd](/blog/herd-behavior-and-fomo/) off cliffs, fall for [seductive stories](/blog/narrative-economics-and-bubbles/), and run [scripts](/blog/money-scripts/) we inherited as children.
+Put plainly, here is where the last nine lessons leave things. The brain runs a [fast, emotional system](/blog/why-smart-people-make-dumb-money-decisions/) that acts before the slow, rational one shows up. [Losses hurt roughly twice as much as gains](/blog/loss-aversion-and-the-disposition-effect/). We file identical euros into [different mental folders](/blog/mental-accounting/). We rob our [future selves](/blog/present-bias-and-your-future-self/), overrate our [own judgement](/blog/overconfidence-and-the-planning-fallacy/), get swayed by [wording and stray numbers](/blog/framing-anchoring-and-price-psychology/), follow [the crowd](/blog/herd-behavior-and-fomo/) off cliffs, fall for [seductive stories](/blog/narrative-economics-and-bubbles/), and run [scripts](/blog/money-scripts/) we inherited as children.
 
 And the most humbling lesson of all: knowing every one of these does far less to stop them than you would expect. Awareness is necessary, but it is nowhere near enough.
 
@@ -86,7 +86,7 @@ Decide the rules in advance, in a quiet room, so the heated moment only executes
 
 ## 5. Reduce decision frequency, because looking less is worth more
 
-Every time you check, you create a chance to react, and reacting is usually where the damage happens. As the [loss aversion post](/blog/loss-aversion-and-the-disposition-effect/) showed, frequent checking simply multiplies the number of painful down-days you experience for the same long-term return. Review on a schedule, monthly or quarterly or yearly, and treat the urge to peek in between as a symptom rather than a signal. Fewer decisions means fewer chances to make a bad one.
+Every time you check, you create a chance to react, and reacting is usually where the damage happens. As the [loss aversion lesson](/blog/loss-aversion-and-the-disposition-effect/) showed, frequent checking simply multiplies the number of painful down-days you experience for the same long-term return. Review on a schedule, monthly or quarterly or yearly, and treat the urge to peek in between as a symptom rather than a signal. Fewer decisions means fewer chances to make a bad one.
 
 ## 6. Keep it boring, because boring has tended to win
 
@@ -121,7 +121,7 @@ Every time you check, you create a chance to react, and reacting is usually wher
 
 ## The dashboard ties it together
 
-All six principles converge on one habit, which the [financial dashboard post](/blog/financial-dashboard/) laid out in detail: reviewing a small set of numbers on a set schedule, and otherwise leaving things alone.
+All six principles converge on one habit, which the [financial dashboard lesson](/blog/financial-dashboard/) laid out in detail: reviewing a small set of numbers on a set schedule, and otherwise leaving things alone.
 
 A dashboard is a deliberate System 2 tool for a System 1 species. It replaces gut feeling with numbers. It controls how often you look, which limits the panic windows. It judges your progress against your own [written goals](/blog/setting-financial-goals/) rather than against market noise or someone else's highlight reel. And a single, unified [net worth](/blog/what-is-net-worth/) view collapses the [mental-accounting](/blog/mental-accounting/) folders that make people treat identical euros differently. One honest number, checked on a schedule, quietly defends against half the biases in this series at once.
 

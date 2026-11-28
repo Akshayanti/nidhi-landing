@@ -48,8 +48,9 @@ export const loanComparisonEn = {
    * shows a reader is here.
    */
   schema: {
-    name: 'nidhi Loan Comparison Calculator',
+    name: 'nidhi loan comparison',
     alternateNames: [
+      'nidhi Loan Comparison Calculator',
       'nidhi Loan Comparator',
       'nidhi Loan Calculator',
       'nidhi Multi-Currency Loan Comparator',
@@ -84,7 +85,7 @@ export const loanComparisonEn = {
     eyebrow: 'Free tools',
     /** Split around the `<span class="lc-wideOnly">`, which phones hide. */
     title: {
-      lead: 'Loan comparison calculator',
+      lead: 'Loan comparison',
       wide: ': compare loan offers side by side',
     },
     /** Three parts, for the same phone-only span. The spaces are the markup's. */
@@ -102,7 +103,7 @@ export const loanComparisonEn = {
           title: 'Getting started',
           items: [
             {
-              q: 'How does this loan comparison calculator work?',
+              q: 'How does this loan comparison work?',
               a: 'Enter the loan amount, annual interest rate, and either the term in months or the monthly payment for each lender you want to compare. You can compare two to five loan offers side by side. The calculator builds a full amortization schedule for each loan and shows the monthly payment, total months to payoff, total interest, APR (which folds the fee into the rate), and total amount paid.',
             },
             {
@@ -225,7 +226,7 @@ export const loanComparisonEn = {
             },
             {
               q: 'What does “multi-currency” mean here?',
-              a: 'It means the calculator formats inputs and outputs using the conventions of whichever currency you pick. The symbol, decimal places, and digit grouping all change with the locale. The math itself is identical: a fixed-rate amortizing loan behaves the same whether you call the units dollars, rupees, or yen. All loans in a single comparison share one currency, because comparing nominal payments across different currencies (without a current exchange rate) would be misleading.',
+              a: 'It means the calculator formats inputs and outputs using the conventions of whichever currency you pick. The symbol, decimal places, and digit grouping all change with the locale. The maths itself is identical: a fixed-rate amortizing loan behaves the same whether you call the units dollars, rupees, or yen. All loans in a single comparison share one currency, because comparing nominal payments across different currencies (without a current exchange rate) would be misleading.',
             },
           ],
         },
@@ -283,6 +284,8 @@ export const loanComparisonEn = {
       monthlyAfterChange: 'Monthly payment after rate change',
       fromMonth: 'From month',
       paymentNote: 'Payment note',
+      /** The summary's last column, there only when an offer has a note: what the card says under its result. */
+      notes: 'Notes',
       noPaymentChange: 'No payment change',
       keptPaid: 'From month {month}, the scheduled payment stays the same. The loan pays off in month {payoffMonth}.',
       keptNever: 'From month {month}, the scheduled payment stays the same. The loan is not paid off.',
@@ -316,6 +319,13 @@ export const loanComparisonEn = {
     /** Heading the vendor cards, for screen readers; the cards' badges sit under it. */
     cardsHeading: 'Loan offers',
     example: 'Example offers. Replace the figures with your own.',
+    /** In place of the tool, when a link written with a check did not arrive whole (#820): one sentence, one button. */
+    link: {
+      /** The heading of the notice below, for a reader who moves by headings. Not shown. */
+      damagedHeading: 'This link cannot be opened',
+      damaged: 'This comparison link is incomplete or has changed. Ask the sender for the full link, or start a new comparison.',
+      startNew: 'Start a new comparison',
+    },
     phoneTabs: {
       groupAria: 'Offer to show',
       tabName: 'Offer {label}',
@@ -366,7 +376,7 @@ export const loanComparisonEn = {
         after: ' to enable these fields.',
       },
       initialFixed: 'Initial fixed period (months)',
-      initialFixedHelp: 'Common: 60, 84 or 120 months (5, 7 or 10 years).',
+      initialFixedHelp: 'It varies by country: 24 or 60 months (2 or 5 years) are common in the UK, for example, and 60, 84 or 120 months (5, 7 or 10 years) in the US.',
       subsequentRate: 'Subsequent rate (%)',
       subsequentRateHelp:
         'Rate after the fixed period ends. Real adjustable loans follow a reference rate; this is your own assumption, not a forecast.',
@@ -617,6 +627,8 @@ export const loanComparisonEn = {
       /** Precedes the horizon, which the slider renders beside it. */
       label: 'Horizon: ',
       inputAria: 'Horizon in months (text)',
+      /** The horizon box left empty (#823). */
+      required: 'Enter a horizon in months, from 1 up.',
       empty: 'Enter valid inputs to see horizon snapshots.',
       principalRepaid: 'Principal repaid',
       interestPaid: 'Interest paid',
@@ -627,6 +639,12 @@ export const loanComparisonEn = {
       heading: 'Refinance scenario',
       lead: "Compare keeping a loan to refinancing it at a future month. Useful when rates drop or you're considering paying off a loan before its rate changes.",
       whichLoan: 'Refinance which loan?',
+      /** A required refinance box left empty (#823). */
+      required: 'Enter a refinance month, a new rate and a new term.',
+      /** One required refinance box left empty, said by itself (#823). */
+      requiredMonth: 'Enter the month to refinance at.',
+      requiredRate: 'Enter the new rate.',
+      requiredTerm: 'Enter the new term in months.',
       atMonth: 'Refinance at month',
       newRate: 'New rate (%)',
       newTerm: 'New term (months)',
@@ -700,12 +718,16 @@ export const loanComparisonEn = {
         term: 'Term must be at least one month.',
         /** `computeLoan`'s checks on what the reader typed, before any schedule is built. */
         amount: 'Enter a loan amount greater than zero.',
+        /** The amount or payment box holds something that is not a number (#898). Never quotes what was typed. */
+        amountUnreadable: 'The loan amount could not be read. Use digits only, such as 250000.',
+        paymentUnreadable: 'The monthly payment could not be read. Use digits only, such as 1500.',
         amountMax: 'This loan amount is too large for the tool. Enter a smaller amount.',
         tooSmall: 'The loan is too small for this term. Enter a larger amount or a shorter term.',
         /** A term was typed, not a payment: the message names the boxes this reader filled in. */
         interestOnly: 'With this amount, rate and term, the monthly payment only covers the interest, so the loan is never paid off. Enter a lower rate, a shorter term or a larger amount.',
         rate: 'Enter a non-negative interest rate.',
-        initialFixed: 'Initial fixed period must be a positive number of months.',
+        /** A month of the rate change that is not a whole one from 1 up. Names the box and the other choice by their labels; never quotes what was typed. */
+        initialFixed: 'The initial fixed period is a whole number of months, from 1 up. Correct it, or choose “Fixed” under “Rate structure”.',
         termMin: 'Enter a term of at least one month.',
         termMax: 'Term cannot exceed {months} months.',
         paymentEnter: 'Enter a monthly payment greater than zero.',
@@ -731,6 +753,14 @@ export const loanComparisonEn = {
           'Internal precision check: principal sum {sum} ≠ {expected}. Please report this.',
         subsequentRate:
           'After the initial fixed period, the subsequent rate is so high that the recast payment barely covers interest.',
+        /** A note, not a fault: the fixed period is as long as the term or longer, so the loan is worked out at one rate. */
+        rateNeverChanges: 'The rate does not change within this term, so the subsequent rate is not used.',
+        /** A note: a lump sum dated after the payoff changes nothing. One sentence for one, one for several, which names the first month. */
+        lumpUnused: 'This loan is paid off in month {payoffMonth}, before the lump sum in month {month} would be paid, so it is not used.',
+        lumpsUnused: 'This loan is paid off in month {payoffMonth}, before the lump sums from month {month} on would be paid, so they are not used.',
+        /** A note: a lump sum larger than what is owed in its month. No amount in it. */
+        lumpPartUsed: 'The lump sum in month {month} is more than is owed then, so only part of it is used.',
+        lumpsPartUsed: 'The lump sums in month {month} are more than is owed then, so only part of them is used.',
       },
     },
   },
@@ -767,8 +797,9 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       'मुफ़्त लोन तुलना कैलकुलेटर। दो से पाँच ऑफ़र साथ-साथ रखें: मासिक किस्त, चुकाने का समय, कुल ब्याज, APR और कुल लागत। कई मुद्राओं में।',
   },
   schema: {
-    name: 'nidhi लोन तुलना कैलकुलेटर',
+    name: 'nidhi लोन की तुलना',
     alternateNames: [
+      'nidhi लोन तुलना कैलकुलेटर',
       'nidhi लोन तुलना टूल',
       'nidhi लोन कैलकुलेटर',
       'nidhi कई मुद्राओं वाला लोन तुलना टूल',
@@ -801,7 +832,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     },
     eyebrow: 'मुफ़्त टूल',
     title: {
-      lead: 'लोन तुलना कैलकुलेटर',
+      lead: 'लोन की तुलना',
       wide: ': लोन के ऑफ़र साथ-साथ रखकर देखें',
     },
     lead: {
@@ -817,7 +848,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           title: 'शुरुआत कैसे करें',
           items: [
             {
-              q: 'यह लोन तुलना कैलकुलेटर कैसे काम करता है?',
+              q: 'लोन की तुलना का यह टूल कैसे काम करता है?',
               a: 'जिन लोन ऑफ़र की तुलना करनी है, उनमें से हर एक के लिए लोन राशि, सालाना ब्याज दर, और अवधि महीनों में या मासिक किस्त भर दें। आप दो से पाँच लोन ऑफ़र की साथ-साथ तुलना कर सकते हैं। कैलकुलेटर हर लोन का पूरा किस्तों का शेड्यूल बनाता है और मासिक किस्त, चुकाने के महीने, कुल ब्याज, APR (जो शुल्क को दर में जोड़ देता है) और कुल चुकाई जाने वाली राशि दिखाता है।',
             },
             {
@@ -994,6 +1025,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       monthlyAfterChange: 'दर बदलने के बाद मासिक किस्त',
       fromMonth: 'किस महीने से',
       paymentNote: 'किस्त पर टिप्पणी',
+      notes: 'टिप्पणियाँ',
       noPaymentChange: 'किस्त नहीं बदलती',
       keptPaid: 'महीना {month} से तय किस्त वही रहती है। लोन महीना {payoffMonth} में चुक जाता है।',
       keptNever: 'महीना {month} से तय किस्त वही रहती है। लोन नहीं चुकता।',
@@ -1018,6 +1050,11 @@ export const loanComparisonHi: typeof loanComparisonEn = {
     },
     cardsHeading: 'लोन ऑफ़र',
     example: 'उदाहरण के ऑफ़र। इनकी जगह अपने आँकड़े भरें।',
+    link: {
+      damagedHeading: 'यह लिंक नहीं खुल सकता',
+      damaged: 'तुलना का यह लिंक अधूरा है या बदल गया है। भेजने वाले से पूरा लिंक माँगें, या नई तुलना शुरू करें।',
+      startNew: 'नई तुलना शुरू करें',
+    },
     phoneTabs: {
       groupAria: 'कौन-सा लोन ऑफ़र दिखाना है',
       tabName: 'लोन ऑफ़र {label}',
@@ -1067,7 +1104,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
         after: ' पर बदल दें।',
       },
       initialFixed: 'शुरुआत की तय अवधि (महीने)',
-      initialFixedHelp: 'आम: 60, 84 या 120 महीने (5, 7 या 10 साल)।',
+      initialFixedHelp: 'यह देश के हिसाब से बदलता है: जैसे ब्रिटेन में 24 या 60 महीने (2 या 5 साल) आम हैं, और अमेरिका में 60, 84 या 120 महीने (5, 7 या 10 साल)।',
       subsequentRate: 'बाद की दर (%)',
       subsequentRateHelp:
         'तय अवधि ख़त्म होने के बाद की दर। असली बदलती दर वाले लोन किसी संदर्भ दर के साथ चलते हैं; यह आपका अपना अनुमान है, कोई पूर्वानुमान नहीं।',
@@ -1289,6 +1326,7 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       lead: 'महीने 36 पर और महीने 360 पर लोन बहुत अलग दिखते हैं। हर पंक्ति बताती है कि उस तारीख़ तक उधार लेने वाला असल में कहाँ खड़ा है।',
       label: 'हॉराइज़न: ',
       inputAria: 'हॉराइज़न महीनों में (टेक्स्ट)',
+      required: 'हॉराइज़न महीनों में भरें, 1 या उससे ज़्यादा।',
       empty: 'हॉराइज़न के आँकड़े देखने के लिए सही इनपुट भरें।',
       principalRepaid: 'चुकाया गया मूलधन',
       interestPaid: 'दिया गया ब्याज',
@@ -1299,6 +1337,10 @@ export const loanComparisonHi: typeof loanComparisonEn = {
       heading: 'रीफ़ाइनेंस परिदृश्य',
       lead: 'किसी लोन को चलाते रहने और आगे किसी महीने उसका रीफ़ाइनेंस कराने की तुलना करें। यह तब काम आता है जब दरें गिर जाएँ, या आप किसी लोन की दर बदलने से पहले उसे चुका देने की सोच रहे हों।',
       whichLoan: 'किस लोन का रीफ़ाइनेंस?',
+      required: 'रीफ़ाइनेंस का महीना, नई दर और नई अवधि भरें।',
+      requiredMonth: 'रीफ़ाइनेंस का महीना भरें।',
+      requiredRate: 'नई दर भरें।',
+      requiredTerm: 'नई अवधि महीनों में भरें।',
       atMonth: 'किस महीने में रीफ़ाइनेंस',
       newRate: 'नई दर (%)',
       newTerm: 'नई अवधि (महीने)',
@@ -1350,11 +1392,13 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           'लोन {months} महीनों में नहीं चुक पाता। मासिक किस्त बढ़ाएँ।',
         term: 'अवधि कम से कम एक महीने की होनी चाहिए।',
         amount: 'शून्य से ज़्यादा लोन राशि भरें।',
+        amountUnreadable: 'लोन राशि पढ़ी नहीं जा सकी। सिर्फ़ अंक लिखें, जैसे 250000।',
+        paymentUnreadable: 'मासिक किस्त पढ़ी नहीं जा सकी। सिर्फ़ अंक लिखें, जैसे 1500।',
         amountMax: 'यह लोन राशि इस टूल के लिए बहुत बड़ी है। छोटी राशि भरें।',
         tooSmall: 'इस अवधि के लिए लोन बहुत छोटा है। बड़ी राशि या छोटी अवधि भरें।',
         interestOnly: 'इस राशि, ब्याज दर और अवधि पर मासिक किस्त सिर्फ़ ब्याज भर पाती है, इसलिए लोन कभी नहीं चुकता। कम ब्याज दर, छोटी अवधि या बड़ी राशि भरें।',
         rate: 'ब्याज दर शून्य या उससे ज़्यादा भरें।',
-        initialFixed: 'शुरुआत की तय अवधि शून्य से ज़्यादा महीनों की होनी चाहिए।',
+        initialFixed: 'शुरुआत की तय अवधि पूरे महीनों में होती है, 1 महीने या उससे ज़्यादा। इसे ठीक करें, या “दर का ढाँचा” में “तय” चुनें।',
         termMin: 'कम से कम एक महीने की अवधि भरें।',
         termMax: 'अवधि {months} महीनों से ज़्यादा नहीं हो सकती।',
         paymentEnter: 'शून्य से ज़्यादा मासिक किस्त भरें।',
@@ -1377,6 +1421,11 @@ export const loanComparisonHi: typeof loanComparisonEn = {
           'भीतरी सटीकता की जाँच: मूलधन की किस्तों का जोड़ {sum} है, जबकि {expected} होना चाहिए। कृपया इसकी सूचना दें।',
         subsequentRate:
           'शुरुआती तय अवधि के बाद की दर इतनी ऊँची है कि नए सिरे से निकाली गई किस्त मुश्किल से ब्याज निकालती है।',
+        rateNeverChanges: 'इस अवधि के भीतर दर नहीं बदलती, इसलिए बाद की दर इस्तेमाल नहीं होती।',
+        lumpUnused: 'यह लोन महीना {payoffMonth} में चुक जाता है, महीना {month} की एकमुश्त राशि चुकाए जाने से पहले ही, इसलिए वह इस्तेमाल नहीं होती।',
+        lumpsUnused: 'यह लोन महीना {payoffMonth} में चुक जाता है, महीना {month} से आगे की एकमुश्त राशियाँ चुकाए जाने से पहले ही, इसलिए वे इस्तेमाल नहीं होतीं।',
+        lumpPartUsed: 'महीना {month} की एकमुश्त राशि उस समय के बकाया से ज़्यादा है, इसलिए उसका एक हिस्सा ही इस्तेमाल होता है।',
+        lumpsPartUsed: 'महीना {month} की एकमुश्त राशियाँ उस समय के बकाया से ज़्यादा हैं, इसलिए उनका एक हिस्सा ही इस्तेमाल होता है।',
       },
     },
   },
@@ -1408,6 +1457,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
   schema: {
     name: 'Comparador de préstamos de nidhi',
     alternateNames: [
+      'Calculadora de comparación de préstamos de nidhi',
       'Calculadora para comparar préstamos de nidhi',
       'Calculadora de préstamos de nidhi',
       'Comparador de préstamos en varias monedas de nidhi',
@@ -1486,7 +1536,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           items: [
             {
               q: '¿Qué es el APR y cómo se calcula aquí?',
-              a: 'El APR (Annual Percentage Rate, la tasa de porcentaje anual) incorpora la comisión inicial al costo del préstamo en una sola tasa anualizada, de modo que dos ofertas con comisiones distintas se pueden comparar con una sola cifra. Esta calculadora obtiene el APR tratando la comisión como una deducción inicial del capital que recibe quien pide el préstamo y buscando después la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Esa tasa mensual se multiplica después por 12 para dar la cifra anual, de modo que el APR tiene la misma base que la tasa que escribes: sin comisión, las dos son iguales. Así lo indican los documentos de EE. UU. y la India, y así expresa Australia su tasa de comparación (calculada sobre un préstamo de ejemplo estándar). Canadá y Japón tampoco capitalizan, pero usan fórmulas propias, así que con comisiones sus cifras pueden diferir de esta. Los documentos de la UE (donde la cifra se llama TAE), el Reino Unido, Suiza, Brasil, México (CAT), Turquía y Hong Kong capitalizan la tasa mensual durante el año, así que la cifra que muestran es más alta para el mismo préstamo: un 6,50 % aquí es un 6,70 % allí, y un 20 % es un 21,94 %. Otros países pueden usar una de las dos o una regla propia, así que comprueba cuál usa el documento del prestamista antes de compararlo con esta cifra.',
+              a: 'El APR (Annual Percentage Rate, la tasa de porcentaje anual) incorpora la comisión inicial al costo del préstamo en una sola tasa anualizada, de modo que dos ofertas con comisiones distintas se pueden comparar con una sola cifra. Esta calculadora obtiene el APR tratando la comisión como una deducción inicial del capital que recibe quien pide el préstamo y buscando después la tasa mensual con la que el valor actual de los pagos contractuales es igual a esa cantidad neta. Esa tasa mensual se multiplica después por 12 para dar la cifra anual, de modo que el APR tiene la misma base que la tasa que escribes: sin comisión, las dos son iguales. Así lo indican los documentos de EE. UU. y la India, y así expresa Australia su tasa de comparación (calculada sobre un préstamo de ejemplo estándar). Canadá y Japón tampoco capitalizan, pero usan fórmulas propias, así que con comisiones sus cifras pueden diferir de esta. Los documentos de la UE (donde la cifra se llama TAE), el Reino Unido, Suiza, Brasil, México (CAT), Turquía y Hong Kong capitalizan la tasa mensual durante el año, así que la cifra que muestran es más alta para el mismo préstamo: un 6,50 % aquí es un 6,70 % allí, y un 20 % es un 21,94 %. Otros países pueden usar una de las dos o una regla propia, así que comprueba cuál usa el documento de la entidad antes de compararlo con esta cifra.',
             },
             {
               q: '¿Por qué el APR suele ser más alto que la tasa anunciada?',
@@ -1633,6 +1683,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       monthlyAfterChange: 'Cuota mensual tras el cambio de tasa',
       fromMonth: 'Desde el mes',
       paymentNote: 'Nota sobre la cuota',
+      notes: 'Notas',
       noPaymentChange: 'La cuota no cambia',
       keptPaid: 'Desde el mes {month}, la cuota programada se mantiene. El préstamo se liquida en el mes {payoffMonth}.',
       keptNever: 'Desde el mes {month}, la cuota programada se mantiene. El préstamo no se liquida.',
@@ -1657,6 +1708,11 @@ export const loanComparisonEs: typeof loanComparisonEn = {
     },
     cardsHeading: 'Ofertas de préstamo',
     example: 'Ofertas de ejemplo. Cambia las cifras por las tuyas.',
+    link: {
+      damagedHeading: 'Este enlace no se puede abrir',
+      damaged: 'Este enlace de comparación está incompleto o ha cambiado. Pide el enlace completo a quien te lo envió, o empieza una comparación nueva.',
+      startNew: 'Empezar una comparación nueva',
+    },
     phoneTabs: {
       groupAria: 'Oferta que se muestra',
       tabName: 'Oferta {label}',
@@ -1706,7 +1762,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         after: ' para activar estos campos.',
       },
       initialFixed: 'Periodo fijo inicial (meses)',
-      initialFixedHelp: 'Habituales: 60, 84 o 120 meses (5, 7 o 10 años).',
+      initialFixedHelp: 'Depende del país: en el Reino Unido, por ejemplo, son habituales 24 o 60 meses (2 o 5 años), y en EE. UU., 60, 84 o 120 meses (5, 7 o 10 años).',
       subsequentRate: 'Tasa posterior (%)',
       subsequentRateHelp:
         'Tasa cuando termina el periodo fijo. Los préstamos de tasa variable reales siguen una tasa de referencia; esta es tu propia suposición, no un pronóstico.',
@@ -1928,6 +1984,7 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       lead: 'Un préstamo se ve muy distinto en el mes 36 que en el mes 360. Cada fila muestra la situación real de quien pidió el préstamo en esa fecha.',
       label: 'Horizonte: ',
       inputAria: 'Horizonte en meses (texto)',
+      required: 'Escribe un horizonte en meses, de 1 en adelante.',
       empty: 'Escribe datos válidos para ver la situación en cada horizonte.',
       principalRepaid: 'Capital devuelto',
       interestPaid: 'Intereses pagados',
@@ -1938,6 +1995,10 @@ export const loanComparisonEs: typeof loanComparisonEn = {
       heading: 'Escenario de refinanciación',
       lead: 'Compara mantener un préstamo con refinanciarlo en un mes futuro. Es útil cuando bajan las tasas o cuando te planteas liquidar un préstamo antes de que cambie su tasa.',
       whichLoan: '¿Qué préstamo refinanciar?',
+      required: 'Escribe el mes de la refinanciación, la nueva tasa y el nuevo plazo.',
+      requiredMonth: 'Escribe el mes de la refinanciación.',
+      requiredRate: 'Escribe la nueva tasa.',
+      requiredTerm: 'Escribe el nuevo plazo en meses.',
       atMonth: 'Refinanciar en el mes',
       newRate: 'Nueva tasa (%)',
       newTerm: 'Nuevo plazo (meses)',
@@ -1988,11 +2049,13 @@ export const loanComparisonEs: typeof loanComparisonEn = {
         notAmortizing: 'El préstamo no se amortiza en {months} meses. Aumenta la cuota mensual.',
         term: 'El plazo debe ser de al menos un mes.',
         amount: 'Escribe una cantidad del préstamo mayor que cero.',
+        amountUnreadable: 'No se pudo leer la cantidad del préstamo. Usa solo cifras, por ejemplo 250000.',
+        paymentUnreadable: 'No se pudo leer la cuota mensual. Usa solo cifras, por ejemplo 1500.',
         amountMax: 'Esta cantidad del préstamo es demasiado grande para la herramienta. Escribe una cantidad menor.',
         tooSmall: 'El préstamo es demasiado pequeño para este plazo. Escribe una cantidad mayor o un plazo más corto.',
         interestOnly: 'Con esta cantidad, esta tasa y este plazo, la cuota mensual solo cubre los intereses, así que el préstamo nunca se liquida. Escribe una tasa más baja, un plazo más corto o una cantidad mayor.',
         rate: 'Escribe una tasa de interés que no sea negativa.',
-        initialFixed: 'El periodo fijo inicial debe ser un número positivo de meses.',
+        initialFixed: 'El periodo fijo inicial es un número entero de meses, de 1 en adelante. Corrígelo, o elige «Fija» en «Estructura de la tasa».',
         termMin: 'Escribe un plazo de al menos un mes.',
         termMax: 'El plazo no puede superar los {months} meses.',
         paymentEnter: 'Escribe una cuota mensual mayor que cero.',
@@ -2016,6 +2079,11 @@ export const loanComparisonEs: typeof loanComparisonEn = {
           'Comprobación interna de precisión: la suma del capital es {sum} ≠ {expected}. Avisa del error, por favor.',
         subsequentRate:
           'Tras el periodo fijo inicial, la tasa posterior es tan alta que la cuota recalculada apenas cubre los intereses.',
+        rateNeverChanges: 'La tasa no cambia dentro de este plazo, así que la tasa posterior no se usa.',
+        lumpUnused: 'Este préstamo se liquida en el mes {payoffMonth}, antes de que se haga el pago extraordinario del mes {month}, así que no se usa.',
+        lumpsUnused: 'Este préstamo se liquida en el mes {payoffMonth}, antes de que se hagan los pagos extraordinarios a partir del mes {month}, así que no se usan.',
+        lumpPartUsed: 'El pago extraordinario del mes {month} es mayor que el saldo pendiente en ese momento, así que solo se usa una parte.',
+        lumpsPartUsed: 'Los pagos extraordinarios del mes {month} suman más que el saldo pendiente en ese momento, así que solo se usa una parte.',
       },
     },
   },
@@ -2044,8 +2112,9 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       'Kalkulačka pro srovnání úvěrů zdarma. Porovnejte dvě až pět nabídek vedle sebe: měsíční splátka, doba splácení, úroky celkem, APR a celkové náklady. Více měn.',
   },
   schema: {
-    name: 'Kalkulačka pro srovnání úvěrů nidhi',
+    name: 'Srovnání úvěrů nidhi',
     alternateNames: [
+      'Kalkulačka pro srovnání úvěrů nidhi',
       'Srovnávač úvěrů nidhi',
       'Úvěrová kalkulačka nidhi',
       'Srovnávač úvěrů ve více měnách nidhi',
@@ -2271,6 +2340,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       monthlyAfterChange: 'Měsíční splátka po změně sazby',
       fromMonth: 'Od měsíce',
       paymentNote: 'Poznámka ke splátce',
+      notes: 'Poznámky',
       noPaymentChange: 'Splátka se nemění',
       keptPaid: 'Od měsíce {month} zůstává pravidelná splátka stejná. Úvěr je splacen v měsíci {payoffMonth}.',
       keptNever: 'Od měsíce {month} zůstává pravidelná splátka stejná. Úvěr není splacen.',
@@ -2295,6 +2365,11 @@ export const loanComparisonCs: typeof loanComparisonEn = {
     },
     cardsHeading: 'Nabídky úvěrů',
     example: 'Ukázkové nabídky. Nahraďte čísla svými.',
+    link: {
+      damagedHeading: 'Tento odkaz nelze otevřít',
+      damaged: 'Tento odkaz na srovnání je neúplný nebo se změnil. Požádejte odesílatele o\u00a0celý odkaz, nebo začněte nové srovnání.',
+      startNew: 'Začít nové srovnání',
+    },
     phoneTabs: {
       groupAria: 'Zobrazená nabídka',
       tabName: 'Nabídka {label}',
@@ -2344,7 +2419,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         after: ' a tato pole budou dostupná.',
       },
       initialFixed: 'Počáteční období fixace (měsíce)',
-      initialFixedHelp: 'Obvykle: 60, 84 nebo 120 měsíců (5, 7 nebo 10 let).',
+      initialFixedHelp: 'Liší se podle země: například ve Spojeném království je běžná fixace na 24 nebo 60 měsíců (2 nebo 5 let), v USA na 60, 84 nebo 120 měsíců (5, 7 nebo 10 let).',
       subsequentRate: 'Následná sazba (%)',
       subsequentRateHelp:
         'Sazba po skončení fixace. Skutečné úvěry s pohyblivou sazbou sledují referenční sazbu; tohle je váš vlastní předpoklad, ne prognóza.',
@@ -2566,6 +2641,7 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       lead: 'Úvěry vypadají v 36. měsíci úplně jinak než ve 360. měsíci. Každý řádek ukazuje, kde dlužník k tomuto datu skutečně stojí.',
       label: 'Horizont: ',
       inputAria: 'Horizont v měsících (text)',
+      required: 'Zadejte horizont v\u00a0měsících, od 1 výš.',
       empty: 'Zadejte platné údaje a uvidíte stav k danému horizontu.',
       principalRepaid: 'Splacená jistina',
       interestPaid: 'Zaplacené úroky',
@@ -2576,6 +2652,10 @@ export const loanComparisonCs: typeof loanComparisonEn = {
       heading: 'Scénář refinancování',
       lead: 'Porovnejte ponechání úvěru s jeho refinancováním v budoucím měsíci. Hodí se, když sazby klesnou nebo zvažujete splacení úvěru před změnou jeho sazby.',
       whichLoan: 'Který úvěr refinancovat?',
+      required: 'Zadejte měsíc refinancování, novou sazbu a\u00a0novou dobu splatnosti.',
+      requiredMonth: 'Zadejte měsíc refinancování.',
+      requiredRate: 'Zadejte novou sazbu.',
+      requiredTerm: 'Zadejte novou dobu splatnosti v\u00a0měsících.',
       atMonth: 'Refinancovat v měsíci',
       newRate: 'Nová sazba (%)',
       newTerm: 'Nová doba splatnosti (měsíce)',
@@ -2626,11 +2706,13 @@ export const loanComparisonCs: typeof loanComparisonEn = {
         notAmortizing: 'Úvěr se během {months} měs. nesplatí. Zvyšte měsíční splátku.',
         term: 'Doba splatnosti musí být alespoň jeden měsíc.',
         amount: 'Zadejte výši úvěru větší než nula.',
+        amountUnreadable: 'Výši úvěru se nepodařilo přečíst. Použijte jen číslice, například 250000.',
+        paymentUnreadable: 'Měsíční splátku se nepodařilo přečíst. Použijte jen číslice, například 1500.',
         amountMax: 'Tato výše úvěru je pro nástroj příliš velká. Zadejte menší částku.',
         tooSmall: 'Úvěr je na tuto dobu splatnosti příliš malý. Zadejte vyšší částku nebo kratší dobu splatnosti.',
         interestOnly: 'Při této částce, sazbě a\u00a0době splatnosti pokryje měsíční splátka jen úrok, takže se úvěr nikdy nesplatí. Zadejte nižší sazbu, kratší dobu splatnosti nebo vyšší částku.',
         rate: 'Zadejte nezápornou úrokovou sazbu.',
-        initialFixed: 'Počáteční období fixace musí být kladný počet měsíců.',
+        initialFixed: 'Počáteční období fixace je celý počet měsíců, od 1 výše. Opravte ho, nebo v\u00a0části „Struktura sazby“ vyberte „Pevná“.',
         termMin: 'Zadejte dobu splatnosti alespoň jeden měsíc.',
         termMax: 'Doba splatnosti nesmí přesáhnout {months} měs.',
         paymentEnter: 'Zadejte měsíční splátku větší než nula.',
@@ -2653,6 +2735,11 @@ export const loanComparisonCs: typeof loanComparisonEn = {
           'Interní kontrola přesnosti: součet jistiny {sum} ≠ {expected}. Nahlaste to prosím.',
         subsequentRate:
           'Po počátečním období fixace je následná sazba tak vysoká, že přepočtená splátka sotva pokryje úrok.',
+        rateNeverChanges: 'Sazba se během této doby splatnosti nezmění, takže se následná sazba nepoužije.',
+        lumpUnused: 'Tento úvěr je splacen v\u00a0měsíci {payoffMonth}, dřív než by přišla jednorázová mimořádná splátka v\u00a0měsíci {month}, takže se nepoužije.',
+        lumpsUnused: 'Tento úvěr je splacen v\u00a0měsíci {payoffMonth}, dřív než by přišly jednorázové mimořádné splátky od měsíce {month}, takže se nepoužijí.',
+        lumpPartUsed: 'Jednorázová mimořádná splátka v\u00a0měsíci {month} je vyšší než tehdy zbývající jistina, takže se z\u00a0ní použije jen část.',
+        lumpsPartUsed: 'Jednorázové mimořádné splátky v\u00a0měsíci {month} jsou vyšší než tehdy zbývající jistina, takže se z\u00a0nich použije jen část.',
       },
     },
   },
@@ -2665,8 +2752,9 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     description: 'मोफत कॅल्क्युलेटर: कर्जाच्या दोन ते पाच ऑफरची शेजारी शेजारी तुलना करा: मासिक हप्ता, परतफेडीचा काळ, एकूण व्याज, APR आणि एकूण खर्च. अनेक चलनांमध्ये.',
   },
   schema: {
-    name: 'nidhi कर्जांची तुलना करणारा कॅल्क्युलेटर',
+    name: 'nidhi कर्जांची तुलना',
     alternateNames: [
+      'nidhi कर्जांची तुलना करणारा कॅल्क्युलेटर',
       'nidhi कर्ज तुलना साधन',
       'nidhi कर्ज कॅल्क्युलेटर',
       'nidhi अनेक चलनांतील कर्ज तुलना साधन',
@@ -2699,7 +2787,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     },
     eyebrow: 'मोफत साधने',
     title: {
-      lead: 'कर्जांची तुलना करणारा कॅल्क्युलेटर',
+      lead: 'कर्जांची तुलना',
       wide: ': कर्जाच्या ऑफरची शेजारी शेजारी तुलना करा',
     },
     lead: {
@@ -2714,7 +2802,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
           title: 'सुरुवात',
           items: [
             {
-              q: 'हा कर्जांची तुलना करणारा कॅल्क्युलेटर कसा काम करतो?',
+              q: 'कर्जांच्या तुलनेचे हे साधन कसे काम करते?',
               a: 'तुम्हाला ज्या प्रत्येक कर्जदात्याची तुलना करायची आहे त्याच्यासाठी कर्जाची रक्कम, वार्षिक व्याजदर, आणि महिन्यांतील मुदत किंवा मासिक हप्ता यांपैकी एक भरा. कर्जाच्या दोन ते पाच ऑफरची शेजारी शेजारी तुलना करता येते. कॅल्क्युलेटर प्रत्येक कर्जासाठी कर्जफेडीचे संपूर्ण वेळापत्रक तयार करतो आणि मासिक हप्ता, परतफेडीपर्यंतचे एकूण महिने, एकूण व्याज, APR (जो शुल्क व्याजदरात सामावून घेतो) आणि भरलेली एकूण रक्कम दाखवतो.',
             },
             {
@@ -2891,6 +2979,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       monthlyAfterChange: 'दर बदलल्यानंतरचा मासिक हप्ता',
       fromMonth: 'कोणत्या महिन्यापासून',
       paymentNote: 'हप्त्याबद्दल टीप',
+      notes: 'टिपा',
       noPaymentChange: 'हप्ता बदलत नाही',
       keptPaid: 'महिना {month} पासून ठरलेला हप्ता तोच राहतो. कर्ज महिना {payoffMonth} मध्ये फिटते.',
       keptNever: 'महिना {month} पासून ठरलेला हप्ता तोच राहतो. कर्ज फिटत नाही.',
@@ -2915,6 +3004,11 @@ export const loanComparisonMr: typeof loanComparisonEn = {
     },
     cardsHeading: 'कर्जाच्या ऑफर',
     example: 'उदाहरणाच्या ऑफर. त्यांच्या जागी तुमचे आकडे भरा.',
+    link: {
+      damagedHeading: 'ही लिंक उघडता येत नाही',
+      damaged: 'तुलनेची ही लिंक अपूर्ण आहे किंवा बदलली आहे. पाठवणाऱ्याकडून पूर्ण लिंक मागवा, किंवा नवीन तुलना सुरू करा.',
+      startNew: 'नवीन तुलना सुरू करा',
+    },
     phoneTabs: {
       groupAria: 'दाखवायची ऑफर',
       tabName: 'ऑफर {label}',
@@ -2964,7 +3058,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         after: ' वर बदला, म्हणजे हे रकाने वापरता येतील.',
       },
       initialFixed: 'सुरुवातीचा ठरावीक कालावधी (महिने)',
-      initialFixedHelp: 'नेहमीचे: 60, 84 किंवा 120 महिने (5, 7 किंवा 10 वर्षे).',
+      initialFixedHelp: 'हे देशानुसार बदलते: उदाहरणार्थ, UK मध्ये 24 किंवा 60 महिने (2 किंवा 5 वर्षे) नेहमीचे आहेत, आणि अमेरिकेत 60, 84 किंवा 120 महिने (5, 7 किंवा 10 वर्षे).',
       subsequentRate: 'नंतरचा दर (%)',
       subsequentRateHelp: 'ठरावीक कालावधी संपल्यानंतरचा दर. प्रत्यक्ष बदलत्या दराची कर्जे एखाद्या संदर्भ दरानुसार बदलतात; हा तुमचा स्वतःचा अंदाज आहे, भाकीत नाही.',
       costs: {
@@ -3177,6 +3271,7 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       lead: 'कर्जे 36 व्या महिन्यात आणि 360 व्या महिन्यात खूप वेगळी दिसतात. प्रत्येक ओळ त्या तारखेला कर्जदाराची प्रत्यक्ष स्थिती दाखवते.',
       label: 'कालावधी: ',
       inputAria: 'महिन्यांतील कालावधी (मजकूर)',
+      required: 'कालावधी महिन्यांत भरा, 1 किंवा त्याहून जास्त.',
       empty: 'कालावधीनुसार स्थिती पाहण्यासाठी वैध माहिती भरा.',
       principalRepaid: 'फेडलेले मुद्दल',
       interestPaid: 'भरलेले व्याज',
@@ -3187,6 +3282,10 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       heading: 'पुनर्वित्त परिदृश्य',
       lead: 'कर्ज तसेच ठेवणे आणि भविष्यातील एखाद्या महिन्यात त्याचे पुनर्वित्त करणे यांची तुलना करा. दर कमी झाल्यावर, किंवा कर्जाचा दर बदलण्यापूर्वीच ते फेडण्याचा विचार करत असाल तेव्हा उपयोगी.',
       whichLoan: 'कोणत्या कर्जाचे पुनर्वित्त?',
+      required: 'पुनर्वित्ताचा महिना, नवा दर आणि नवी मुदत भरा.',
+      requiredMonth: 'पुनर्वित्ताचा महिना भरा.',
+      requiredRate: 'नवा दर भरा.',
+      requiredTerm: 'नवी मुदत महिन्यांत भरा.',
       atMonth: 'पुनर्वित्ताचा महिना',
       newRate: 'नवीन दर (%)',
       newTerm: 'नवीन मुदत (महिने)',
@@ -3236,11 +3335,13 @@ export const loanComparisonMr: typeof loanComparisonEn = {
         notAmortizing: '{months} महिन्यांत कर्ज फिटत नाही. मासिक हप्ता वाढवा.',
         term: 'मुदत किमान एक महिना असायला हवी.',
         amount: 'शून्यापेक्षा जास्त कर्जाची रक्कम भरा.',
+        amountUnreadable: 'कर्जाची रक्कम वाचता आली नाही. फक्त अंक भरा, उदा. 250000.',
+        paymentUnreadable: 'मासिक हप्ता वाचता आला नाही. फक्त अंक भरा, उदा. 1500.',
         amountMax: 'ही कर्जाची रक्कम या साधनासाठी फार मोठी आहे. लहान रक्कम भरा.',
         tooSmall: 'या मुदतीसाठी कर्ज फार लहान आहे. मोठी रक्कम किंवा कमी मुदत भरा.',
         interestOnly: 'या रकमेवर, व्याजदरावर आणि मुदतीवर मासिक हप्त्यात फक्त व्याज भागते, त्यामुळे कर्ज कधीच फिटत नाही. कमी व्याजदर, कमी मुदत किंवा मोठी रक्कम भरा.',
         rate: 'उणे नसलेला व्याजदर भरा.',
-        initialFixed: 'सुरुवातीचा ठरावीक कालावधी शून्यापेक्षा जास्त महिन्यांचा असायला हवा.',
+        initialFixed: 'सुरुवातीचा ठरावीक कालावधी पूर्ण महिन्यांचा असतो, 1 महिना किंवा त्याहून जास्त. तो दुरुस्त करा, किंवा “व्याजदराची रचना” मध्ये “ठरावीक” निवडा.',
         termMin: 'किमान एक महिन्याची मुदत भरा.',
         termMax: 'मुदत {months} महिन्यांपेक्षा जास्त असू शकत नाही.',
         paymentEnter: 'शून्यापेक्षा जास्त मासिक हप्ता भरा.',
@@ -3261,6 +3362,11 @@ export const loanComparisonMr: typeof loanComparisonEn = {
       warnings: {
         precision: 'अंतर्गत अचूकता तपासणी: मुद्दलाची बेरीज {sum} ≠ {expected}. कृपया हे कळवा.',
         subsequentRate: 'सुरुवातीच्या ठरावीक कालावधीनंतरचा दर इतका जास्त आहे की पुनर्गणना केलेल्या हप्त्यात व्याजही कसेबसे भागते.',
+        rateNeverChanges: 'या मुदतीत दर बदलत नाही, त्यामुळे नंतरचा दर वापरला जात नाही.',
+        lumpUnused: 'हे कर्ज महिना {payoffMonth}\u00a0मध्ये फिटते, महिना {month}\u00a0मधील एकरकमी रक्कम भरण्याआधीच, त्यामुळे ती वापरली जात नाही.',
+        lumpsUnused: 'हे कर्ज महिना {payoffMonth}\u00a0मध्ये फिटते, महिना {month} पासूनच्या एकरकमी रकमा भरण्याआधीच, त्यामुळे त्या वापरल्या जात नाहीत.',
+        lumpPartUsed: 'महिना {month}\u00a0मधील एकरकमी रक्कम त्या वेळच्या बाकी कर्जापेक्षा जास्त आहे, त्यामुळे तिचा काही भागच वापरला जातो.',
+        lumpsPartUsed: 'महिना {month}\u00a0मधील एकरकमी रकमा त्या वेळच्या बाकी कर्जापेक्षा जास्त आहेत, त्यामुळे त्यांचा काही भागच वापरला जातो.',
       },
     },
   },

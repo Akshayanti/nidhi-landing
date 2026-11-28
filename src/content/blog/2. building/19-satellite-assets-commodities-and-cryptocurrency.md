@@ -52,9 +52,9 @@ faq:
     answer: "In most frameworks, satellites come after the core. The usual foundation is an emergency fund, high-interest debt handled, and broad exposure across stocks and bonds; adding speculative or hedge positions before that leaves the plan fragile. People who add satellites typically set a cap in advance, often a share small enough that losing all of it would not change their plan, so that price swings don't decide the size. Commodity exposure is usually held through low-cost diversified ETFs, since futures and single-commodity bets add complexity and cost. Satellites are then rebalanced like the rest of the portfolio. Whether any satellite belongs in your plan at all depends on your goals and how much uncertainty you can carry."
 ---
 
-The [previous post](/blog/investing-101-asset-classes/) covered the four core asset classes most diversified portfolios are built from: stocks, bonds, real estate, and cash. Two other asset types come up in almost every investing conversation but don't fit cleanly into that framework: commodities and cryptocurrency. They behave differently, generate returns differently, and play a different role in a plan.
+The [previous lesson](/blog/investing-101-asset-classes/) covered the four core asset classes most diversified portfolios are built from: stocks, bonds, real estate, and cash. Two other asset types come up in almost every investing conversation but don't fit cleanly into that framework: commodities and cryptocurrency. They behave differently, generate returns differently, and play a different role in a plan.
 
-The honest treatment is to give them a separate post rather than dilute the core four with sections that have a fundamentally different shape. By the end of this one, you'll know what each is, what it's for, and where the line sits between a sensible satellite allocation and a speculative bet.
+The honest treatment is to give them a separate lesson rather than dilute the core four with sections that have a fundamentally different shape. By the end of this one, you'll know what each is, what it's for, and where the line sits between a sensible satellite allocation and a speculative bet.
 
 ## Commodities: raw materials and inflation hedges
 
@@ -138,4 +138,4 @@ This isn't a moral judgement. It's a structural one. A simple portfolio can leav
 
 The four core asset classes plus a small, deliberate satellite allocation is the shape most diversified portfolios actually take. Commodities and cryptocurrency are real categories with legitimate (and limited) roles. The mistake is letting marketing or social-feed energy promote them from satellite to core.
 
-You now know what the building blocks of investing are and where the satellites sit around them. Knowing the categories is one thing; spreading your money across them so no single bet can sink you is another. That's the principle behind diversification, and it's where we head next.
+You now know what the building blocks of investing are and where the satellites sit around them. Knowing the categories is one thing; spreading your money across them so no single bet can sink you is another. That's the principle behind diversification, and it's the subject of the next lesson.

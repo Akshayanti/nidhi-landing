@@ -51,7 +51,7 @@ referentialReading:
 
 There are two common failure modes in personal finance tracking. One is ignoring everything until tax season or a crisis forces you to look. The other is checking every app every day, reacting to every small move, and using "keeping up with finances" as a way to avoid actually making decisions.
 
-Neither works. The goal is a dashboard: a small, known set of metrics, reviewed on a known cadence, designed to surface drift early without creating noise. By the end of this post you'll know exactly which numbers to track, at what frequency, and what a healthy vs. drifting signal looks like for each.
+Neither works. The goal is a dashboard: a small, known set of metrics, reviewed on a known cadence, designed to surface drift early without creating noise. By the end of this lesson you'll know exactly which numbers to track, at what frequency, and what a healthy vs. drifting signal looks like for each.
 
 ## The principle: signals, not noise
 
@@ -67,9 +67,9 @@ The monthly check-in is the heartbeat. It should take 15-30 minutes. Four number
 
 **Net worth.** Your [complete picture](/blog/what-is-net-worth/): assets minus liabilities. Tracked as a line over time, not a single moment. Steady growth is the main thing to see; if it stagnates or declines for several months without a clear reason, something is off.
 
-**Cash flow for the month.** Income minus expenses for the calendar month, as covered in the [cash flow post](/blog/cash-flow-101/). Tells you whether you're actually living below your means this month, not just on average.
+**Cash flow for the month.** Income minus expenses for the calendar month, as covered in the [cash flow lesson](/blog/cash-flow-101/). Tells you whether you're actually living below your means this month, not just on average.
 
-**Savings rate.** (Income - expenses) ÷ income. It is one of the biggest levers you control, as the [FIRE post](/blog/introduction-to-financial-independence/) showed, though returns, taxes, pensions and time shape the outcome too. A sustained drop in savings rate is usually the earliest visible sign of lifestyle creep.
+**Savings rate.** (Income - expenses) ÷ income. It is one of the biggest levers you control, as the [FIRE lesson](/blog/introduction-to-financial-independence/) showed, though returns, taxes, pensions and time shape the outcome too. A sustained drop in savings rate is usually the earliest visible sign of lifestyle creep.
 
 **Debt balances.** Especially for high-interest debt in payoff mode. Are balances falling each month as expected? If not, why?
 
@@ -110,7 +110,7 @@ Quarterly issues rarely require urgent action. They require deliberate action, s
 
 Once a year, do the full review. This takes 2-4 hours, ideally with a partner if you share finances. This is where the biggest decisions belong.
 
-**Full [financial health check](/blog/financial-health-metrics/).** The six ratios from the previous post: debt-to-asset, liquid percentage, savings rate trend, emergency-fund coverage, debt-to-income, and expense coverage. Annual is the right cadence for the full set.
+**Full [financial health check](/blog/financial-health-metrics/).** The six ratios from the previous lesson: debt-to-asset, liquid percentage, savings rate trend, emergency-fund coverage, debt-to-income, and expense coverage. Annual is the right cadence for the full set.
 
 **Goal calibration.** For each goal, revisit target amount, date, and monthly contribution. Life changes; goals should too. New goals can be added; stale ones retired.
 
@@ -118,7 +118,7 @@ Once a year, do the full review. This takes 2-4 hours, ideally with a partner if
 
 **Asset and liability audit.** Are any assets obsolete or no longer tracked? Any small forgotten accounts? Any closed credit lines or paid-off loans still listed?
 
-**Insurance review.** Has your life changed in a way that requires updating coverage? [The insurance post](/blog/insurance-basics/) covers the main triggers: new dependants, new home, significant income changes, changes in health, changes in country.
+**Insurance review.** Has your life changed in a way that requires updating coverage? [The insurance lesson](/blog/insurance-basics/) covers the main triggers: new dependants, new home, significant income changes, changes in health, changes in country.
 
 **Tax position.** Did the year hold any tax surprises? Are there structural changes for next year (retirement contribution capacity, tax-advantaged account use, jurisdiction shifts)?
 
@@ -162,7 +162,7 @@ Minimum useful columns in a monthly tracker:
 
 The `notes` column is underrated. Why did net worth drop this month? A vacation? A car repair? Explanations written at the time prevent misinterpretation six months later.
 
-For goal-tracking, a separate sheet with the template from the [goals post](/blog/setting-financial-goals/) is enough: target, date, contribution required, current contribution, on-track status.
+For goal-tracking, a separate sheet with the template from the [goals lesson](/blog/setting-financial-goals/) is enough: target, date, contribution required, current contribution, on-track status.
 
 ## Common mistakes
 
@@ -185,4 +185,4 @@ For goal-tracking, a separate sheet with the template from the [goals post](/blo
 
 A dashboard well used is the quiet infrastructure that turns intention into outcomes. You already know the concepts. You already have goals. What the dashboard adds is visibility: an honest, low-noise picture of whether your plan is working and where it isn't.
 
-This also closes the Building level. You now have the working set: risk, asset classes, satellites, diversification, accounts and automation, taxes, tax-advantaged vehicles, rebalancing, financial independence, passive income, loans, real estate, multi-currency planning, goals, health metrics, and a dashboard to watch them on. That's the full operational kit for running your own financial life with intent. What comes next is where most people discover the math was the easy part: their own brain. The Psychology level looks at the biases, scripts, and emotional patterns that quietly override good plans, and at the systems that hold the line when willpower won't.
+This also closes the Building level. You now have the working set: risk, asset classes, satellites, diversification, accounts and automation, taxes, tax-advantaged vehicles, rebalancing, financial independence, passive income, loans, real estate, multi-currency planning, goals, health metrics, and a dashboard to watch them on. That's the full operational kit for running your own financial life with intent. What comes next is where most people discover the maths was the easy part: their own brain. The Psychology level looks at the biases, scripts, and emotional patterns that quietly override good plans, and at the systems that hold the line when willpower won't.

@@ -41,15 +41,26 @@
  *   - `h=120`     horizon months
  *   - `rv` `ra` `rr` `rt` `rf` `rl`: refinance scenario fields
  *
+ * The envelope (#820)
+ * -------------------
+ * Every link the tool writes is the state above inside an envelope,
+ * `f=2&<state>&z=<check>` (`src/utils/shared/checkedLink.ts`), so a link that
+ * arrives cut short or altered is refused whole and never filled with the
+ * example values. A state with no `f` is a link written before the envelope
+ * and is read exactly as it always was. Accepted limit: a link cut so that no
+ * `f` survives, and any older link that was cut, cannot be told from an older
+ * link that arrived whole, and is read as one.
+ *
  * Hard cutover: the previous `cur=`, `v{i}_principal=`-style keys are NOT
  * decoded. The tool is new (no shared URLs in the wild) and v5.2 of the
  * free-tools plan documents the rationale for skipping the alias layer.
  */
 
 import { CURRENCIES, DEFAULT_CURRENCY, MAX_TERM_MONTHS } from './math.ts';
+import { CHECK_KEY, FORMAT_KEY, openState, sealState } from '../shared/checkedLink.ts';
 import { decodeTuple, encodeTuple, serializeParams, setNonDefault } from '../shared/compactUrl.ts';
-import { UNREADABLE, linkCurrency, linkLumpSums, linkName, linkNumber, linkWholeNumber } from '../shared/linkInput.ts';
-import { canonicalNumber, displayNumber } from '../shared/parseLocaleNumber.ts';
+import { UNREADABLE, fitsLinkNumber, linkCurrency, linkLumpSums, linkName, linkNumber, linkWholeNumber } from '../shared/linkInput.ts';
+import { canonicalNumber, displayNumber, plainDigits } from '../shared/parseLocaleNumber.ts';
 
 /**
  * Where a shared link's state lives. Links carry it after the #, which
@@ -60,8 +71,11 @@ import { canonicalNumber, displayNumber } from '../shared/parseLocaleNumber.ts';
  */
 export const SHARED_STATE_GLOBAL = '__nidhiLoanCompareShared';
 
-/** Matches one state parameter name, for ToolStateGuard. */
-export const STATE_KEY_PATTERN = 'c|n|t|h|ac|rv|ra|rr|rt|rf|rl|v\\d+(?:_[a-z]{2})?';
+/** Matches one state parameter name, for ToolStateGuard: the envelope's two keys, then the state's own. */
+export const STATE_KEY_PATTERN = `${FORMAT_KEY}|${CHECK_KEY}|c|n|t|h|ac|rv|ra|rr|rt|rf|rl|v\\d+(?:_[a-z]{2})?`;
+
+/** The format of the links the tool writes now: the state inside an envelope with a check (#820). */
+export const LINK_FORMAT = '2';
 
 export type ModeKind = 'term' | 'payment';
 export type RateKind = 'fixed' | 'hybrid';
@@ -372,11 +386,80 @@ export function encodeLumpSums(entries: LumpSumEntry[]): string {
  */
 const CLEARED = '-';
 
-/** `value` as the link writes it: the mark when it was emptied and its default is not empty. */
+/**
+ * The number the tool itself reads in a box's text, as plain digits, or null
+ * when it reads none. A box holds a plain number or the marker; anything else
+ * can only have come in with a link from before the check, which was read
+ * leniently ("1,2,3", "+5"). The engine reads such text with spaces and
+ * commas taken out (`parseNumber` in inputs.ts, which a test holds this to),
+ * so "1,2,3" is the 123 the reader has been looking at.
+ */
+export function boxNumber(value: string): string | null {
+  const cleaned = value.replace(/[\s,]/g, '');
+  if (!/^[+-]?(\d+\.?\d*|\.\d+)$/.test(cleaned)) return null;
+  return linkDigits(Number(cleaned));
+}
+
+/**
+ * A number the tool has read, as a link carries it: plain digits, or null for
+ * one a link cannot carry. No box takes a number below zero, so there is no
+ * way to write one, and it stays the error it was; "-0" is the zero the tool
+ * reads it as.
+ */
+function linkDigits(n: number): string | null {
+  if (!(n >= 0)) return null;
+  const digits = plainDigits(n);
+  return fitsLinkNumber(digits) ? digits : null;
+}
+
+/**
+ * `value` as the link writes it: the mark when it was emptied and its default
+ * is not empty. What a lenient older link left in a box is written as the
+ * number the tool reads there (council, Nov 27, 2026: a comparison that opened
+ * as 123 must not become an unreadable box on a language switch), and as the
+ * marker only when the tool reads no number in it: the link's own reader
+ * takes nothing but the site's own ways of writing a number (#821).
+ */
 function written(value: string, dflt: string): string {
-  if (value === '') return dflt === '' ? '' : CLEARED;
-  // A hyphen in the box is not the mark of an emptied one.
-  return value === CLEARED ? UNREADABLE : linkNumber(value, dflt);
+  // Spaces alone are an empty box to the tool, so they are one to the link.
+  if (value.trim() === '') return dflt === '' ? '' : CLEARED;
+  if (fitsLinkNumber(value)) return value;
+  return boxNumber(value) ?? UNREADABLE;
+}
+
+/**
+ * One side of a lump-sum pair as the link writes it. The lump-sum box reads
+ * each side with `Number` (`readLumpSum`), so a side an older link left as
+ * "+500", "500." or ".5" is the 500 or 0.5 the tool has been using, and is
+ * written as that; the marker is for a side the tool reads no number in.
+ */
+function writtenSide(side: string): string {
+  if (fitsLinkNumber(side)) return side;
+  // Never an empty side: `linkLumpSums` has already made that the marker, which `Number` reads no number in.
+  return linkDigits(Number(side)) ?? UNREADABLE;
+}
+
+/** A lump-sum list as the link writes it: each side a number as the site writes one, or the marker. */
+function writtenLumpSums(text: string): string {
+  const list = linkLumpSums(text, '');
+  if (list === '') return '';
+  return list
+    .split(';')
+    .map((pair) => pair.split(':').map(writtenSide).join(':'))
+    .join(';');
+}
+
+/** Whether a checked link's value is what `written` writes: a number as the site writes one, or one of the two marks. */
+const fits = (value: string) => value === CLEARED || value === UNREADABLE || fitsLinkNumber(value);
+
+/** The same for a lump-sum list: the mark of an emptied box, or pairs as `writtenLumpSums` writes them. */
+function lumpSumsFit(value: string): boolean {
+  if (value === CLEARED) return true;
+  return value.split(';').every((pair) => {
+    if (pair === UNREADABLE) return true;
+    const sides = pair.split(':');
+    return sides.length === 2 && sides.every((side) => side === UNREADABLE || fitsLinkNumber(side));
+  });
 }
 
 /** What a link's value says about a box: emptied on purpose, or the value itself. */
@@ -480,7 +563,7 @@ export function encodeToQueryString(vendors: VendorInput[], global: GlobalState)
       const text = String(value);
       const out =
         field === 'rateKind' ? text
-        : field === 'lumpSumsEncoded' ? linkLumpSums(text, '')
+        : field === 'lumpSumsEncoded' ? writtenLumpSums(text)
         : written(text, String(dflt));
       if (out !== '') params.set(`v${idx}_${key}`, out);
     }
@@ -507,12 +590,21 @@ export function isPristineState(vendors: VendorInput[], global: GlobalState, pag
 }
 
 /**
+ * What follows the `#` of a link the tool writes: the state inside the
+ * envelope, whose check lets the page that opens it tell that it arrived
+ * whole (`readSharedState`).
+ */
+export function encodeSharedState(vendors: VendorInput[], global: GlobalState): string {
+  return sealState(encodeToQueryString(vendors, global), LINK_FORMAT);
+}
+
+/**
  * What the tool publishes for the language switch: nothing while it is
  * untouched, so the other page opens with its own starting currency, and the
- * encoded state (the share-link encoding, unchanged) once anything changed.
+ * share link's own state once anything changed.
  */
 export function publishableState(vendors: VendorInput[], global: GlobalState, pageCurrency: string): string {
-  return isPristineState(vendors, global, pageCurrency) ? '' : encodeToQueryString(vendors, global);
+  return isPristineState(vendors, global, pageCurrency) ? '' : encodeSharedState(vendors, global);
 }
 
 const KNOWN_CURRENCIES: ReadonlySet<string> = new Set(CURRENCIES.map((c) => c.code));
@@ -603,4 +695,68 @@ export function decodeFromQueryString(qs: string): DecodeResult {
   };
 
   return { vendors, currency, global };
+}
+
+/** The keys of the settings that are typed numbers: the horizon and the refinance boxes. */
+const NUMBER_KEYS: ReadonlySet<string> = new Set(['h', 'ra', 'rr', 'rt', 'rf']);
+/** The positions of an offer's tuple that are typed numbers. */
+const NUMBER_POSITIONS: readonly number[] = [
+  V_IDX.PRINCIPAL, V_IDX.ANNUAL_RATE_PCT, V_IDX.TERM_MONTHS, V_IDX.MONTHLY_PAYMENT, V_IDX.FEE_MAJOR, V_IDX.EXTRA_MONTHLY,
+];
+/** The advanced fields that are choices, not typed numbers. */
+const NOT_NUMBERS: ReadonlySet<string> = new Set(['rk', 'rc']);
+/** The advanced keys that are typed numbers (the lump-sum list has its own shape and is asked first). */
+const ADVANCED_NUMBER_KEYS: ReadonlySet<string> = new Set(ADVANCED_KEY_MAP.map(({ key }) => key).filter((key) => !NOT_NUMBERS.has(key)));
+
+/**
+ * Whether every typed number of a checked link is one the tool's own writer
+ * could have written (#821): a number in one of the site's styles, the mark
+ * of an emptied box or the marker of an unreadable one. The writer writes
+ * nothing else, so in a link whose check holds a value outside that was
+ * never in a sender's box: the link is not what anyone saw, and it is refused
+ * whole, like a link that arrived damaged, rather than opened with a box
+ * the sender never had. An empty position in an offer's tuple is "not
+ * given" and fits. Links from before the check are not asked: they are read
+ * as leniently as ever.
+ */
+function numbersFit(state: string): boolean {
+  for (const [key, value] of new URLSearchParams(state)) {
+    if (NUMBER_KEYS.has(key)) {
+      if (!fits(value)) return false;
+      continue;
+    }
+    const offer = /^v\d+(?:_([a-z]{2}))?$/.exec(key);
+    if (!offer) continue;
+    const field = offer[1];
+    if (field === undefined) {
+      const fields = decodeTuple(value, SIMPLE_FIELD_COUNT);
+      if (!NUMBER_POSITIONS.every((at) => fields[at] === '' || fits(fields[at]))) return false;
+    } else if (field === 'ls') {
+      if (!lumpSumsFit(value)) return false;
+    } else if (ADVANCED_NUMBER_KEYS.has(field) && !fits(value)) {
+      return false;
+    }
+  }
+  return true;
+}
+
+/**
+ * A state that arrived (a share link, the language switch), read: the offers
+ * and settings it carries, or `null` for a link written with the envelope
+ * that did not arrive whole. Nothing of such a link is used: the page shows
+ * neither its values nor the examples in their place (#820).
+ *
+ * A state with no `f` key was written before the envelope and is read as it
+ * always was. One cut so that no `f` survives looks the same and is read the
+ * same way: that limit is accepted. The decoder knows neither `f` nor `z`,
+ * so a whole link reads as the state inside it; with every other value left
+ * out, that is each offer's slot template, which is what the writer left out.
+ *
+ * A whole link is also refused when one of its numbers is not one the writer
+ * could have written (`numbersFit`, #821).
+ */
+export function readSharedState(state: string): DecodeResult | null {
+  const arrived = openState(state, LINK_FORMAT);
+  if (arrived === 'damaged' || (arrived === 'whole' && !numbersFit(state))) return null;
+  return decodeFromQueryString(state);
 }

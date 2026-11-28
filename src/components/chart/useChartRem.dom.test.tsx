@@ -69,7 +69,7 @@ beforeEach(() => {
     return { width: shown, height: 0, top: 0, left: 0, right: shown, bottom: 0, x: 0, y: 0, toJSON: () => ({}) };
   };
   g.getComputedStyle = (el: Element) => {
-    assert.equal(el, document.documentElement, 'the text size is read from the page, not the chart');
+    assert.ok(el === document.documentElement, 'the text size is read from the page, not the chart');
     return { fontSize: rootSize };
   };
   g.ResizeObserver = Watcher;
@@ -186,6 +186,21 @@ describe('a chart measured from inside its own drawing (#876)', () => {
     shown = 320;
     live()[0].resize();
     assert.deepEqual(seen, { rem: 32, scale: 1 });
+  });
+
+  it('is drawn measured as soon as that second look runs, not a frame later (#889)', async () => {
+    shown = 320;
+    render(<Framed width={640} />);
+    // Only the microtask itself: no act, no scheduler turn.
+    const env = globalThis as { IS_REACT_ACT_ENVIRONMENT?: boolean };
+    const before = env.IS_REACT_ACT_ENVIRONMENT;
+    env.IS_REACT_ACT_ENVIRONMENT = false;
+    try {
+      await Promise.resolve();
+      assert.deepEqual(seen, { rem: 32, scale: 1 });
+    } finally {
+      env.IS_REACT_ACT_ENVIRONMENT = before;
+    }
   });
 });
 

@@ -52,7 +52,7 @@ referentialReading:
 
 Your salary comes from one employer. Your company stock sits in your retirement account because you got it as part of your compensation. Your home is in one city. Your savings are in euros because that's what you earn. On paper, your net worth looks reasonable. On the day that employer cuts jobs, that city's housing market stalls, and the euro has a weak year against the currency of the supplier you import everything from, you discover something uncomfortable: almost every number on your balance sheet moves in the same direction. Down.
 
-This is concentration risk. It's a close cousin of the [risk concepts](/blog/understanding-risk/) we covered earlier, and the reason "don't put all your eggs in one basket" survived centuries as advice. And diversification is the boring, unglamorous answer that quietly protects most of the financial progress you make.
+This is concentration risk. It's a close cousin of the [risk concepts](/blog/understanding-risk/) from an earlier lesson, and the reason "don't put all your eggs in one basket" survived centuries as advice. And diversification is the boring, unglamorous answer that quietly protects most of the financial progress you make.
 
 ## What diversification actually is
 
@@ -90,9 +90,9 @@ You diversify along several dimensions at once. Most people think only about the
 
 **4. Company size.** Large established companies behave differently from small growing ones. Broad "total market" index funds include both; narrower indexes may only include large caps.
 
-**5. Currency.** If everything you own is denominated in one currency, you're exposed to that currency's fate. We'll come back to this in detail in a later post on managing money across currencies; if you want a quick read on your own exposure now, the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) shows what you own and owe by currency and each currency's share of your net worth. It does not know your future spending, so the comparison with where you will spend is yours to make.
+**5. Currency.** If everything you own is denominated in one currency, you're exposed to that currency's fate. A later lesson on managing money across currencies comes back to this in detail; if you want a quick read on your own exposure now, the [multi-currency net worth analyzer](/free/multi-currency-net-worth/) shows what you own and owe by currency and each currency's share of your net worth. It does not know your future spending, so the comparison with where you will spend is yours to make.
 
-**6. Time.** Spreading purchases across months or years through dollar-cost averaging (investing a fixed amount on a schedule regardless of price) diversifies your *entry price*, so no single date determines your cost basis (what you paid, which tax on a later sale is worked out from). We come back to this in the next post.
+**6. Time.** Spreading purchases across months or years through dollar-cost averaging (investing a fixed amount on a schedule regardless of price) diversifies your *entry price*, so no single date determines your cost basis (what you paid, which tax on a later sale is worked out from). The next lesson comes back to this.
 
 | Dimension | Concentrated | Diversified |
 |---|---|---|
@@ -103,7 +103,7 @@ You diversify along several dimensions at once. Most people think only about the
 | Currency | Only home currency | Multiple currencies |
 | Time | One lump sum at one moment | Regular contributions over years |
 
-Time is the odd one out. Regular contributions from pay spread the entry date naturally. For money already in hand, spreading it out narrows the range of outcomes but has usually cost something on average: in Vanguard's study of US, UK and Australian data, investing a lump sum at once beat spreading it over 12 months about two times in three. The [next post](/blog/getting-started-investing/) covers this.
+Time is the odd one out. Regular contributions from pay spread the entry date naturally. For money already in hand, spreading it out narrows the range of outcomes but has usually cost something on average: in Vanguard's study of US, UK and Australian data, investing a lump sum at once beat spreading it over 12 months about two times in three. The [next lesson](/blog/getting-started-investing/) covers this.
 
 Diversifying along more dimensions is usually better, up to a point. Past that point, adding complexity doesn't add meaningful protection. It just makes the portfolio harder to manage.
 
@@ -198,7 +198,7 @@ That's not a glamorous portfolio, but it captures much of the benefit of diversi
 
 More complexity isn't automatically better. Every additional fund adds cost, cognitive load, and rebalancing work. A useful question before adding a fund is: does this actually cover an exposure I don't already have?
 
-> **Two terms that will come up often:** **asset allocation** is the specific mix you choose to hold, for example 70% stocks and 30% bonds. Diversification is the *principle*; asset allocation is the *number*. **Rebalancing** is the discipline of selling some of what's grown and buying some of what's lagged to return to that target mix. We cover rebalancing in detail in a later post in this series.
+> **Two terms that will come up often:** **asset allocation** is the specific mix you choose to hold, for example 70% stocks and 30% bonds. Diversification is the *principle*; asset allocation is the *number*. **Rebalancing** is the discipline of selling some of what's grown and buying some of what's lagged to return to that target mix. A later lesson in this series covers rebalancing in detail.
 
 ## When diversification hits its limits
 
@@ -214,10 +214,10 @@ Diversification is powerful but not magical:
 1. **Start by listing your concentrations.** Employer stock, home country exposure, currency exposure, sector exposure. Which of these is large because you chose it, and which is large because you never noticed?
 2. **Broad index funds are the common default.** Many retail investors get most of their diversification from one global stock fund and one bond fund, because simplicity keeps costs and mistakes down. The right mix and wrapper depend on your situation
 3. **Dimensions matter more than count.** Twenty stocks in the same country and sector is one bet. A single global fund is many bets
-4. **Currency exposure is easy to miss.** Earning and saving in one currency while expenses, retirement plans, or family support happen in another is a hidden concentration. A later post in this series goes into the mechanics
+4. **Currency exposure is easy to miss.** Earning and saving in one currency while expenses, retirement plans, or family support happen in another is a hidden concentration. A later lesson in this series goes into the mechanics
 5. **Over-engineering adds little.** A ninth fund in an already well diversified portfolio is usually noise; the test is whether each holding adds an exposure you don't already have
 6. **The trade-off is built in.** A diversified portfolio will rarely be your best-performing asset in any given year. It is also much less likely to be your worst
 
 Diversification is quiet. It doesn't produce headlines. It doesn't give you stories to tell at dinner. It just keeps working, year after year, absorbing shocks that would otherwise derail the plan. That's its value.
 
-You now know what the building blocks are and how spreading risk works. The remaining piece is the practical mechanics: the kinds of accounts people use, what typically goes inside them, and how to make contributions happen automatically every month so the plan runs without you. That's where we go next.
+You now know what the building blocks are and how spreading risk works. The remaining piece is the practical mechanics: the kinds of accounts people use, what typically goes inside them, and how to make contributions happen automatically every month so the plan runs without you. That's the subject of the next lesson.

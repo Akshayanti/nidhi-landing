@@ -43,6 +43,8 @@ const FONT_FAMILIES: Record<string, string> = {
  */
 const CLIENT_PACKAGES: Record<string, string> = {
   react: 'react, react-dom and scheduler',
+  // Imported by name since the charts' flushSync (#889); the same notice.
+  'react-dom': 'react, react-dom and scheduler',
 };
 
 /** Packages imported under src/ that run at build time only, each with where. */

@@ -73,6 +73,15 @@ describe('a gridline carries a bare number', () => {
     assert.equal(axisTick(0, 'million', 'EUR'), '0');
     assert.equal(axisTick(750, 'none', 'EUR'), '750');
   });
+
+  it('writes what rounds to nothing as zero, never "-0" (#888)', () => {
+    assert.equal(axisTick(-0, 'none', 'EUR'), '0');
+    assert.equal(axisTick(-0.001, 'none', 'EUR'), '0');
+    assert.equal(axisTick(-4, 'thousand', 'EUR'), '0');
+    assert.equal(axisTick(-0.001, 'none', 'CZK', 'cs'), '0');
+    assert.equal(axisTick(-5, 'thousand', 'EUR'), '-0.01');
+    assert.equal(axisTick(333_333, 'million', 'EUR'), '0.33');
+  });
 });
 
 describe('a label that stands alone carries its own unit', () => {
@@ -82,6 +91,13 @@ describe('a label that stands alone carries its own unit', () => {
     assert.equal(chartLabel(1_870_000, 'INR', exportEn.chart), '₹18.7L');
     assert.equal(chartLabel(10_900_000, 'INR', exportEn.chart), '₹1.09Cr');
     assert.equal(chartLabel(950, 'EUR', exportEn.chart), '€950');
+  });
+
+  it('writes less than half a unit below zero as zero, never "-€0" (#888)', () => {
+    assert.equal(chartLabel(-0.3, 'EUR', exportEn.chart), '€0');
+    assert.equal(chartLabel(-0, 'EUR', exportEn.chart), '€0');
+    assert.equal(chartLabel(-0.3, 'CZK', exportCs.chart, 'cs'), `0${NBSP}Kč`);
+    assert.equal(chartLabel(-0.6, 'EUR', exportEn.chart), '-€1');
   });
 
   it('chooses the unit after rounding, so no label reads a thousand of the unit below', () => {

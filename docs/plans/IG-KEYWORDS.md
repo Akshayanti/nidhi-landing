@@ -8,7 +8,7 @@ Tuning rules live in `PLAYBOOK.md` §3 (hashtags) and §6 (keywords block); the 
 - Per-post audience angle varies — each post in a series aims at a distinct sub-audience so IG's classifier doesn't anchor the account to one cluster.
 - Hashtags and keywords don't duplicate each other — community-browse terms live in hashtags, search phrases + multilingual terms live in the keyword array.
 - Multilingual coverage: EN base + targeted translations in languages where the native word is what people actually search (DE, FR, ES, IT, NL, PL, SV, NO, DA, CS). Cognates (`inflation`, `budget`, `euro`) aren't re-translated.
-- Array size: 13–18 keywords per post (tight side of the 18–24 sweet spot documented in PLAYBOOK.md §6). Open item: kit 49 day 1 has 20 terms (Nov 3, 2026); lint or trim.
+- Array size: 18 to 24 keywords per post, reels included (the sweet spot documented in PLAYBOOK.md §6, which the kit lint in `scripts/render-kit.mjs` enforces; owner, #802).
 
 ## Inclusive Finances
 

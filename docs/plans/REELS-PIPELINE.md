@@ -226,16 +226,18 @@ TTS. If the LLM emits anything in these categories, the renderer halts:
   to one cluster and stalled non-follower reach. Pre-flight audit script:
   `node -e '...' | sort | uniq -c | awk "$1>3"`.
 - **IG keyword block (May 2026 search surface, separate from hashtags)**:
-  `caption.instagramKeywords` is a 13–18 item array of multilingual search
+  `caption.instagramKeywords` is an 18 to 24 item array of multilingual search
   phrases that renders as a bracketed block after the hashtag line in
   `.ig.txt`. Hashtags = community-follow surface; keywords = search-query
-  index. Scrubber rejects: count <13 or >18, leading `#` symbols, terms
+  index. Scrubber rejects: a count out of range, leading `#` symbols, terms
   that duplicate the hashtag list (token-collapse comparison), banned
   terms. EN must dominate the count vs any single non-EN language
   (PLAYBOOK §3 cohort-balance rule).
   Kit reels take their keywords from the kit instead (`keywords_day1`,
-  `keywords_day2`), where the `render-kit.mjs` lint enforces 18 to 24. Open
-  question for the owner: which count holds for reels (PLAYBOOK §6).
+  `keywords_day2`), where the `render-kit.mjs` lint enforces 18 to 24, the
+  count for every reel (owner, #802; PLAYBOOK §6). The LLM route's prompt
+  (`llm-script-writer.mjs`) and scrubber (`scrub-output.mjs`) ask for and
+  check the same 18 to 24.
 - **TikTok extras (May 2026)**: `caption.tiktokTopics` is a 3–5 item array
   of natural-language English search-query phrases, rendered as a single
   `Topics: phrase1, phrase2, ...` line above the hashtag wave in
@@ -501,7 +503,7 @@ asked whether each figure had context.
   four in a reel, or more than one new number in a beat outside the hook, is
   a rewrite. (The first fix of the gig work day 1 reel walked every input as
   a number and the owner called it a "numbers bombardment".)
-- A financial term is explained, or replaced with plain words, before it is said or shown anywhere in the reel: in the hook, on chart labels, chips, tool cards, the story tool card and the caption (owner, Nov 5, 2026: "windfall" in 51 day 2). Show the thing first, then name it ("that is called deferred interest"). A hook that shows every band hides band names that are terms with `bandStory.hideCostInHook`. The caption's "Read the full post" line comes from the lesson's `reelPromise` unless the plan sets its own; set one when the lesson's has terms or hyphens.
+- A financial term is explained, or replaced with plain words, before it is said or shown anywhere in the reel: in the hook, on chart labels, chips, tool cards, the story tool card and the caption (owner, Nov 5, 2026: "windfall" in 51 day 2). Show the thing first, then name it ("that is called deferred interest"). A hook that shows every band hides band names that are terms with `bandStory.hideCostInHook`. The caption's "Read the full lesson" line comes from the lesson's `reelPromise` unless the plan sets its own; set one when the lesson's has terms or hyphens.
 - No single country framing (owner, Nov 5, 2026: "explaining a US rule assumes the audience is US based"). A reel's core idea never rests on one country's rule, product or law (28/36, a no cost EMI, an ISA). Teach the mechanism every country shares (the four measures behind borrowing rules, a stress test, the fine print that ends 0%); national rules stay in the lesson's country expanders or appear only side by side with other countries. Every council brief asks: would a viewer in Lisbon, Dubai and Bangkok all see themselves in this?
 - A reel delivers the lesson's substance, not a teaser for it (owner, Nov 5, 2026, on reels that held the rules back for the blog: "doesn't offer any new info"). Depth comes from one complete idea, not from more ideas.
 - One step per beat, and the hook names the problem (owner, Nov 5, 2026, on 50b and 50c day 1: "multiple ideas very quickly in a beat as if the user should be rushed"; on 50b day 2: "no question in hook to make the reader understand what problem is there"). A beat's voice carries one item or one step, never a pair of parallel items ("the payment, and all debts"); a card may still show two rows at once if the timed read passes. When a list does not fit at one item per beat, keep the items the hook's question needs and move the rest to the story card and caption. The hook asks the viewer's own question about the problem the reel solves; "Part two:" does not replace it. Model: 50c day 2 (one setup, one mechanism built step by step, then the checklist).
@@ -594,7 +596,7 @@ The reel's job is the spark.
 blog frontmatter and declared in `src/content.config.ts`) is the one-line,
 content-backed reason to click through. The orchestrator stamps it onto the
 plan, the CTA scene reads it for the READ row, and `render-platform-caption.mjs`
-renders it as the caption's "Read the full post · {promise}: …" line. It MUST
+renders it as the caption's "Read the full lesson · {promise}: …" line. It MUST
 describe something actually in the post body (a worked example, a
 side-by-side table, a rule of thumb), never a generic teaser. `relatedTool`
 works the same way for a paired free tool ("Free tool · …" line).

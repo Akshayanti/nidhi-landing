@@ -102,6 +102,21 @@ describe('palette contrast, as docs/color-palette.md sets it', () => {
     }
   });
 
+  it('the grey text and the light warning text are AAA (8:1) on the surfaces they are written on (#788, #828)', () => {
+    const pairs: Array<[string, string, string, string]> = [
+      ['n700 (secondary)', NEUTRAL.n700, 'page', NEUTRAL.offWhite],
+      ['n700 (secondary)', NEUTRAL.n700, 'hover surface', NEUTRAL.n25],
+      ['n600 (muted)', NEUTRAL.n600, 'page', NEUTRAL.offWhite],
+      ['textDarkSecondary', NEUTRAL.textDarkSecondary, '#1E1E1E', SURFACE_DARK],
+      ['textDarkMuted', NEUTRAL.textDarkMuted, '#1E1E1E', SURFACE_DARK],
+      ['warningLightText', SEMANTIC.warningLightText, 'warningLightBg', SEMANTIC.warningLightBg],
+      ['warningLightTextStrong', SEMANTIC.warningLightTextStrong, 'warningLightBg', SEMANTIC.warningLightBg],
+    ];
+    for (const [name, ink, surfaceName, surface] of pairs) {
+      assert.ok(contrast(ink, surface) >= 8, `${name} ${ink} on ${surfaceName} is ${contrast(ink, surface).toFixed(2)}:1`);
+    }
+  });
+
   it('every status and warning text colour is AA (4.5:1) on the surface it is written on', () => {
     const pairs: Array<[string, string, string, string]> = [
       ['successLight', SEMANTIC.successLight, 'white', WHITE],

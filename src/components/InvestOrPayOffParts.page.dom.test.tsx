@@ -64,7 +64,7 @@ describe('the invest or pay off calculator on its page', () => {
     assert.equal(doc.querySelector('.iop-example')?.textContent, island.example);
     assert.equal(doc.querySelector('.iop-headline')?.textContent, linesFor()[1]);
     assert.equal(doc.querySelector('span[aria-live="polite"]')?.textContent, '');
-    assert.equal(doc.querySelector('.tool-report'), null);
+    assert.ok(doc.querySelector('.tool-report') === null);
     assert.equal(doc.querySelector('input[value="historical"]')?.hasAttribute('checked'), true);
     assert.equal(doc.querySelector('input[value="plus5"]')?.hasAttribute('checked'), true);
     // A page whose country's history is not in it yet says it is loading, not that it failed.
@@ -329,7 +329,7 @@ describe('the invest or pay off calculator on its page', () => {
       assert.equal(input.getAttribute('aria-invalid'), 'true', name);
       const error = input.closest('.ifc-field')?.querySelector('.ifc-error');
       assert.equal(error?.textContent, fieldError(message), name);
-      assert.equal(input.getAttribute('aria-errormessage'), error?.id);
+      assert.equal(input.hasAttribute('aria-errormessage'), false, name);
       assert.ok(input.getAttribute('aria-describedby')?.startsWith(`${error?.id}`), name);
       type(name, was);
       assert.equal(input.hasAttribute('aria-invalid'), false, name);

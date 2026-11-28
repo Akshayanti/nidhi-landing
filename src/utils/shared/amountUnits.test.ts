@@ -26,6 +26,14 @@ describe('splitAmounts', () => {
     assert.deepEqual(units('-€12,800'), ['-€12,800']);
   });
 
+  it('keeps a small amount whole, decimals and all, as the inflation calculator writes it (#868)', () => {
+    assert.deepEqual(units('€1 in 10 years buys what about €0.74 buys today.'), ['€1', '10', '€0.74']);
+    assert.deepEqual(units('It was about €0.074.'), ['€0.074']);
+    assert.deepEqual(units('zhruba 0,74\u00a0€'), ['0,74\u00a0€']);
+    assert.deepEqual(units('about ￥1.3'), ['￥1.3']);
+    assert.deepEqual(units('less than 0,01\u00a0$'), ['0,01\u00a0$']);
+  });
+
   it('leaves a sentence\'s own punctuation outside the unit', () => {
     assert.deepEqual(units('It comes to €1,520, which is less than €9,900.'), ['€1,520', '€9,900']);
   });

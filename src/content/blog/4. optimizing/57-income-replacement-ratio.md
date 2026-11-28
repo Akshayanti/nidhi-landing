@@ -39,11 +39,11 @@ faq:
   - question: "When is the 70 to 80% rule wrong for me?"
     answer: "Several common cases. Lower than 70%: mortgage paid off before retirement (removes the mortgage payment, though property tax, insurance and maintenance continue), children now financially independent, planned downshift to lower-cost location or simpler lifestyle. Some households retire on 40 to 50% of pre-retirement income and live well. Higher than 80%: planned lifestyle upgrade (travel, second home, expensive hobbies), dependants still supported (adult children with special needs, ageing parents), rising healthcare costs (particularly in the US where private insurance and out-of-pocket costs can accelerate), pre-retirement lifestyle already frugal (little room to compress further). Some households need 100% or more. The check is to project your actual expected retirement expenses category by category rather than apply a percentage."
   - question: "How do I actually build my own number?"
-    answer: "Start with your current monthly expenses (from the cash flow post) and project each category into retirement. For each category, ask: does this stop, continue, drop, or rise? Housing: mortgage payment often stops (if paid off); property tax, insurance, maintenance continue. Transportation: often drops (no commuting) but may not disappear. Food: continues, often slightly higher (more meals at home). Healthcare: typically rises significantly, particularly late retirement. Insurance: life insurance often can be dropped; disability insurance ends. Retirement contributions: end. Employment-linked expenses: end. Travel and leisure: often rises in early retirement. Then add any planned new expenses (extended travel, second home, philanthropy, family support). Sum the projected monthly expenses and compare to current income to get your personal replacement ratio."
+    answer: "Start with your current monthly expenses (from the cash flow lesson) and project each category into retirement. For each category, ask: does this stop, continue, drop, or rise? Housing: mortgage payment often stops (if paid off); property tax, insurance, maintenance continue. Transportation: often drops (no commuting) but may not disappear. Food: continues, often slightly higher (more meals at home). Healthcare: typically rises significantly, particularly late retirement. Insurance: life insurance often can be dropped; disability insurance ends. Retirement contributions: end. Employment-linked expenses: end. Travel and leisure: often rises in early retirement. Then add any planned new expenses (extended travel, second home, philanthropy, family support). Sum the projected monthly expenses and compare to current income to get your personal replacement ratio."
   - question: "Why does the ratio matter so much for my FIRE target?"
-    answer: "Because it directly determines the multiple of expenses your portfolio must sustain. At a 4% withdrawal rate, the FIRE target is 25x annual expenses (at 3.5%, about 29x). If your annual expenses are €40,000 (a 60% replacement of a €67,000 income), your target is €1 million. If they are €53,600 (an 80% replacement of the same €67,000 income), your target is €1.34 million. That is a €340,000 difference in portfolio target from a 20-percentage-point change in the replacement ratio. Small changes in the ratio compound into large changes in the FIRE number. Using the wrong ratio (too high or too low) can either delay your retirement unnecessarily or leave you underfunded. The FIRE post covered the SWR concept generically; the ratio is the input that determines your specific target."
+    answer: "Because it directly determines the multiple of expenses your portfolio must sustain. At a 4% withdrawal rate, the FIRE target is 25x annual expenses (at 3.5%, about 29x). If your annual expenses are €40,000 (a 60% replacement of a €67,000 income), your target is €1 million. If they are €53,600 (an 80% replacement of the same €67,000 income), your target is €1.34 million. That is a €340,000 difference in portfolio target from a 20-percentage-point change in the replacement ratio. Small changes in the ratio compound into large changes in the FIRE number. Using the wrong ratio (too high or too low) can either delay your retirement unnecessarily or leave you underfunded. The FIRE lesson covered the SWR concept generically; the ratio is the input that determines your specific target."
   - question: "How do pension and social benefit income change the calculation?"
-    answer: "They change it fundamentally. The FIRE math (25x annual expenses) assumes your portfolio covers your entire expenses. If a state pension or employer pension covers €20,000 of your €50,000 retirement expenses, your portfolio only needs to cover €30,000, so the target is 25x €30,000 = €750,000, not 25x €50,000 = €1.25 million. Each euro a year of inflation-linked lifetime income reduces the portfolio target by about 25 euros (at a 4% withdrawal rate); pensions that are not inflation-linked, or that start years after an early retirement, reduce it by less. This is one of the largest reasons FI timelines vary so much between households with similar incomes and expenses: households with generous employer pensions or robust social benefit systems can reach FI on much smaller portfolios. A calculation built around net-of-pension expenses reflects this; one built on gross expenses overstates the target. Details on pension income are in later Mastery posts; the takeaway here is that the ratio and the portfolio target are downstream of your total retirement-income mix."
+    answer: "They change it fundamentally. The FIRE maths (25x annual expenses) assumes your portfolio covers your entire expenses. If a state pension or employer pension covers €20,000 of your €50,000 retirement expenses, your portfolio only needs to cover €30,000, so the target is 25x €30,000 = €750,000, not 25x €50,000 = €1.25 million. Each euro a year of inflation-linked lifetime income reduces the portfolio target by about 25 euros (at a 4% withdrawal rate); pensions that are not inflation-linked, or that start years after an early retirement, reduce it by less. This is one of the largest reasons FI timelines vary so much between households with similar incomes and expenses: households with generous employer pensions or robust social benefit systems can reach FI on much smaller portfolios. A calculation built around net-of-pension expenses reflects this; one built on gross expenses overstates the target. Details on pension income are in later Mastery lessons; the takeaway here is that the ratio and the portfolio target are downstream of your total retirement-income mix."
 reelPromise: "Why the 70 to 80% rule is a starting point not an answer, the four categories that swing your personal number, and why every euro of pension income drops your FIRE target by 25 euros"
 relatedSlugs: ["cash-flow-101", "setting-financial-goals", "financial-projections", "introduction-to-financial-independence", "financial-health-metrics"]
 referentialReading:
@@ -58,7 +58,7 @@ referentialReading:
 
 Eva earns €80,000 a year before tax. Suppose her retirement budget, including any tax on withdrawals, is €60,000 a year: 75% of her gross income. If a portfolio had to cover all of it, 25 times that is €1.5 million. A €48,000 budget, or 60%, gives €1.2 million. The €300,000 gap can mean years more saving, depending on how much is saved each year and what it earns.
 
-That percentage is the [income replacement ratio](#term-income-replacement-ratio): the share of pre-retirement income needed to keep the same life once work stops. The most quoted figure is 70 to 80%. This post covers where that figure comes from, how to build your own number instead, and why pensions and other income change what the portfolio has to cover.
+That percentage is the [income replacement ratio](#term-income-replacement-ratio): the share of pre-retirement income needed to keep the same life once work stops. The most quoted figure is 70 to 80%. This lesson covers where that figure comes from, how to build your own number instead, and why pensions and other income change what the portfolio has to cover.
 
 ## Where the 70 to 80% rule comes from, and where it breaks
 
@@ -68,7 +68,7 @@ Each assumption can be wrong for a specific household. Someone who saved little 
 
 ## Building your own ratio from expected expenses
 
-The alternative is a bottom-up estimate: take current monthly spending (the [cash flow post](/blog/cash-flow-101/) covered tracking it) and ask of each category whether it stops, continues, falls or rises in retirement, then add anything new. The yearly total divided by current gross income is your own ratio. For most people it takes about an hour.
+The alternative is a bottom-up estimate: take current monthly spending (the [cash flow lesson](/blog/cash-flow-101/) covered tracking it) and ask of each category whether it stops, continues, falls or rises in retirement, then add anything new. The yearly total divided by current gross income is your own ratio. For most people it takes about an hour.
 
 - **Housing,** usually the largest line and the largest difference between retirees. A mortgage that ends before retirement removes its payment; property tax, insurance, utilities and maintenance continue, maintenance often rising as a home ages. Rent continues. A €1,500 monthly mortgage that ends before retirement removes €18,000 a year, and at 25 times, €450,000 from the target.
 - **Transport** may fall when commuting stops or a household needs fewer cars, though travel or accessibility needs can move it the other way.
@@ -109,7 +109,7 @@ The alternative is a bottom-up estimate: take current monthly spending (the [cas
   <text class="fig-quote-small" x="542" y="352.8" text-anchor="start">Food, other, health (25%)</text>
   <line x1="80" y1="380" x2="700" y2="380" class="fig-stroke-rule" />
 </svg>
-<figcaption>Illustrative decomposition of a "typical" household's income replacement math. Actual numbers vary widely; the shape of the drop is common.</figcaption>
+<figcaption>Illustrative decomposition of a "typical" household's income replacement maths. Actual numbers vary widely; the shape of the drop is common.</figcaption>
 </figure>
 
 <details class="quick-check">
@@ -122,7 +122,7 @@ About €300,000: €12,000 a year less spending, times 25.
 <details class="lesson-depth">
 <summary class="disclosure">Households that tend to need less than 70%, and more than 80%</summary>
 
-**Often below 70%:** a mortgage paid off before retirement (the most common reason); downsizing from a family home in an expensive area; moving somewhere cheaper (the [geographic arbitrage post](/blog/geographic-arbitrage/) covered it), which can cut costs by 30 to 60%; a deliberately simpler life; children fully independent. Ratios of 40 to 60% are not unusual here.
+**Often below 70%:** a mortgage paid off before retirement (the most common reason); downsizing from a family home in an expensive area; moving somewhere cheaper (the [geographic arbitrage lesson](/blog/geographic-arbitrage/) covered it), which can cut costs by 30 to 60%; a deliberately simpler life; children fully independent. Ratios of 40 to 60% are not unusual here.
 
 **Often above 80%:** a planned upgrade (long travel, a second home, expensive hobbies); dependants still supported, such as an adult child with a disability or a parent who needs care; rising healthcare costs, especially where care is mostly private; and a life already frugal before retirement, which leaves nothing to compress. Some need 100% or more.
 
@@ -130,7 +130,7 @@ About €300,000: €12,000 a year less spending, times 25.
 
 ## A small change in the ratio moves the target a lot
 
-The [financial independence post](/blog/introduction-to-financial-independence/) set the target as about 25 times yearly spending at a 4% [withdrawal rate](#term-withdrawal-rate), a US-derived rule of thumb that many treat as optimistic for long or non-US retirements; at 3.5% the multiple is about 29. Because the ratio sets the spending, it sets the target. On Eva's €80,000, 65% instead of 75% is €8,000 a year less spending and €200,000 less portfolio, about 13% of a €1.5 million target. A ratio that is too high delays retirement unnecessarily; one that is too low can leave someone underfunded.
+The [financial independence lesson](/blog/introduction-to-financial-independence/) set the target as about 25 times yearly spending at a 4% [withdrawal rate](#term-withdrawal-rate), a US-derived rule of thumb that many treat as optimistic for long or non-US retirements; at 3.5% the multiple is about 29. Because the ratio sets the spending, it sets the target. On Eva's €80,000, 65% instead of 75% is €8,000 a year less spending and €200,000 less portfolio, about 13% of a €1.5 million target. A ratio that is too high delays retirement unnecessarily; one that is too low can leave someone underfunded.
 
 ## Pensions and other income shrink what the portfolio must cover
 
@@ -180,6 +180,6 @@ The arithmetic is the same everywhere: retirement spending, minus income from ou
 
 </details>
 
-A later post covers insurance: how cover can change as net worth grows and circumstances shift.
+A later lesson covers insurance: how cover can change as net worth grows and circumstances shift.
 
 If your mortgage or rent disappeared tomorrow, what share of your current income would you still need?

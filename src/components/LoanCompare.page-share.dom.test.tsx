@@ -34,7 +34,7 @@ describe('the loan comparison: copying a link', () => {
   it('copies the comparison after the #, says so once per copy, and drops the address once it changes', async () => {
     clipboard();
     mount();
-    assert.equal(bar(), null);
+    assert.ok(bar() === null);
     assert.equal(shareLabel(), tb.share);
     assert.equal(shareButton().hasAttribute('aria-disabled'), false);
     const start = link([offer(0), offer(1)]);
@@ -66,7 +66,7 @@ describe('the loan comparison: copying a link', () => {
     assert.equal(barLink(), shareAddress(start));
 
     type(0, c.principal, '73191');
-    assert.equal(bar(), null);
+    assert.ok(bar() === null);
     await copy();
     assert.equal(decodeFromQueryString(copied[2].split('#')[1]).vendors[0].principal, '73191');
     assert.deepEqual(eventNames(), [
@@ -203,14 +203,14 @@ describe('the loan comparison: the validation event', () => {
       assert.deepEqual(next(0, c.rate, '200'), [{ count: 2, firstReason: 'payment_below_interest', firstVendor: 'A' }]);
       assert.deepEqual(next(0, c.rate, '6'), [{ count: 1, firstReason: 'missing_rate', firstVendor: 'B' }]);
       assert.deepEqual(next(1, c.rate, '6'), []);
-      assert.deepEqual(next(1, c.principal, ''), [{ count: 1, firstReason: 'other', firstVendor: 'B' }]);
+      assert.deepEqual(next(1, c.principal, ''), [{ count: 1, firstReason: 'missing_principal', firstVendor: 'B' }]);
       assert.deepEqual(next(1, c.principal, '250000'), []);
-      // A payment typed, too small to be a payment: no word about interest in the reason it gives.
+      // A payment left empty is a missing payment, not an unknown problem.
       events.length = 0;
       fireEvent.click(one('input[type="radio"][value="payment"]', cards()[1]));
       type(1, c.monthly, '');
       wait(600);
-      assert.deepEqual(reasons(), [{ count: 1, firstReason: 'other', firstVendor: 'B' }]);
+      assert.deepEqual(reasons(), [{ count: 1, firstReason: 'missing_payment', firstVendor: 'B' }]);
 
       // Leaving the page before typing pauses sends nothing.
       events.length = 0;
@@ -224,16 +224,16 @@ describe('the loan comparison: the validation event', () => {
     }
   });
 
-  it('files a changing rate that arrives without its later rate under "other", and holds the comparison back (issue 818)', () => {
+  it('files a changing rate that arrives without its later rate under "rate_structure", and holds the comparison back (issue 818, #895)', () => {
     mock.timers.enable({ apis: ['setTimeout'] });
     try {
       arriveWith(link([offer(0, { rateKind: 'hybrid' }), offer(1)]));
       mount();
       events.length = 0;
       act(() => { mock.timers.tick(600); });
-      assert.deepEqual(events, [['free_loan_comparison_validation_error', { count: 1, firstReason: 'other', firstVendor: 'A' }]]);
+      assert.deepEqual(events, [['free_loan_comparison_validation_error', { count: 1, firstReason: 'rate_structure', firstVendor: 'A' }]]);
       assert.equal(cards()[0].querySelector('.lc-error')?.textContent, `Error: ${island.engine.errors.rateChangeIncomplete}`);
-      assert.equal(cards()[1].querySelector('.lc-error'), null);
+      assert.ok(cards()[1].querySelector('.lc-error') === null);
       assert.equal(withheld(), true);
       assert.equal(ariaDisabled(xlsxButton()), true);
       assert.equal(has('.tool-report'), false);
@@ -243,7 +243,7 @@ describe('the loan comparison: the validation event', () => {
       type(0, c.subsequentRate, '9');
       act(() => { mock.timers.tick(600); });
       assert.deepEqual(events, []);
-      assert.equal(cards()[0].querySelector('.lc-error'), null);
+      assert.ok(cards()[0].querySelector('.lc-error') === null);
       assert.equal(withheld(), false);
     } finally {
       mock.timers.reset();

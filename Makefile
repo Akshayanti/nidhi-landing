@@ -8,7 +8,7 @@ SOURCE_SVG ?= public/favicon.svg
 OUTPUT_DIR = $(dir $(SOURCE_SVG))
 BRAND_DIR = $(OUTPUT_DIR)brand
 
-.PHONY: all brand favicons clean verify help
+.PHONY: all brand favicons clean verify dev help
 
 # Default target: generate everything
 all: brand
@@ -23,6 +23,7 @@ help:
 	@echo "  make favicons         - Generate only favicon assets"
 	@echo "  make clean            - Remove generated brand assets"
 	@echo "  make verify           - Check the tools the generators need"
+	@echo "  make dev              - Start the local dev server (npm run dev)"
 	@echo "  make help             - Show this help"
 	@echo ""
 	@echo "Custom source SVG:"
@@ -30,6 +31,10 @@ help:
 	@echo ""
 	@echo "Example:"
 	@echo "  make SOURCE_SVG=public/favicon.svg"
+
+# Start the local dev server. It runs until stopped (Ctrl+C).
+dev:
+	@npm run dev
 
 # Generate all brand assets
 brand:

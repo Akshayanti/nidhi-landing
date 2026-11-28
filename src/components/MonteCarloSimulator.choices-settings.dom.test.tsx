@@ -42,6 +42,8 @@ describe('the choices: returns, the mix, runs and fees', () => {
       const label = () => document.querySelector(`label[for="${screen.getByRole('slider').id}"]`)?.textContent;
       assert.equal(label(), 'Mix: 80% stocks, 20% bonds');
       assert.ok(one('.mcs-mix .mcs-hint').textContent?.includes('80% stocks is an example value'));
+      // the slider is described by that hint, so a screen reader hears it too
+      assert.ok(document.getElementById(screen.getByRole('slider').getAttribute('aria-describedby') ?? '') === one('.mcs-mix .mcs-hint'));
       fireEvent.change(screen.getByRole('slider'), { target: { value: '65' } });
       assert.equal(label(), 'Mix: 65% stocks, 35% bonds');
       assert.equal(one('.mcs-mix .mcs-hint').textContent, island.fields.mixHint);

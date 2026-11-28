@@ -211,8 +211,8 @@ export const learnEn = {
       'real-estate': {
         name: 'Real Estate',
         title: 'Real Estate as an Investment: The Basics | nidhi',
-        description: 'Real estate beyond owning a home: returns, leverage, illiquidity, and the rent-versus-buy math. Personal finance literacy from nidhi.',
-        card: 'Real estate beyond owning a home: returns, leverage, illiquidity, and the rent-versus-buy math. Personal finance literacy from nidhi.',
+        description: 'Real estate beyond owning a home: returns, leverage, illiquidity, and the rent-versus-buy maths. Personal finance literacy from nidhi.',
+        card: 'Real estate beyond owning a home: returns, leverage, illiquidity, and the rent-versus-buy maths. Personal finance literacy from nidhi.',
       },
     } as Record<string, { name: string; title: string; description: string; card: string }>,
 
@@ -1188,7 +1188,7 @@ export const learnEs: typeof learnEn = {
   topic: {
     meta: {
       titleFallback: '{tag}: educación en finanzas personales | nidhi',
-      descriptionFallback: 'Lecciones sobre {tag}: finanzas personales y educación financiera prácticas, de nidhi.',
+      descriptionFallback: 'Lecciones prácticas sobre {tag}: finanzas personales y educación financiera, de nidhi.',
     },
     schema: {
       itemListName: 'Lecciones sobre {tag}',

@@ -129,7 +129,7 @@ describe('reading a year off the chart', () => {
     Object.defineProperty(proto, 'offsetWidth', { configurable: true, get(this: HTMLElement) { return this.classList.contains('chart-readout') ? 200 : 0; } });
     try {
       await drawPlan({ saveYears: 10, paths: 100 });
-      assert.equal(document.querySelector('.chart-readoutSlot'), null, 'no empty slot while it is closed');
+      assert.ok(document.querySelector('.chart-readoutSlot') === null, 'no empty slot while it is closed');
       const figure = one('.mcs-figure');
       Object.defineProperty(figure, 'clientWidth', { configurable: true, value: 760 });
       (svg() as unknown as Record<string, unknown>).getBoundingClientRect = () => ({ left: 0, top: 0, width: 760, height: 398, right: 760, bottom: 398, x: 0, y: 0 });

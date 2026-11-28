@@ -75,7 +75,7 @@ referentialReading:
 
 A salaried designer earning €40,000 a year goes freelance and wants the same standard of living. The obvious move is to charge what the old job paid per day. That turns out to be a pay cut of more than a third.
 
-The [growing your income post](/blog/growing-your-income/) assumed an employer on the other side of the table. For a large share of working people there is none: freelancers invoice clients, platform workers are paid per job, and domestic workers, traders and day labourers are often paid in cash with no contract. As [the first post in this series](/blog/when-the-default-plan-does-not-fit-you/) noted, informal work alone covers most of the world's workers. This post covers what an employer was quietly paying for, and how to turn uneven income into steady pay. Self-employment tax and worker classification differ sharply between countries, and none of this is tax filing advice.
+The [growing your income lesson](/blog/growing-your-income/) assumed an employer on the other side of the table. For a large share of working people there is none: freelancers invoice clients, platform workers are paid per job, and domestic workers, traders and day labourers are often paid in cash with no contract. As [the first lesson in this series](/blog/when-the-default-plan-does-not-fit-you/) noted, informal work alone covers most of the world's workers. This lesson covers what an employer was quietly paying for, and how to turn uneven income into steady pay. Self-employment tax and worker classification differ sharply between countries, and none of this is tax filing advice.
 
 ## Setting a freelance rate that replaces a salary
 
@@ -96,7 +96,7 @@ To price your bundle, many people start by listing what the employer paid for; p
 
 That is where the common rule of thumb comes from: a freelance rate often needs to be one and a half to two times the salaried day rate just to stand still. The numbers are illustrative, and the multiple depends on local social contributions and how much time is billable.
 
-Retirement works differently too. The [tax-advantaged accounts post](/blog/tax-advantaged-accounts/) covered the accounts most countries offer; employees often have one opened for them, and the self-employed open their own. There is no employer match, and many self-employed people contribute a percentage of each payment rather than a fixed monthly amount that a bad month could not cover.
+Retirement works differently too. The [tax-advantaged accounts lesson](/blog/tax-advantaged-accounts/) covered the accounts most countries offer; employees often have one opened for them, and the self-employed open their own. There is no employer match, and many self-employed people contribute a percentage of each payment rather than a fixed monthly amount that a bad month could not cover.
 
 ## Uneven income is a variance problem, not a discipline problem
 
@@ -204,7 +204,7 @@ Informal workers have built their own smoothing tools for generations. In a [rot
 
 ## Why variable income needs a bigger emergency fund
 
-The [emergency fund post](/blog/emergency-fund/) gave three to six months of costs as a common guideline. With variable income the same reasoning lands at the upper end or beyond, often six to twelve months: three protections an employee has, sick pay, a notice period and unemployment benefit, are missing at once, and a quiet spell and an emergency can arrive together. Many people keep it separate from the holding account: the holding account handles ordinary swings, the emergency fund a real interruption.
+The [emergency fund lesson](/blog/emergency-fund/) gave three to six months of costs as a common guideline. With variable income the same reasoning lands at the upper end or beyond, often six to twelve months: three protections an employee has, sick pay, a notice period and unemployment benefit, are missing at once, and a quiet spell and an emergency can arrive together. Many people keep it separate from the holding account: the holding account handles ordinary swings, the emergency fund a real interruption.
 
 ## How the rules differ by country
 

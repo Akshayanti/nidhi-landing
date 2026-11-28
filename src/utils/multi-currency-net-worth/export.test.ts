@@ -59,6 +59,8 @@ const DOLLAR = 'US Dollar (USD)';
 const YEN = 'Japanese Yen (JPY)';
 const KORUNA = 'Czech Koruna (CZK)';
 const NO_RATE = 'Rate unavailable';
+/** The spending currency with no rates at all: its rate is 1, its share is what is unknown (#922). */
+const NO_SHARE = 'Share unknown: no exchange rates';
 
 /** A position as a link without amounts gives it: a share and a band, nothing else. */
 const shareOnly = (code: string, pctOfTotal: number, riskLevel: CurrencyPosition['riskLevel'], more: Partial<CurrencyPosition> = {}): CurrencyPosition => ({
@@ -357,6 +359,32 @@ describe('net worth spreadsheet: a shared view that hides amounts', () => {
       [DOLLAR, 'USD', pct(66.67), pct(66.67), 'band:elevated'],
       [YEN, 'JPY', pct(16.67), pct(16.67), 'band:low'],
     ]);
+  });
+
+  it('with no rates at all the spending currency has no share either: both cells say so in words, never 0% (#887)', () => {
+    // 1,000 euros and 3,000 koruna, no rates: as the result comes from the rows, and as a link without flags gives it.
+    const rows: AssetRow[] = [{ name: '', value: '1000', currency: 'EUR', type: 'asset' }, { name: '', value: '3000', currency: 'CZK', type: 'asset' }];
+    const unrated = aggregate(rows, 'EUR', null);
+    assert.deepEqual(hidden(unrated)[1].rows, [
+      head('Currency', 'Code', 'Concentration, %', 'Exposure, % of net worth', 'Share band'),
+      [KORUNA, 'CZK', NO_RATE, NO_RATE, 'band:low'],
+      [EURO, 'EUR', NO_SHARE, NO_SHARE, 'band:functional'],
+    ]);
+    const unflagged = hidden({ ...result, hasRates: 'none', positions: [shareOnly('EUR', 0, 'functional'), shareOnly('USD', 0, 'low')] });
+    assert.deepEqual(unflagged[1].rows.slice(1), [[EURO, 'EUR', NO_SHARE, NO_SHARE, 'band:functional'], [DOLLAR, 'USD', NO_RATE, NO_RATE, 'band:low']]);
+    // The cells are text, not a number: nothing to add up or chart as zero.
+    for (const row of hidden(unrated)[1].rows.slice(1)) assert.deepEqual([typeof row[2], typeof row[3]], ['string', 'string']);
+    // With the amounts shown there is no share column at all, as before.
+    assert.deepEqual(own(rows, null)[2].rows[0], head('Currency', 'Code', 'Net, in its own currency', 'Net, in EUR'));
+  });
+
+  it('a share of nothing that is a share stays a number: a link that carries shares, and a net worth of zero with rates', () => {
+    // A link without amounts whose euro share rounds to 0.0 beside real shares.
+    const carried = hidden({ ...result, hasRates: 'none', positions: [shareOnly('EUR', 0, 'functional'), shareOnly('USD', 100, 'elevated')] });
+    assert.deepEqual(carried[1].rows.slice(1), [[EURO, 'EUR', pct(0), pct(0), 'band:functional'], [DOLLAR, 'USD', pct(100), pct(100), 'band:elevated']]);
+    // Shares of zero with the rates known are not "rate unavailable".
+    const known = hidden({ ...result, hasRates: 'full', positions: [shareOnly('EUR', 0, 'functional'), shareOnly('USD', 0, 'low')] });
+    assert.deepEqual(known[1].rows.slice(1), [[EURO, 'EUR', pct(0), pct(0), 'band:functional'], [DOLLAR, 'USD', pct(0), pct(0), 'band:low']]);
   });
 
   it('a link that says net worth was zero or less states no exposure', () => {

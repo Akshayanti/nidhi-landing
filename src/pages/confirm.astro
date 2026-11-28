@@ -101,8 +101,11 @@ const isDev = import.meta.env.DEV;
 
     btn.disabled = false;
 
+    // While sending, the button is marked busy rather than disabled, so
+    // keyboard focus stays on it and a failure can be retried from there (#776).
     btn.addEventListener('click', function () {
-      btn.disabled = true;
+      if (btn.getAttribute('aria-disabled') === 'true') return;
+      btn.setAttribute('aria-disabled', 'true');
       btn.textContent = 'Confirming…';
       setStatus('', 'idle');
 
@@ -130,7 +133,7 @@ const isDev = import.meta.env.DEV;
         }
         if (outcome !== 'ok') {
           setStatus('It’s not clear whether that went through. Please try again; trying twice is safe.', 'error');
-          btn.disabled = false;
+          btn.removeAttribute('aria-disabled');
           btn.textContent = 'Yes, subscribe me';
           return;
         }

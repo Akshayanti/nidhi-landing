@@ -14,6 +14,7 @@
 import { existsSync } from 'node:fs';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import GuideVisual from '../../components/GuideVisual.astro';
+import AmountText from '../../components/AmountText.astro';
 import { GUIDE_HUB, guidePath, guideReadingMinutes, type Guide } from '../../utils/guides';
 import { DEFAULT_LOCALE, dict } from '../../i18n';
 import { formatEnglishDate } from '../../utils/longDate.ts';
@@ -135,7 +136,7 @@ const breadcrumbSchema = {
               <div>
                 <h3 class="guide-step-action">{s.action}</h3>
                 <p>{s.why}</p>
-                {s.example && <p class="guide-step-example"><span>Example:</span> {s.example}</p>}
+                {s.example && <p class="guide-step-example"><span>Example:</span> <AmountText text={s.example} /></p>}
                 {s.caution && <p class="guide-step-caution"><span>Careful:</span> {s.caution}</p>}
               </div>
             </li>
@@ -309,6 +310,8 @@ const breadcrumbSchema = {
   .guide-step p { margin: 0 0 var(--space-2); line-height: 1.6; }
   .guide-step-example, .guide-step-caution { font-size: var(--text-ui); padding: var(--space-2) var(--space-3); border-radius: var(--radius-sm); }
   .guide-step-example { border-inline-start: 3px solid var(--color-border); border-radius: 0; }
+  /* Its amounts are one unit each, fitted to the line (AmountText, .amt). */
+  .guide-step-example { container-type: inline-size; --amt-k: 0.57; }
   .guide-step-caution { border-inline-start: 3px solid var(--color-warning); border-radius: 0; }
   .guide-step-example span, .guide-step-caution span { font-weight: 700; }
 

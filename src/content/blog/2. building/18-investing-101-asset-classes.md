@@ -13,8 +13,10 @@ takeaways:
   - "What a fund is, and what funds are called where you live"
 order: 18
 pubDate: 2026-05-27
-updatedDate: 2026-11-22
+updatedDate: 2026-11-27
 corrections:
+  - date: 2026-11-27
+    note: "The world stock return now uses the 2026 figures: about 5.3% a year after inflation, 1900 to 2025 (Dimson, Marsh and Staunton, as reprinted in Exponential Wealth, 2026), where it said 5.2%, 1900 to 2024."
   - date: 2026-11-22
     note: "The lesson gave stocks 4 to 6% a year after inflation across developed markets, with the US at about 6.5%. Country returns vary widely; the US returned 6.6% a year after inflation from 1900 to 2024. The lesson now gives the world figure, about 5% a year after inflation (Dimson, Marsh and Staunton), and the emerging-market comparison now cites the 2026 Yearbook's public summary."
   - date: 2026-11-17
@@ -25,6 +27,9 @@ primaryPersona: "eva"
 personas: ["eva", "petra", "jiri"]
 tags: ["building", "investing", "fundamentals"]
 referentialReading:
+  - title: "Exponential Wealth: Centuries of Stock and Bond Returns (CFA Institute Research Foundation, 2026)"
+    url: "https://rpc.cfainstitute.org/sites/default/files/docs/research-reports/rf_ibbotson_2026_exponentialwealth_section-3_online.pdf"
+    type: "paper"
   - title: "Historical Real Equity Returns Across Countries (UBS Global Investment Returns Yearbook 2025)"
     url: "https://www.ubs.com/global/en/investment-bank/insights-and-data/2025/global-investment-returns-yearbook-2025.html"
     type: "paper"
@@ -64,7 +69,7 @@ faq:
 
 You've heard of stocks and bonds since you were a teenager. You know real estate exists. You have money in a savings account. But if someone asked you to explain how each of these actually generates returns (and why you might want all of them), could you?
 
-Most people can't. They invest in whatever their bank recommends, or whatever a friend mentioned, without understanding the building blocks. This post changes that. By the end, you'll know what the main asset classes are, how each works, what returns they've historically delivered, and why they complement each other.
+Most people can't. They invest in whatever their bank recommends, or whatever a friend mentioned, without understanding the building blocks. This lesson changes that. By the end, you'll know what the main asset classes are, how each works, what returns they've historically delivered, and why they complement each other.
 
 ## What an asset class is
 
@@ -86,7 +91,7 @@ When you buy a stock, you buy a tiny piece of a company. If the company grows an
 - **Capital appreciation**: The stock price rises over time as the company grows
 - **Dividends**: Regular cash payments from company profits (not all companies pay dividends)
 
-**Historical returns**: World shares returned about 5% a year after inflation from 1900 to 2024 (5.2%, Dimson, Marsh and Staunton, UBS Global Investment Returns Yearbook 2025), with single countries well above or below that: the US at 6.6% over the same years, and several European markets under 3% a year from 1900 to 2022 (Credit Suisse Global Investment Returns Yearbook 2023). Emerging markets have been more volatile and returned less than developed markets over the full period since 1900, though they led from 1960 (UBS Global Investment Returns Yearbook 2026, public summary). Over 1900 to 2024 as a whole, world shares returned more than world bonds and Treasury bills. This does not mean shares outperform in every decade. Estimates for housing differ widely, as the [real estate post](/blog/real-estate-as-investment/) explains.
+**Historical returns**: World shares returned about 5% a year after inflation, measured in US dollars, from 1900 to 2025 (5.3%, Dimson, Marsh and Staunton, as reprinted in Exponential Wealth, CFA Institute Research Foundation, 2026), with single countries, each measured in its own currency, well above or below that: the US at 6.6% from 1900 to 2024 (UBS Global Investment Returns Yearbook 2025), and several European markets under 3% a year from 1900 to 2022 (Credit Suisse Global Investment Returns Yearbook 2023). Emerging markets have been more volatile and returned less than developed markets over the full period since 1900, though they led from 1960 (UBS Global Investment Returns Yearbook 2026, public summary). Over 1900 to 2025 as a whole, world shares returned more than world bonds and Treasury bills. This does not mean shares outperform in every decade. Estimates for housing differ widely, as the [real estate lesson](/blog/real-estate-as-investment/) explains.
 
 **Volatility**: High. In any given year, a diversified stock portfolio might gain 25% or lose 30%. Individual stocks can swing far more. Broad stock indices (the S&P 500 in the US, the FTSE All-Share in the UK, the STOXX Europe 600 across Europe, the Nifty 50 in India, the MSCI World for a global developed-market view) have historically had negative years roughly one out of every four.
 
@@ -95,7 +100,7 @@ When you buy a stock, you buy a tiny piece of a company. If the company grows an
 | Feature | Detail |
 |---------|--------|
 | Return type | Capital gains + dividends |
-| Historical real return | About 5% a year (world shares, 1900 to 2024); single countries well above or below |
+| Historical real return | About 5% a year (world shares, 1900 to 2025); single countries well above or below |
 | Volatility | High (15-25% annual swings typical) |
 | Liquidity | High (traded daily on exchanges) |
 | Time horizon | Commonly 5+ years, often 10+ |
@@ -183,13 +188,13 @@ Cash equivalents include savings accounts, money market funds, certificates of d
 
 **Why they matter**: Cash equivalents are where you park money you need soon: your [emergency fund](/blog/emergency-fund/), your next month's rent, your buffer for unexpected expenses. They're not investments in the growth sense. They're a holding place.
 
-**The catch**: As we've seen in the [purchasing power post](/blog/purchasing-power/), cash loses real value every year. Holding a lot of cash for a long time tends to be a slow loss whenever interest rates trail inflation.
+**The catch**: As the [purchasing power lesson](/blog/purchasing-power/) showed, cash loses real value every year. Holding a lot of cash for a long time tends to be a slow loss whenever interest rates trail inflation.
 
 ## How they compare
 
 | Dimension | Stocks | Bonds | Real Estate | Cash |
 |---|---|---|---|---|
-| **Historical real return** | About 5% (world shares, 1900 to 2024) | ~1-2% | Low single digits + rental yield | About 0-1% (Treasury bills, US and world) |
+| **Historical real return** | About 5% (world shares, 1900 to 2025) | ~1-2% | Low single digits + rental yield | About 0-1% (Treasury bills, US and world) |
 | **Volatility** | High | Low-moderate | Moderate | Near zero |
 | **Liquidity** | High | Moderate-high | Very low | Very high |
 | **Income** | Dividends (variable) | Coupons (fixed) | Rent (variable) | Interest (low) |
@@ -197,7 +202,7 @@ Cash equivalents include savings accounts, money market funds, certificates of d
 
 *Returns shown are historical averages. Past performance is not indicative of future results.*
 
-Two other groups of assets sit outside this core: commodities (raw materials like gold, oil, agricultural products), used as inflation and crisis hedges, and cryptocurrency, a speculative asset whose long-term role in diversified portfolios is unsettled. Neither is load-bearing for a basic investment plan, but both come up often enough that they deserve their own treatment. The next post covers them as satellite assets.
+Two other groups of assets sit outside this core: commodities (raw materials like gold, oil, agricultural products), used as inflation and crisis hedges, and cryptocurrency, a speculative asset whose long-term role in diversified portfolios is unsettled. Neither is load-bearing for a basic investment plan, but both come up often enough that they deserve their own treatment. The next lesson covers them as satellite assets.
 
 ## Why no single asset class is enough
 
@@ -208,7 +213,7 @@ Each asset class has strengths and weaknesses. More importantly, they tend to be
 - **High inflation**: Stocks are mixed. Bonds lose value (fixed payments become less valuable). Real estate often keeps pace. Cash loses purchasing power
 - **Low interest rates**: Stocks benefit. Bond prices rise (but future returns fall). Real estate booms (cheap mortgages). Cash earns almost nothing
 
-No single asset class wins in all conditions. Holding a mix means some part of your portfolio is likely doing well at any given time, cushioning the parts that aren't. This concept, diversification, is what we'll explore in detail later in this series.
+No single asset class wins in all conditions. Holding a mix means some part of your portfolio is likely doing well at any given time, cushioning the parts that aren't. This concept, diversification, gets its own lesson later in this series.
 
 ## What a fund is
 
@@ -255,4 +260,4 @@ Index funds are commonly cited in personal finance literature as a practical sta
 4. **A common simple starting point.** Many people begin with a global stock index fund, often paired with a bond index fund, because it is cheap, broad and easy to maintain. The split between them depends on risk capacity and horizon, and the best wrapper and fund choice depends on your country's costs and tax rules
 5. **Return and volatility travel together.** As the [risk lesson](/blog/understanding-risk/) showed, higher expected returns come with bigger swings, and time is what makes those swings bearable
 
-Now you know the four building blocks most diversified portfolios are made from. Two more asset types (commodities and cryptocurrency) sit alongside the core four and come up in almost every conversation about investing, but with a very different role and a much weaker case for being load-bearing. The next post covers them honestly: what they are, what they're for, and where the line sits between hedge, satellite, and speculation.
+Now you know the four building blocks most diversified portfolios are made from. Two more asset types (commodities and cryptocurrency) sit alongside the core four and come up in almost every conversation about investing, but with a very different role and a much weaker case for being load-bearing. The next lesson covers them honestly: what they are, what they're for, and where the line sits between hedge, satellite, and speculation.

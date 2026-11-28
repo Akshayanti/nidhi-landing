@@ -13,6 +13,7 @@ import type { Dict } from '../../i18n/strings/types.ts';
 import { format } from '../../i18n/format.ts';
 import { amountFormat, typedRate, type Cell, type Sheet } from '../shared/xlsx.ts';
 import type { ToolState } from './url.ts';
+import { roundAbout } from './math.ts';
 import type { MonthlySource } from './monthly.ts';
 
 type Island = Dict['tools']['inflation']['island'];
@@ -56,7 +57,14 @@ const head = (...titles: string[]): Cell[] => titles.map((t) => ({ t, bold: true
 
 export function inflationSheets({ island, common, state, answer, decimals, date, page }: InflationExport): Sheet[] {
   const x = island.export;
-  const money = (v: number): Cell => ({ n: Number(v.toFixed(decimals)), fmt: amountFormat(decimals) });
+  // A small amount the page writes with more decimals than the currency has
+  // ("about ¥1.3", "about €0.074", #868) is given as the page writes it: to
+  // the currency's smallest unit it would read 1 or 0.07, less than the page says.
+  // From 10 up the page's figure is whole, so no currency fails the test.
+  const money = (v: number): Cell => {
+    const shown = roundAbout(v);
+    return Number(shown.toFixed(decimals)) !== shown ? { n: shown, fmt: 'general' } : { n: Number(v.toFixed(decimals)), fmt: amountFormat(decimals) };
+  };
   // Typed rates keep the decimals they were given.
   const rate = (v: number): Cell => typedRate(v);
   const whole = (v: number): Cell => ({ n: v, fmt: 'integer' });

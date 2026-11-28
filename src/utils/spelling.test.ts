@@ -32,7 +32,7 @@ function prose(markdown: string): string {
     .replace(/^corrections:\n(?:[ \t].*\n)*/m, '')
     .replace(/^ *- term:.*$/gm, '')
     .replace(/^#{1,6} .*$/gm, '')
-    .replace(/^ *(?:- )?(?:slug|hostSlug|companionOf|relatedSlugs|lessons|related|url|href|searchTerms|tags|id):.*$/gm, '')
+    .replace(/^ *(?:- )?(?:slug|hostSlug|companionOf|relatedSlugs|lessons|related|url|href|searchTerms|tags|id|anchor):.*$/gm, '')
     .replace(/\]\([^)]*\)/g, ']')
     .replace(/<[^>]*>/g, '')
     .replace(/https?:\S+/g, '');

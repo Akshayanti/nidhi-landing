@@ -107,9 +107,11 @@ html:is([lang="hi"], [lang="mr"]) {
   --palette-red:              #991100;
   --palette-deep-orange:      #8B2E00;
   --palette-amber:            #6B4800;
+  --palette-amber-deep:       #5C3D00;  /* Psychology's badge text (#761) */
   --palette-olive:            #4A4A00;
   --palette-green:            #004D1A;
   --palette-teal:             #005B4F;
+  --palette-teal-deep:        #004D40;  /* Discovery's badge text (#761) */
   --palette-cyan:             #005566;
   --palette-blue:             #0A3D8F;
   --palette-indigo:           #1A237E;
@@ -139,10 +141,12 @@ html:is([lang="hi"], [lang="mr"]) {
   --neutral-50:               #F0F0F0;  /* subtle borders, code bg */
   --neutral-100:              #E8E8E8;  /* light bg-dark surface */
   --neutral-200:              #E0E0E0;  /* default light border */
-  --neutral-500:              #9A9A9A;  /* dark-mode muted text */
-  --neutral-600:              #5A5A5A;  /* light-mode muted text */
-  --neutral-700:              #616161;  /* light-mode secondary text */
-  --neutral-800:              #B0B0B0;  /* dark-mode secondary text (lighter for contrast) */
+  --neutral-500:              #9A9A9A;  /* dark-mode borders, the QR studio's muted text */
+  --neutral-600:              #474747;  /* light-mode muted text: 8.8:1 on the page (#788) */
+  --neutral-700:              #4A4A4A;  /* light-mode secondary text: 8.4:1 on the page, 8.9:1 on white (#788) */
+  --neutral-800:              #B0B0B0;  /* dark-mode borders and lines (text: --neutral-text-dark-secondary) */
+  --neutral-text-dark-secondary: #BABABA; /* dark-mode secondary text: 8.6:1 on #1E1E1E (#788) */
+  --neutral-text-dark-muted:  #B8B8B8;  /* dark-mode muted text: 8.4:1 on #1E1E1E (#788) */
   --neutral-850:              #3D3D3D;  /* light-mode quiet button text */
   --neutral-900:              #212121;  /* light-mode primary text */
   --neutral-near-black:       #0D0D0D;  /* dark mode bg-dark */
@@ -209,8 +213,8 @@ html:is([lang="hi"], [lang="mr"]) {
   --warning-light-bg:         #fff3cd;
   --warning-light-border:     #ffe082;
   --warning-light-border-strong: #ffc107;
-  --warning-light-text:       #665100;
-  --warning-light-text-strong: #856404;
+  --warning-light-text:       #5C4300;  /* 8.4:1 on the warning tint, 9.3:1 on white (#828) */
+  --warning-light-text-strong: #5A4100;  /* 8.7:1 on the warning tint (#828) */
   --warning-dark-text:        #ffc107;
   --warning-dark-bg:          #332b00;
   --warning-dark-border:      #664d00;
@@ -396,6 +400,16 @@ html:is([lang="hi"], [lang="mr"]) {
   --level-optimizing:       var(--palette-red);
   --level-mastery:          var(--palette-purple);
   --level-inclusive-finances: var(--palette-green);
+  /* Level text on a badge (#761): 8:1 or more on white, the light page and
+     the dark surfaces. Two levels need a deeper (light) or paler (dark)
+     shade than their identity colour; the rest are their identity colour.
+     Lines, dots and rings keep the identity colour. */
+  --level-discovery-text:   var(--palette-teal-deep);
+  --level-building-text:    var(--level-building);
+  --level-psychology-text:  var(--palette-amber-deep);
+  --level-optimizing-text:  var(--level-optimizing);
+  --level-mastery-text:     var(--level-mastery);
+  --level-inclusive-finances-text: var(--level-inclusive-finances);
 
   /* Solid CTA background that always pairs with white foreground. */
   --color-cta-bg:           var(--semantic-cta-bg-light);
@@ -463,8 +477,8 @@ html:is([lang="hi"], [lang="mr"]) {
   --color-info:             var(--semantic-info-dark);
 
   --color-text-primary:     var(--neutral-white);
-  --color-text-secondary:   var(--neutral-800);
-  --color-text-muted:       var(--neutral-500);
+  --color-text-secondary:   var(--neutral-text-dark-secondary);
+  --color-text-muted:       var(--neutral-text-dark-muted);
   --color-bg:               var(--neutral-page-bg-dark);
   --color-bg-white:         var(--neutral-surface-dark);
   --color-bg-dark:          var(--neutral-near-black);
@@ -495,6 +509,10 @@ html:is([lang="hi"], [lang="mr"]) {
   --level-optimizing:       var(--palette-red-dark);
   --level-mastery:          var(--palette-purple-dark);
   --level-inclusive-finances: var(--palette-green-dark);
+  /* Badge text, dark (#761): Discovery's ring stays #26A69A, apart from
+     Building's blue in lightness; its number and name are the paler teal. */
+  --level-discovery-text:   var(--palette-teal-dark);
+  --level-psychology-text:  var(--level-psychology);
 
   /* CTA bg stays a saturated dark teal so white text keeps WCAG AA. */
   --color-cta-bg:           var(--semantic-cta-bg-dark);
@@ -1383,6 +1401,15 @@ details[open] > .disclosure::after,
   margin: 0;
 }
 
+/* A cell's words keep the cell at least as wide as the longest of them, so
+   "3%" or "(…4821)" never splits where it would fit; a table wider than its
+   box scrolls in it instead (#814). The body's `anywhere` would let a cell
+   shrink below its words. A word longer than the whole box still breaks. */
+.prose th,
+.prose td {
+  overflow-wrap: break-word;
+}
+
 .prose th {
   text-align: left;
   font-family: var(--font-heading);
@@ -1473,8 +1500,8 @@ details[open] > .disclosure::after,
 .prose figure svg .fig-subtitle { font: 400 15px var(--font-heading); fill: var(--color-text-secondary); }
 .prose figure svg .fig-label { font: 600 16px var(--font-heading); fill: var(--color-text-primary); }
 .prose figure svg .fig-sublabel { font: 400 13px var(--font-heading); fill: var(--color-text-secondary); }
-/* The two smallest labels are 13 units: a figure drawn 880 wide shows at about
-   0.78 of its size in the lesson column, and 13 keeps them at 10px or more. */
+/* The two smallest labels are 13 units. A figure is never drawn below the
+   minimum width set further down, so they stay at 12px or more (#813). */
 .prose figure svg .fig-tick { font: 400 13px var(--font-heading); fill: var(--color-text-muted); }
 .prose figure svg .fig-num-lg { font: 700 36px var(--font-heading); fill: var(--fig-on-fill); }
 .prose figure svg .fig-num-md { font: 700 22px var(--font-heading); fill: var(--fig-on-fill); }
@@ -1508,9 +1535,8 @@ details[open] > .disclosure::after,
 .prose figure svg .fig-stroke-rule { stroke: var(--color-border); fill: none; }
 
 /* Mobile: charts keep their desktop layout at a readable size and scroll
-   sideways. Each figure is the scroller; its chart gets a minimum width that
-   keeps the smallest label (11 to 12 units) at about 10px on screen, so
-   min-width is about 0.92 of the viewBox width plus padding. The swipe hint
+   sideways. Each figure is the scroller; its chart's minimum width is set
+   below, for every screen width. The swipe hint
    and the caption stay pinned to the left edge while the chart scrolls. */
 @media (width < 640px) {
   .prose figure:has(> svg) {
@@ -1519,10 +1545,6 @@ details[open] > .disclosure::after,
     -webkit-overflow-scrolling: touch;
   }
   .prose figure svg { padding: var(--space-3) var(--space-1); max-width: none; width: 100%; }
-  .prose figure svg[viewBox^="0 0 600 "] { min-width: 564px; }
-  .prose figure svg[viewBox^="0 0 720 "] { min-width: 676px; }
-  .prose figure svg[viewBox^="0 0 800 "] { min-width: 748px; }
-  .prose figure svg[viewBox^="0 0 880 "] { min-width: 822px; }
   .prose figure:has(> svg)::before {
     content: "Swipe to see the whole chart \2192";
     position: sticky;
@@ -1539,6 +1561,47 @@ details[open] > .disclosure::after,
     position: sticky;
     left: 0;
     max-width: none;
+    margin-left: 0;
+    text-align: left;
+  }
+}
+
+/* Every width (#813): a figure is drawn at least as wide as keeps its
+   smallest label (13 units) at 0.8 of the reader's text size, so it grows
+   with that size. Where the screen has room, a figure wider than the lesson
+   column reaches past it on both sides, never past the screen's edge less a
+   margin; where it has not, the figure scrolls sideways (the phone rule
+   above, and here from 640px). */
+.prose figure:has(> svg[viewBox^="0 0 600 "]) { --fig-vbw: 600; }
+.prose figure:has(> svg[viewBox^="0 0 720 "]) { --fig-vbw: 720; }
+.prose figure:has(> svg[viewBox^="0 0 800 "]) { --fig-vbw: 800; }
+.prose figure:has(> svg[viewBox^="0 0 880 "]) { --fig-vbw: 880; }
+.prose figure:has(> svg) > svg { min-width: calc(var(--fig-vbw, 0) * 0.8rem / 13); }
+@media (width >= 640px) {
+  .prose figure:has(> svg) {
+    --fig-out: max(0px, min(calc((var(--fig-vbw, 0) * 0.8rem / 13 - 100%) / 2), calc((100vw - 100%) / 2 - var(--space-4))));
+    margin-inline: calc(-1 * var(--fig-out));
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+  }
+  .prose figure:has(> svg) > figcaption { max-width: min(92%, 42rem); }
+  /* While a figure scrolls (BlogPost.astro marks it), it says so, and its
+     caption stays at the left edge, as on a phone. A hidden scroll bar would
+     otherwise make a cut-off chart look whole. */
+  .prose figure[data-scrolls]::before {
+    content: "Scroll sideways to see the whole chart \2192";
+    position: sticky;
+    left: 0;
+    display: block;
+    margin-bottom: var(--space-2);
+    font-size: var(--text-caption);
+    font-weight: 600;
+    color: var(--color-text-muted);
+    text-align: left;
+  }
+  .prose figure[data-scrolls] > figcaption {
+    position: sticky;
+    left: 0;
     margin-left: 0;
     text-align: left;
   }
@@ -1921,7 +1984,9 @@ body[data-page="landing"] .site-footer {
   .disclaimer,
   .faq-item p,
   .faq-item summary,
-  .privacy-container p,
+  /* Not the page's two meta lines (#770): the changelog's eyebrow and the
+     "last updated" line keep their small print on a phone. */
+  .privacy-container p:not(.eyebrow, .privacy-updated),
   .privacy-container li,
   .privacy-intro,
   .changelog-intro,

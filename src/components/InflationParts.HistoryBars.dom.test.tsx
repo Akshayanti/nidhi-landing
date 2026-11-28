@@ -53,7 +53,7 @@ describe('the bars of a country’s yearly inflation', () => {
       same(labels(), [
         { words: '10%', x: 53, y: 14.9, anchor: 'end' },
         { words: '0%', x: 53, y: 210.9, anchor: 'end' },
-        { words: '-1%', x: 53, y: 230.5, anchor: 'end' },
+        { words: '−1%', x: 53, y: 230.5, anchor: 'end' },
         { words: '2001', x: 60, y: 248.6, anchor: 'start' },
         { words: '2005', x: 752, y: 248.6, anchor: 'end' },
       ], 'label');
@@ -87,7 +87,7 @@ describe('the bars of a country’s yearly inflation', () => {
     same(labels(), [
       { words: '4%', x: 45, y: 14.9 },
       { words: '0%', x: 45, y: 34.5 },
-      { words: '-20%', x: 45, y: 132.5 },
+      { words: '−20%', x: 45, y: 132.5 },
       { words: '2010', x: 52, y: 150.6 },
       { words: '2011', x: 352, y: 150.6 },
     ], 'label');
@@ -121,7 +121,7 @@ describe('the bars of a country’s yearly inflation', () => {
     clear();
     bars({ 2000: -2, 2001: -3 }, 2001);
     // Lowest -3 gives a bottom of -5 (one step of 5): 1.4 x 14 x 6 / 1 = 117.6, under 130.
-    assert.deepEqual(labels().map((l) => l.words), ['1%', '0%', '-5%', '2000', '2001']);
+    assert.deepEqual(labels().map((l) => l.words), ['1%', '0%', '−5%', '2000', '2001']);
     same(lines('ifc-axisLine'), [{ y1: 10 + 130 / 6, y2: 10 + 130 / 6 }], 'zero line');
   });
 
@@ -143,7 +143,7 @@ describe('the bars of a country’s yearly inflation', () => {
     clear();
     // A fall past -50% is cut at the bottom in the same way: top 5 (two steps of 2.5), bottom -50.
     bars({ 1990: -60, 1991: -50, 1992: 5 }, 1995);
-    assert.deepEqual(labels().map((l) => l.words), ['5%', '0%', '-50%', '1990', '1992']);
+    assert.deepEqual(labels().map((l) => l.words), ['5%', '0%', '−50%', '1990', '1992']);
     // 1.4 x 14 x 55 / 5 = 215.6 of plot, 3.92 units to a percent: zero at 29.6, the bottom at 225.6.
     same(rects(), [
       { cls: 'ifc-bar ifc-bar--capped', y: 29.6, h: 196 },
@@ -178,7 +178,7 @@ describe('the bars of a country’s yearly inflation', () => {
     same(labels(), [
       { words: '4%', x: 70, y: 26.8 },
       { words: '0%', x: 70, y: 66 },
-      { words: '-20%', x: 70, y: 262 },
+      { words: '−20%', x: 70, y: 262 },
       { words: '2000', x: 84, y: 292.2, anchor: 'start' },
       { words: '2001', x: 352, y: 292.2, anchor: 'end' },
     ], 'label');

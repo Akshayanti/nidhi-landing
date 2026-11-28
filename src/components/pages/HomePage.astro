@@ -280,7 +280,7 @@ const faqSchema = {
           last line once a guide in it is live. */}
       <ul class="routes" role="list">
         {startingPoints.map((s) => s.lessons.length === 0 ? (
-          <li style={`--start-level: var(--level-${s.level ?? 'mixed'}, var(--color-text-secondary))`}>
+          <li style={`--start-level: var(--level-${s.level ?? 'mixed'}, var(--color-text-secondary)); --start-level-text: var(--level-${s.level ?? 'mixed'}-text, var(--color-text-secondary))`}>
             {/* A level whose lessons are still scheduled: shown, not linked, until the first one goes live. */}
             <div class="route route--soon">
               <span class="route-badge" aria-hidden="true">{s.level ? LADDER_LEVELS.indexOf(s.level as typeof LADDER_LEVELS[number]) + 1 : '+'}</span>
@@ -289,7 +289,7 @@ const faqSchema = {
             </div>
           </li>
         ) : (
-          <li style={`--start-level: var(--level-${s.level ?? 'mixed'}, var(--color-text-secondary))`}>
+          <li style={`--start-level: var(--level-${s.level ?? 'mixed'}, var(--color-text-secondary)); --start-level-text: var(--level-${s.level ?? 'mixed'}-text, var(--color-text-secondary))`}>
             <a
               class="route"
               href={s.lessons[0].href}
@@ -308,7 +308,7 @@ const faqSchema = {
           </li>
         ))}
         {inclusive.count > 0 && (
-          <li style="--start-level: var(--level-inclusive-finances)">
+          <li style="--start-level: var(--level-inclusive-finances); --start-level-text: var(--level-inclusive-finances-text)">
             <a class="route" href={href(INCLUSIVE_HUB)} data-attr="home-inclusive-finances">
               <span class="route-badge" aria-hidden="true">
                 <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10" /><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" /></svg>
@@ -845,8 +845,9 @@ const faqSchema = {
     line-height: 1;
     border: 1.5px solid var(--start-level);
     border-radius: 50%;
-    background: color-mix(in srgb, var(--start-level) 12%, var(--color-bg-white));
-    color: var(--start-level);
+    /* No tint, and the level's text shade: 8:1 or more (#761). */
+    background: var(--color-bg-white);
+    color: var(--start-level-text, var(--start-level));
     font-family: var(--font-heading);
     font-size: var(--text-small);
     font-weight: 700;

@@ -41,6 +41,12 @@ question; they are not site strings yet.
 | An error message | The rate you entered must be between 0% and 100%. | A taxa que você digitou deve estar entre 0% e 100%. | A taxa deve estar entre 0% e 100%. |
 | A sensitive money topic | Being behind on your payments can feel overwhelming, and there are ways to get help. | Atrasos nos seus pagamentos podem pesar, e existem formas de conseguir ajuda. | Atrasos nos pagamentos podem pesar, e existem formas de conseguir ajuda. |
 
+**Read before this language starts** (owner, November 27, 2026, #812): the
+"sensitive money topic" row was rewritten from a new English sentence on
+November 23, 2026, and its translations are an AI draft nobody here can
+judge. A volunteer reads that row first, before any other work in this
+language, and the council does not treat it as settled until then.
+
 The examples avoid words that change with gender, such as *sozinho* or *sozinha*.
 
 The other editions split: Spanish uses the informal *tú*, while Hindi (आप),

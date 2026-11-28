@@ -52,7 +52,7 @@ relatedTool:
   label: "Net worth calculator (one currency or several)"
   cta: "See your net worth in the currency you would live in"
   idea: "When you earn in one currency and spend in another, exchange-rate moves change your effective income."
-reelPromise: "The math of income-versus-expense mismatch, the tax and visa mechanics that make or break the arbitrage, and the non-financial costs that dwarf the spreadsheet gains"
+reelPromise: "The maths of income-versus-expense mismatch, the tax and visa mechanics that make or break the arbitrage, and the non-financial costs that dwarf the spreadsheet gains"
 relatedSlugs: ["why-your-euro-buys-more-in-some-countries", "financial-projections", "cash-flow-101", "managing-money-across-currencies", "introduction-to-financial-independence"]
 referentialReading:
   - title: "The 4-Hour Work Week"
@@ -69,11 +69,11 @@ referentialReading:
 
 Two households earn the same €80,000 a year after tax. One spends €4,000 a month in an expensive city and saves 40%. The other does the same work remotely from a place where the same life costs €2,000 a month, and saves 70%. On an illustrative 5% real return, the first reaches financial independence in about 22 years; the second in about 9.
 
-That gap is [geographic arbitrage](#term-geographic-arbitrage): earning where pay is high and spending where costs are low. Remote work since 2020, retirement abroad and cross-border jobs have made it possible for far more households than before. This post covers the arithmetic, the visa and tax mechanics that turn it into a real plan, and the costs no spreadsheet shows.
+That gap is [geographic arbitrage](#term-geographic-arbitrage): earning where pay is high and spending where costs are low. Remote work since 2020, retirement abroad and cross-border jobs have made it possible for far more households than before. This lesson covers the arithmetic, the visa and tax mechanics that turn it into a real plan, and the costs no spreadsheet shows.
 
 ## A lower cost base moves both the savings rate and the finish line
 
-Financial independence in this framing depends on two numbers: the [savings rate](#term-savings-rate) and the [FI target](#term-fi-target), commonly 25 times yearly spending for a 4% withdrawal rate, or more for caution (the [financial independence post](/blog/introduction-to-financial-independence/) treats both as starting points, not answers).
+Financial independence in this framing depends on two numbers: the [savings rate](#term-savings-rate) and the [FI target](#term-fi-target), commonly 25 times yearly spending for a 4% withdrawal rate, or more for caution (the [financial independence lesson](/blog/introduction-to-financial-independence/) treats both as starting points, not answers).
 
 Lower costs move both at once. €80,000 of income with €48,000 of spending is a 40% savings rate; with €24,000 of spending it is 70%. And 25 times €48,000 is €1.2 million, while 25 times €24,000 is €600,000. Starting from zero, at 5% a year after inflation and a 25-times target:
 
@@ -88,7 +88,7 @@ Lower costs move both at once. €80,000 of income with €48,000 of spending is
   <title id="fig-geoarb-title">Same income, different expense base</title>
   <desc id="fig-geoarb-desc">Two side-by-side bar breakdowns of the same €80,000 income. Left bar (high-cost location): expenses take 60% of income (€48,000 bar), savings 40% (€32,000 bar). Right bar (low-cost location): expenses take 30% (€24,000 bar), savings 70% (€56,000 bar). Below each, the FI timeline: 22 years for the high-cost location, 9 years for the low-cost location.</desc>
   <text class="fig-title" x="360" y="42" text-anchor="middle">Same income, different expense base</text>
-  <text class="fig-subtitle" x="360" y="68" text-anchor="middle">€80,000 net income. Illustrative FI timelines from savings-rate math.</text>
+  <text class="fig-subtitle" x="360" y="68" text-anchor="middle">€80,000 net income. Illustrative FI timelines from savings-rate maths.</text>
   <text class="fig-tick" x="200" y="112" text-anchor="middle">High-cost location</text>
   <rect x="150" y="130" width="100" height="150.0" class="fig-fill-warn" opacity="0.55" />
   <text class="fig-quote-small" x="200" y="203.0" text-anchor="middle">Expenses</text>
@@ -174,7 +174,7 @@ Cost-of-living sites capture rent, food, transport and utilities. What usually d
 
 ## Currency moves change your income
 
-The [currencies post](/blog/managing-money-across-currencies/) covered the general risk: earning in one currency and spending in another means every exchange-rate move changes your effective income. Here it sits at the centre of the plan. Major currencies can move 20 to 30% over a few years without any crisis; a euro earner living somewhere whose currency rises 25% in three years loses a fifth of their spending power with no change in pay. Two common habits are converting savings as needed rather than in bulk, and, in retirement, matching currencies: a destination whose currency matches much of the portfolio, or a portfolio holding more of the spending currency, each with trade-offs. The free <a href="/free/multi-currency-net-worth/" data-attr="post-inline-tool-multi-currency-net-worth">multi-currency net worth calculator</a> shows savings in several currencies in the one you spend.
+The [currencies lesson](/blog/managing-money-across-currencies/) covered the general risk: earning in one currency and spending in another means every exchange-rate move changes your effective income. Here it sits at the centre of the plan. Major currencies can move 20 to 30% over a few years without any crisis; a euro earner living somewhere whose currency rises 25% in three years loses a fifth of their spending power with no change in pay. Two common habits are converting savings as needed rather than in bulk, and, in retirement, matching currencies: a destination whose currency matches much of the portfolio, or a portfolio holding more of the spending currency, each with trade-offs. The free <a href="/free/multi-currency-net-worth/" data-attr="post-inline-tool-multi-currency-net-worth">multi-currency net worth calculator</a> shows savings in several currencies in the one you spend.
 
 ## Common routes, region by region
 
@@ -195,6 +195,6 @@ The [currencies post](/blog/managing-money-across-currencies/) covered the gener
 
 ## Trying it before committing
 
-A common sequence: an honest estimate for one specific place, with healthcare, tax and the housing you would actually want; the visa and tax-residency rules for your citizenship in both countries; and at least a month living there, working and running errands as you would day to day, which tells you more than any spreadsheet. The next post covers how much income retirement really needs, which depends heavily on where you plan to retire.
+A common sequence: an honest estimate for one specific place, with healthcare, tax and the housing you would actually want; the visa and tax-residency rules for your citizenship in both countries; and at least a month living there, working and running errands as you would day to day, which tells you more than any spreadsheet. The next lesson covers how much income retirement really needs, which depends heavily on where you plan to retire.
 
 If you could earn the same from anywhere, which place would you want to test for a month, and what would you miss most?

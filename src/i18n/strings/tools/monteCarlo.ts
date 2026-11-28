@@ -183,7 +183,7 @@ export const monteCarloEn = {
           a: "All returns are real returns, after inflation. A result of 500,000 means 500,000 of today's purchasing power, so you can compare it directly with prices and salaries you know. It also means your monthly saving and yearly withdrawal stay constant in real terms, which is roughly what happens if you raise them with inflation.",
         },
         {
-          q: 'What does “the money lasted in 8 in 10 paths” mean?',
+          q: 'What does it mean that the money lasted in 8 of 10 paths?',
           a: 'Of all the simulated paths, 8 in 10 paid every withdrawal in full for all the years you chose. It is not an 80% chance that your plan works: the model leaves out taxes, changes in your spending, and the real world can be worse (or better) than any model. Treat it as a way to compare plans, not as a promise.',
         },
         {
@@ -343,8 +343,14 @@ export const monteCarloEn = {
       copied: 'Link copied',
       /** The fallback prompt when the clipboard is unavailable. */
       copyPrompt: 'Copy this link:',
+      /** Over the copied address, kept under the buttons until the form changes (#711). */
+      copiedBar: 'Link copied. You can also copy it from here:',
+      shareUrlAria: 'Link to this plan',
+      shareStatus: 'Link copied to the clipboard.',
       reset: 'Reset',
       fix: 'Fix the highlighted fields to see the results.',
+      /** Said once when a corrected plan's results are on screen again (#822). */
+      back: 'The results are shown again.',
       running: 'Running {paths} paths…',
     },
     /**
@@ -694,8 +700,12 @@ export const monteCarloHi: typeof monteCarloEn = {
       copy: 'इस योजना का लिंक कॉपी करें',
       copied: 'लिंक कॉपी हो गया',
       copyPrompt: 'यह लिंक कॉपी करें:',
-      reset: 'रीसेट',
+      copiedBar: 'लिंक कॉपी हो गया। आप इसे यहाँ से भी कॉपी कर सकते हैं:',
+      shareUrlAria: 'इस योजना का लिंक',
+      shareStatus: 'लिंक क्लिपबोर्ड पर कॉपी हो गया।',
+      reset: 'रीसेट करें',
       fix: 'नतीजे देखने के लिए चिह्नित खाने ठीक करें।',
+      back: 'नतीजे फिर से दिख रहे हैं।',
       running: '{paths} रास्ते चल रहे हैं…',
     },
     quick: {
@@ -808,7 +818,7 @@ export const monteCarloEs: typeof monteCarloEn = {
     browserRequirements: 'Requiere JavaScript. Navegador moderno.',
     featureList: [
       'De {minPaths} a {maxPaths} trayectorias simuladas de rentabilidades anuales',
-      'Supuestos de rentabilidad basados en los mercados mundiales de acciones y bonos de 1900 a 2025, con escenarios prudente y optimista',
+      'Supuestos de rentabilidad basados en los mercados mundiales de acciones y bonos de 1900 a 2025, con opciones prudente y optimista',
       'Comisiones anuales',
       'Fase de ahorro y fase de retiros opcional',
       'Combinación de acciones y bonos, con reequilibrio anual',
@@ -883,7 +893,7 @@ export const monteCarloEs: typeof monteCarloEn = {
         },
         {
           q: '¿De dónde salen los supuestos de rentabilidad?',
-          a: 'Del historial a largo plazo de los mercados mundiales de acciones y bonos, de 1900 a 2025, recopilado por Dimson, Marsh y Staunton y reproducido en Exponential Wealth (CFA Institute Research Foundation, 2026). Descontada la inflación, la renta variable mundial obtuvo de media un {stocksMean} anual con una desviación estándar de {stocksSd}, y los bonos mundiales un {bondsMean} con {bondsSd}. El escenario «{historical}» extrae las rentabilidades anuales de una distribución con esas medias y oscilaciones. «{cautious}» y «{optimistic}» mantienen las mismas oscilaciones, pero sitúan la rentabilidad anual compuesta en una tasa prudente y otra optimista, a uno y otro lado de la rentabilidad compuesta de ese historial (alrededor del 5,3 % anual en acciones y del 1,7 % en bonos): acciones al 4 % o al 6 % anual descontada la inflación, bonos al 1 % o al 3 %. La herramienta no copia ninguna serie histórica.',
+          a: 'Del historial a largo plazo de los mercados mundiales de acciones y bonos, de 1900 a 2025, recopilado por Dimson, Marsh y Staunton y reproducido en Exponential Wealth (CFA Institute Research Foundation, 2026). Descontada la inflación, la renta variable mundial obtuvo de media un {stocksMean} anual con una desviación estándar de {stocksSd}, y los bonos mundiales un {bondsMean} con {bondsSd}. La opción «{historical}» extrae las rentabilidades anuales de una distribución con esas medias y oscilaciones. «{cautious}» y «{optimistic}» mantienen las mismas oscilaciones, pero sitúan la rentabilidad anual compuesta en una tasa prudente y otra optimista, a uno y otro lado de la rentabilidad compuesta de ese historial (alrededor del 5,3 % anual en acciones y del 1,7 % en bonos): acciones al 4 % o al 6 % anual descontada la inflación, bonos al 1 % o al 3 %. La herramienta no copia ninguna serie histórica.',
         },
         {
           q: '¿Cuántas trayectorias conviene simular?',
@@ -999,11 +1009,11 @@ export const monteCarloEs: typeof monteCarloEn = {
     },
     returnTips: {
       cautious:
-        'Las acciones crecen alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}: un escenario prudente, por debajo de lo que han rendido los mercados mundiales desde 1900. Los altibajos son tan grandes como en la historia.',
+        'Las acciones crecen alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}: una opción prudente, por debajo de lo que han rendido los mercados mundiales desde 1900. Los altibajos son tan grandes como en la historia.',
       historical:
         'Los mercados mundiales de 1900 a 2025: las acciones crecieron alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}, con los altibajos que tuvieron en realidad.',
       optimistic:
-        'Las acciones crecen alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}: un escenario optimista, por encima de lo que han rendido los mercados mundiales desde 1900. Los altibajos son tan grandes como en la historia.',
+        'Las acciones crecen alrededor de un {stocks} anual descontada la inflación y los bonos alrededor de un {bonds}: una opción optimista, por encima de lo que han rendido los mercados mundiales desde 1900. Los altibajos son tan grandes como en la historia.',
     },
     settings: {
       toggle: 'Comisiones y trayectorias simuladas',
@@ -1027,8 +1037,12 @@ export const monteCarloEs: typeof monteCarloEn = {
       copy: 'Copiar un enlace a este plan',
       copied: 'Enlace copiado',
       copyPrompt: 'Copia este enlace:',
+      copiedBar: 'Enlace copiado. También puedes copiarlo desde aquí:',
+      shareUrlAria: 'Enlace a este plan',
+      shareStatus: 'Enlace copiado al portapapeles.',
       reset: 'Restablecer',
       fix: 'Corrige los campos marcados para ver los resultados.',
+      back: 'Los resultados vuelven a mostrarse.',
       running: 'Simulando {paths} trayectorias…',
     },
     quick: {
@@ -1362,8 +1376,12 @@ export const monteCarloCs: typeof monteCarloEn = {
       copy: 'Kopírovat odkaz na tento plán',
       copied: 'Odkaz zkopírován',
       copyPrompt: 'Zkopírujte tento odkaz:',
+      copiedBar: 'Odkaz zkopírován. Můžete ho zkopírovat i\u00a0odsud:',
+      shareUrlAria: 'Odkaz na tento plán',
+      shareStatus: 'Odkaz zkopírován do schránky.',
       reset: 'Obnovit výchozí',
       fix: 'Opravte zvýrazněná pole a\u00a0uvidíte výsledky.',
+      back: 'Výsledky se znovu zobrazují.',
       running: 'Probíhá simulace, počet trajektorií: {paths}…',
     },
     quick: {
@@ -1679,8 +1697,12 @@ export const monteCarloMr: typeof monteCarloEn = {
       copy: 'या योजनेची लिंक कॉपी करा',
       copied: 'लिंक कॉपी झाली',
       copyPrompt: 'ही लिंक कॉपी करा:',
+      copiedBar: 'लिंक कॉपी झाली. तुम्ही ती इथूनही कॉपी करू शकता:',
+      shareUrlAria: 'या योजनेची लिंक',
+      shareStatus: 'लिंक क्लिपबोर्डवर कॉपी झाली.',
       reset: 'रीसेट करा',
       fix: 'निकाल पाहण्यासाठी ठळक केलेले रकाने दुरुस्त करा.',
+      back: 'निकाल पुन्हा दिसत आहेत.',
       running: '{paths} मार्ग चालवत आहे…',
     },
     quick: {

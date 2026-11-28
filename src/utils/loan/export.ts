@@ -17,6 +17,7 @@ import { MAX_CELL_TEXT, amountFormat, typedRate, type Cell, type Sheet } from '.
 import { fromMinor, getCurrency, isNotPaidOff, MAX_TERM_MONTHS, type LoanResult } from './math.ts';
 import { parseNumber } from './inputs.ts';
 import { lumpSumFault, parseLumpSums, type VendorInput } from './url.ts';
+import { resultNotes } from './notes.ts';
 
 type Island = Dict['tools']['loanComparison']['island'];
 type Common = Dict['tools']['export'];
@@ -66,6 +67,16 @@ export function hasLaterPayment(results: LoanResult[]): boolean {
 
 /** How many columns the summary sheet gives the monthly payment: one, or four when a payment changes. */
 export const LATER_PAYMENT_COLUMNS = 4;
+
+/**
+ * Whether any offer that was worked out has a note under its result on the
+ * page (a later rate that is never charged, a lump sum after the payoff). The
+ * summary then ends with a notes column, so the file says what the card says;
+ * with no note it is as it always was.
+ */
+export function hasNotes(results: LoanResult[]): boolean {
+  return results.some((r) => !r.error && r.warnings.length > 0);
+}
 
 export function loanSheets({ island, common, currency, vendors, results, names, date, page, worded, locale }: LoanExport): Sheet[] {
   const x = island.export;
@@ -185,11 +196,15 @@ export function loanSheets({ island, common, currency, vendors, results, names, 
     const note = change ? island.results.paidOffBeforeChange.replace('{payoffMonth}', String(r.months)) : x.noPaymentChange;
     return [minor(r.effectiveMonthlyMinor), null, null, note];
   };
+  // The notes the card shows under a result, in a last column of their own:
+  // one cell per offer, its sentences in the card's order.
+  const noted = hasNotes(results);
+  const noteCell = (r: LoanResult): Cell[] => (noted ? [resultNotes(r, island.engine.warnings).join(' ') || null] : []);
   const summary: Sheet = {
     name: x.sheets.summary,
-    widths: [22, ...(later ? [18, 22, 12, 34] : [16]), 12, 16, 16, 14, 16, 34, 12],
+    widths: [22, ...(later ? [18, 22, 12, 34] : [16]), 12, 16, 16, 14, 16, 34, 12, ...(noted ? [60] : [])],
     rows: [
-      head(c.name, ...paymentHead, x.months, island.delta.totalInterest, island.results.fees, island.results.penalty, island.delta.totalPaid, worded ? x.aprPct : `${x.aprPct} (${island.results.aprBasis})`, x.computed),
+      head(c.name, ...paymentHead, x.months, island.delta.totalInterest, island.results.fees, island.results.penalty, island.delta.totalPaid, worded ? x.aprPct : `${x.aprPct} (${island.results.aprBasis})`, x.computed, ...(noted ? [x.notes] : [])),
       ...results.map((r, i): Cell[] =>
         ok(r)
           ? [
@@ -204,8 +219,9 @@ export function loanSheets({ island, common, currency, vendors, results, names, 
                 ? missing(r, 'apr')
                 : Number.isFinite(r.aprNominal) ? { n: Math.round(r.aprNominal * 1_000_000) / 10_000, fmt: 'decimal2' } : null,
               common.yes,
+              ...noteCell(r),
             ]
-          : [names[i], ...paymentHead.map(() => null), null, null, null, null, null, null, common.no],
+          : [names[i], ...paymentHead.map(() => null), null, null, null, null, null, null, common.no, ...noteCell(r)],
       ),
     ],
   };

@@ -126,7 +126,7 @@ describe('the country history of the inflation calculator', () => {
     {
       // the chart is named with the years and the highest and lowest year, to one decimal
       const svg = one('.ifc-historyBody svg');
-      assert.equal(svg.getAttribute('aria-label'), 'Yearly inflation in Testland, 2010 to 2011. Highest 5.3% in 2010, lowest -1% in 2011.');
+      assert.equal(svg.getAttribute('aria-label'), 'Yearly inflation in Testland, 2010 to 2011. Highest 5.3% in 2010, lowest −1% in 2011.');
       assert.equal(svg.getAttribute('viewBox')?.split(' ')[2], '760');
       // Both years are in the average.
       assert.equal(all('rect.ifc-bar--recent').length, 2);
@@ -158,7 +158,7 @@ describe('the country history of the inflation calculator', () => {
       assert.equal(one('caption').textContent, 'Yearly inflation in Testland');
       assert.deepEqual(all('thead th').map((c) => [c.textContent, c.getAttribute('scope'), c.getAttribute('role')]), [[h.tableYear, 'col', 'columnheader'], [h.tableRate, 'col', 'columnheader']]);
       assert.deepEqual([one('thead').getAttribute('role'), one('tbody').getAttribute('role'), one('thead tr').getAttribute('role')], ['rowgroup', 'rowgroup', 'row']);
-      assert.deepEqual(rows(), [['2011', '-1.04%'], ['2010', '5.26%']]);
+      assert.deepEqual(rows(), [['2011', '−1.04%'], ['2010', '5.26%']]);
       assert.deepEqual(all('tbody tr').map((r) => r.getAttribute('role')), ['row', 'row']);
       assert.deepEqual(all('tbody th').map((c) => [c.getAttribute('scope'), c.getAttribute('role'), cellLabel(c)]), [['row', 'rowheader', h.tableYear], ['row', 'rowheader', h.tableYear]]);
       assert.deepEqual(all('tbody td').map((c) => [c.getAttribute('role'), cellLabel(c)]), [['cell', h.tableRate], ['cell', h.tableRate]]);
@@ -228,7 +228,8 @@ describe('the country history of the inflation calculator', () => {
     panel({ country: TESTLAND, state: 'ready', series: { 2000: -5 }, showUse: false });
     assert.deepEqual(hints(), ['Figures cover 2000 to 2000.']);
     clear();
-    const pct = (v: number, digits: number) => new Intl.NumberFormat('es', { style: 'percent', maximumFractionDigits: digits }).format(v / 100);
+    // Below zero with the true minus sign, as the page writes it (#888).
+    const pct = (v: number, digits: number) => new Intl.NumberFormat('es', { style: 'percent', maximumFractionDigits: digits }).format(v / 100).replace('-', '\u2212');
     panel({ country: TESTLAND, state: 'ready', series: PLAIN, numberLocale: 'es' });
     assert.notEqual(pct(5.26, 2), '5.26%');
     assert.deepEqual(rows(), [['2011', pct(-1.04, 2)], ['2010', pct(5.26, 2)]]);
@@ -238,7 +239,7 @@ describe('the country history of the inflation calculator', () => {
 
   it('the euro area is not called a country', () => {
     panel({ country: EURO_AREA, state: 'ready', series: PLAIN });
-    assert.equal(one('.ifc-historyBody svg').getAttribute('aria-label'), 'Yearly inflation in the euro area, 2010 to 2011. Highest 5.3% in 2010, lowest -1% in 2011.');
+    assert.equal(one('.ifc-historyBody svg').getAttribute('aria-label'), 'Yearly inflation in the euro area, 2010 to 2011. Highest 5.3% in 2010, lowest −1% in 2011.');
     assert.equal(one('caption').textContent, h.tableCaptionEuroArea);
     assert.notEqual(h.tableCaptionEuroArea, fill(h.tableCaption, { country: 'Euro area' }));
   });

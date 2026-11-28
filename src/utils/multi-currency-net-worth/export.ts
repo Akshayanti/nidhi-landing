@@ -16,7 +16,7 @@ import type { Dict } from '../../i18n/strings/types.ts';
 import { format } from '../../i18n/format.ts';
 import { getCurrency } from '../shared/money.ts';
 import { amountFormat, type Cell, type Sheet } from '../shared/xlsx.ts';
-import { concentrationShares, getCurrencyLabel, isSingleCurrency, rateGap, ownedAndOwed, parseAmount, type AggregationResult, type AssetRow } from './math.ts';
+import { concentrationShares, getCurrencyLabel, isSingleCurrency, rateGap, sharesUnknown, ownedAndOwed, parseAmount, type AggregationResult, type AssetRow } from './math.ts';
 
 type Island = Dict['tools']['multiCurrencyNetWorth']['island'];
 type Common = Dict['tools']['export'];
@@ -95,9 +95,14 @@ export function netWorthSheets(e: NetWorthExport): Sheet[] {
   const concentration = concentrationShares(result.positions);
   // Net worth of zero or less: no position is a share of it. The cell says so; an empty one would read as missing data.
   const noShares = result.noShares === true;
+  // With no rates at all no currency has a share, the spending currency included: words, never 0% (#887).
+  const unknown = sharesUnknown(result, fc);
   const byCurrency: Cell[][] = result.positions.map((p): Cell[] => {
-    const pctCell = p.rateUnavailable ? island.results.rateUnavailable : share(concentration.get(p.code) ?? 0);
-    const exposureCell = p.rateUnavailable ? island.results.rateUnavailable : noShares ? e.riskLabel('unbanded') : share(p.pctOfTotal);
+    const noShare = p.rateUnavailable || unknown;
+    // The spending currency's own rate is 1: with no rates at all, what is unknown is its share (#922).
+    const why = p.isFunctional ? island.results.shareUnknown : island.results.rateUnavailable;
+    const pctCell = noShare ? why : share(concentration.get(p.code) ?? 0);
+    const exposureCell = noShare ? why : noShares ? e.riskLabel('unbanded') : share(p.pctOfTotal);
     const shareCells: Cell[] = gap ? [] : [pctCell, exposureCell, e.riskLabel(p.riskLevel)];
     if (!showAmounts) return [name(p.code), p.code, ...shareCells];
     return [

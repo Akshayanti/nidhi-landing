@@ -41,6 +41,12 @@ question; they are not site strings yet.
 | An error message | The rate you entered must be between 0% and 100%. | Lãi suất bạn nhập phải nằm trong khoảng từ 0% đến 100%. | Lãi suất quý vị nhập phải nằm trong khoảng từ 0% đến 100%. | Lãi suất phải nằm trong khoảng từ 0% đến 100%. |
 | A sensitive money topic | Being behind on your payments can feel overwhelming, and there are ways to get help. | Việc chậm trả nợ có thể khiến bạn cảm thấy quá sức, và có những cách để được giúp đỡ. | Việc chậm trả nợ có thể khiến quý vị cảm thấy quá sức, và có những cách để được giúp đỡ. | Chậm trả nợ có thể gây cảm giác quá sức, và có những cách để được giúp đỡ. |
 
+**Read before this language starts** (owner, November 27, 2026, #812): the
+"sensitive money topic" row was rewritten from a new English sentence on
+November 23, 2026, and its translations are an AI draft nobody here can
+judge. A volunteer reads that row first, before any other work in this
+language, and the council does not treat it as settled until then.
+
 The other editions split: Spanish uses the informal *tú*, while Hindi (आप),
 Czech (*vy*) and Marathi (तुम्ही) use the polite form. That is a reference, not
 a rule for this language.

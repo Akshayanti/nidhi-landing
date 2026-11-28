@@ -13,8 +13,9 @@
  * 2. The lead-in of a field error ("Error: …"), so an error is told apart
  *    from help text by more than its colour, in every language.
  */
-import { createContext, useContext, useEffect, useLayoutEffect, useRef, useState, type InputHTMLAttributes, type Ref } from 'react';
+import { createContext, useCallback, useContext, useEffect, useLayoutEffect, useRef, useState, type InputHTMLAttributes, type Ref } from 'react';
 import { resultGate } from '../utils/shared/settle.ts';
+import { steadyAbove, type Steady } from '../utils/shared/steadyAbove.ts';
 
 /** False in the server-rendered page and on the first render; true once the island runs. */
 export function useToolReady(): boolean {
@@ -195,4 +196,90 @@ export function LinkField({ link, ref, ...rest }: LinkFieldProps) {
       }}
     />
   );
+}
+
+/**
+ * A copied share link, as the loan comparison and the net worth calculator
+ * have it (#711): said once through the tool's announcement (`notice`), and
+ * shown in a bar under the buttons, where it can be copied by hand when the
+ * clipboard is refused. The address goes as soon as `stale` changes (the
+ * form), when it stops being the address of what is on the page. It sits in
+ * a read-only box's value, set from script, never in an attribute (CLAUDE.md,
+ * free tools rule 4).
+ */
+export function useShareLink(stale: unknown, words: { status: string; prompt: string }) {
+  const [url, setUrl] = useState('');
+  const [failed, setFailed] = useState(false);
+  const [notice, setNotice] = useState<Notice>({ text: '', n: 0 });
+  // The clipboard answers later: an answer for a form that has changed since
+  // the click is dropped, so the bar never brings back the address of
+  // something no longer on the page. The form is noted as it commits, before
+  // the page is painted: a change counts at once, and a drawing React set
+  // aside never counts.
+  const latest = useRef(stale);
+  useLayoutEffect(() => { latest.current = stale; }, [stale]);
+  useEffect(() => { setUrl(''); }, [stale]);
+  /** Call when a copy starts; the answers it returns count only while the form is unchanged. */
+  const start = useCallback(() => {
+    const at = latest.current;
+    return {
+      copied: (link: string) => {
+        if (!Object.is(at, latest.current)) return;
+        setUrl(link);
+        setFailed(false);
+        setNotice((was) => ({ text: words.status, n: was.n + 1 }));
+      },
+      /** Whether the refusal still counts: a late one is dropped, prompt and all. */
+      refused: (link: string): boolean => {
+        if (!Object.is(at, latest.current)) return false;
+        setUrl(link);
+        setFailed(true);
+        setNotice((was) => ({ text: words.prompt, n: was.n + 1 }));
+        return true;
+      },
+    };
+  }, [words.status, words.prompt]);
+  return { url, failed, notice, start };
+}
+
+/** The bar under a tool's buttons that holds a copied share link (`useShareLink`). Not a live region: the notice says it. */
+export function ShareUrlBar({ url, failed, label, failedLabel, aria, count = 0 }: { url: string; failed: boolean; label: string; failedLabel: string; aria: string; count?: number }) {
+  // A refused copy takes focus to the address, which is selected, so "Copy
+  // this link:" does not point at a box still to be found; each refusal (its
+  // notice's `count`) moves it again. A copy that worked leaves focus alone.
+  const field = useRef<HTMLInputElement | null>(null);
+  useEffect(() => {
+    if (failed && url) field.current?.focus();
+  }, [failed, url, count]);
+  if (!url) return null;
+  return (
+    <div className="lc-shareUrlBar">
+      <span className="lc-shareUrlLabel">{failed ? failedLabel : label}</span>
+      <LinkField
+        ref={field}
+        className="lc-shareUrlInput"
+        link={url}
+        onFocus={(e) => { e.target.select(); e.target.scrollLeft = 0; }}
+        aria-label={aria}
+      />
+    </div>
+  );
+}
+
+/**
+ * For a part of a tool that changes height as a reader types in a box below
+ * it: the ref to put on that part. The box then stays where it is on the
+ * screen (#827, `steadyAbove`). The part is looked at again after every
+ * render of the component that calls this, so call it where the part's
+ * content is decided.
+ */
+export function useSteadyAbove<T extends HTMLElement>(): (el: T | null) => void {
+  const steady = useRef<Steady | null>(null);
+  useLayoutEffect(() => {
+    steady.current?.settle();
+  });
+  return useCallback((el: T | null) => {
+    steady.current?.stop();
+    steady.current = el === null ? null : steadyAbove(el);
+  }, []);
 }

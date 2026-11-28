@@ -75,6 +75,7 @@ describe('the net worth calculator on its page', () => {
       assert.ok(spending().id.length > 1);
       assert.equal(field.querySelector('p')?.className, 'mcnw-fieldHelp');
       assert.equal(field.querySelector('p')?.textContent, island.toolbar.currencyHelp);
+      assert.ok(document.getElementById(spending().getAttribute('aria-describedby') ?? '') === field.querySelector('p'));
       const options = Object.fromEntries([...spending().options].map((o) => [o.value, o.textContent]));
       assert.equal(options.EUR, island.currencies.EUR);
       assert.equal(options.USD, island.currencies.USD);

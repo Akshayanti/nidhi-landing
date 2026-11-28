@@ -164,7 +164,7 @@ export const multiCurrencyNetWorthEn = {
         {
           q: 'What\'s the difference between the “Full” and “Redacted” share modes?',
           a:
-            'Full mode includes all your asset names, values, currencies, and types in the URL: anyone with the link can see your full breakdown and verify the math. Redacted mode includes only the per-currency concentration percentages and the band labels: no amounts, no asset names. Both are copied to your clipboard as a single link, and you choose which to send.',
+            'Full mode includes all your asset names, values, currencies, and types in the URL: anyone with the link can see your full breakdown and verify the maths. Redacted mode includes only the per-currency concentration percentages and the band labels: no amounts, no asset names. Both are copied to your clipboard as a single link, and you choose which to send.',
         },
         {
           q: 'How are exchange rates sourced?',
@@ -402,6 +402,8 @@ export const multiCurrencyNetWorthEn = {
         'At least one currency was missing a current rate and is excluded from this total.',
       /** The two-word flag beside a currency whose rate the feed did not return. */
       rateUnavailable: 'Rate unavailable',
+      /** Beside the spending currency when there are no rates at all: its own rate is 1, what is not known is its share (#922). */
+      shareUnknown: 'Share unknown: no exchange rates',
       badgeFunctional: 'Spending currency',
       badgeNetDebt: 'Net debt',
       badgeElevated: 'Elevated',
@@ -842,6 +844,7 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
         'यहाँ सब कुछ एक ही मुद्रा में है: {currency}। इसलिए विनिमय दरों का इस पर असर नहीं पड़ता। अगर आप किसी और मुद्रा में रखी कोई चीज़ जोड़ेंगे, तो यह भी दिखेगा कि आपकी शुद्ध संपत्ति का कितना हिस्सा विनिमय दरों पर निर्भर है।',
       partialHint: 'कम से कम एक मुद्रा की ताज़ा दर नहीं मिली, इसलिए वह इस जोड़ में शामिल नहीं है।',
       rateUnavailable: 'दर नहीं मिली',
+      shareUnknown: 'हिस्सा पता नहीं: विनिमय दरें नहीं मिलीं',
       badgeFunctional: 'खर्च की मुद्रा',
       badgeNetDebt: 'शुद्ध देनदारी',
       badgeElevated: 'ज़्यादा',
@@ -946,8 +949,9 @@ export const multiCurrencyNetWorthHi: typeof multiCurrencyNetWorthEn = {
 };
 
 /**
- * "Functional currency" is *moneda de referencia* throughout, the glossary's
- * term for the home currency; the risk badge shortens it to *Referencia*.
+ * The home currency is *la moneda en la que gastas*, the glossary's term
+ * (es-glossary.md, "spending currency"); the risk badge shortens it to
+ * *Moneda de gasto*.
  */
 export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
   meta: {
@@ -1269,6 +1273,7 @@ export const multiCurrencyNetWorthEs: typeof multiCurrencyNetWorthEn = {
       partialHint:
         'Faltaba el tipo de cambio actual de al menos una moneda, que queda fuera de este total.',
       rateUnavailable: 'Tipo no disponible',
+      shareUnknown: 'Parte desconocida: sin tipos de cambio',
       badgeFunctional: 'Moneda de gasto',
       badgeNetDebt: 'Deuda neta',
       badgeElevated: 'Elevado',
@@ -1600,7 +1605,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
         'Vaše čisté jmění se zobrazuje v této měně. Vše v jiné měně se převede podle nejnovějších oficiálních kurzů.',
       share: 'Sdílet',
       shareTitle: 'Sdílet čisté jmění',
-      reset: 'Začít znovu',
+      reset: 'Obnovit výchozí',
       resetTitle: 'Smazat všechna data a začít znovu',
       copiedLabel: 'Odkaz zkopírován do schránky',
       /** Above the address when the browser would not copy it: the reader copies it by hand. */
@@ -1702,6 +1707,7 @@ export const multiCurrencyNetWorthCs: typeof multiCurrencyNetWorthEn = {
       partialHint:
         'U alespoň jedné měny chyběl aktuální kurz, a proto není zahrnutá do tohoto součtu.',
       rateUnavailable: 'Kurz chybí',
+      shareUnknown: 'Podíl neznámý: chybí směnné kurzy',
       badgeFunctional: 'Měna výdajů',
       badgeNetDebt: 'Čistý dluh',
       badgeElevated: 'Zvýšená',
@@ -2092,6 +2098,7 @@ export const multiCurrencyNetWorthMr: typeof multiCurrencyNetWorthEn = {
       singleNote: 'इथे सगळे {currency} मध्ये आहे, त्यामुळे विनिमय दरांचा त्यावर परिणाम होत नाही. तुम्ही दुसऱ्या चलनातील काही जोडले, तर तुमच्या निव्वळ संपत्तीचा किती भाग विनिमय दरांवर अवलंबून आहे हेही इथे दिसेल.',
       partialHint: 'किमान एका चलनाचा चालू दर मिळाला नाही, त्यामुळे ते या एकूण रकमेतून वगळले आहे.',
       rateUnavailable: 'दर उपलब्ध नाही',
+      shareUnknown: 'हिस्सा माहीत नाही: विनिमय दर मिळाले नाहीत',
       badgeFunctional: 'खर्चाचे चलन',
       badgeNetDebt: 'निव्वळ कर्ज',
       badgeElevated: 'जास्त',

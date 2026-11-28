@@ -41,6 +41,12 @@ question; they are not site strings yet.
 | An error message | The rate you entered must be between 0% and 100%. | 입력한 금리는 0%에서 100% 사이여야 합니다. | 입력한 금리는 0%에서 100% 사이여야 해요. |
 | A sensitive money topic | Being behind on your payments can feel overwhelming, and there are ways to get help. | 상환이 밀리면 버겁게 느껴질 수 있습니다. 도움을 받을 방법이 있습니다. | 상환이 밀리면 버겁게 느껴질 수 있어요. 도움을 받을 방법이 있어요. |
 
+**Read before this language starts** (owner, November 27, 2026, #812): the
+"sensitive money topic" row was rewritten from a new English sentence on
+November 23, 2026, and its translations are an AI draft nobody here can
+judge. A volunteer reads that row first, before any other work in this
+language, and the council does not treat it as settled until then.
+
 Neither column uses *당신*.
 
 The other editions split: Spanish uses the informal *tú*, while Hindi (आप),

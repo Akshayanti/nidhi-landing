@@ -1,4 +1,4 @@
-import { useCallback, useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { useCallback, useContext, useEffect, useId, useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { CURRENCIES } from '../utils/shared/money.ts';
 import {
   aggregate,
@@ -8,6 +8,7 @@ import {
   rateGap,
   ratesPending,
   ratesFailureShown,
+  sharesUnknown,
   concentrationShares,
   isSupportedCurrency,
   isUnreadableAmount,
@@ -331,20 +332,22 @@ export default function MultiCurrencyNetWorth({
   // double-fire under React 18 StrictMode (the dev-mode invariant
   // double-invokes updaters); production wouldn't see it, but anyone
   // running `npm run dev` against a real PostHog key would.
+  // The row count as of the last Add, ahead of the redraw: two Adds handled
+  // before the page draws again would both see the old `rows` (#826).
+  const rowCount = useRef(rows.length);
+  useLayoutEffect(() => { rowCount.current = rows.length; }, [rows.length]);
   const addRow = useCallback(() => {
-    if (rows.length >= MAX_ROWS) return;
+    if (rowCount.current >= MAX_ROWS) return;
     if (endsSharedView(sharedRedacted, 'add')) leaveSharedView();
+    rowCount.current += 1;
     setRows((prev) => [
       ...prev,
       { name: '', value: '', currency: defaultCurrency, type: 'asset' as const },
     ]);
-    // Read length from a functional set via a microtask-stable closure:
-    // we already know the new length is `rows.length + 1` because the
-    // updater appends exactly one row. Using `rows.length + 1` here is
-    // safe because StrictMode does not double-invoke the *enclosing*
-    // callback, only the updater.
-    track('free_multi_currency_net_worth_asset_added', { count: rows.length + 1 });
-  }, [rows.length, defaultCurrency, sharedRedacted, leaveSharedView]);
+    // The count is the ref's, not the updater's: StrictMode runs an updater
+    // twice, never this callback.
+    track('free_multi_currency_net_worth_asset_added', { count: rowCount.current });
+  }, [defaultCurrency, sharedRedacted, leaveSharedView]);
 
   const removeRow = useCallback((index: number) => {
     if (rows.length <= 1) return;
@@ -593,6 +596,7 @@ export default function MultiCurrencyNetWorth({
             <select
               id={functionalCurrencySelectId}
               className="mcnw-select"
+              aria-describedby={`${functionalCurrencySelectId}-help`}
               value={functionalCurrency}
               onChange={(e) => {
                 const next = e.target.value;
@@ -607,7 +611,7 @@ export default function MultiCurrencyNetWorth({
                 </option>
               ))}
             </select>
-            <p className="mcnw-fieldHelp">
+            <p id={`${functionalCurrencySelectId}-help`} className="mcnw-fieldHelp">
               {strings.toolbar.currencyHelp}
             </p>
           </div>
@@ -953,6 +957,7 @@ function AssetRowInput({ row, index, total, strings, onChange, onRemove }: Asset
         <input
           id={nameId}
           type="text"
+          enterKeyHint="done"
           className="mcnw-input"
           value={row.name}
           onChange={(e) => onChange({ name: e.target.value })}
@@ -1151,6 +1156,9 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, pendingRate
   // A currency without a rate is in no total: what is left is a subtotal, and
   // no share, band or chart can be drawn from it (#795).
   const partial = gap === 'some';
+  // With no rates at all the spending currency has no share either: its card
+  // says so, as the sheet does, and has no sentence about "0%" (#887).
+  const unknown = sharesUnknown(result, functionalCurrency);
   const totalWord = partial ? strings.results.totalPartial : strings.results.totalLabel;
   // Without a band to say "debt", the amount carries its sign.
   const cardMoney = (value: number, code: string) =>
@@ -1199,8 +1207,9 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, pendingRate
               {/* The currency comes first for a screen reader; the band is shown first (CSS order). */}
               <span className="mcnw-riskCurrency">
                 {getCurrencyLabel(pos.code, strings.currencies)}
-                {pos.rateUnavailable ? (
-                  !pendingRates && <> · <span className="mcnw-riskHidden">{strings.results.rateUnavailable}</span></>
+                {pos.rateUnavailable || (unknown && gap !== 'all') ? (
+                  // The spending currency's own rate is 1: what is not known is its share (#922).
+                  !pendingRates && <> · <span className="mcnw-riskHidden">{pos.isFunctional ? strings.results.shareUnknown : strings.results.rateUnavailable}</span></>
                 ) : gap === 'all' ? null : hidePct || partial ? (
                   <> · <span className="mcnw-riskHidden">{strings.results.hidden}</span></>
                 ) : (
@@ -1224,7 +1233,7 @@ function ResultsPanel({ withheld = null, result, functionalCurrency, pendingRate
             {/* With no rate, the paragraph below says so once (#618); the head
                 already reads "Rate unavailable". */}
             {!gap && !pos.rateUnavailable && <p className="mcnw-riskLabel">{riskLabel(strings, pos.riskLevel)}</p>}
-            {(!gap || (partial && pos.rateUnavailable)) && <Recommendation pos={pos} functionalCurrency={functionalCurrency} hidePct={hidePct} noShares={noShares} strings={strings} />}
+            {((!gap && !(unknown && !pos.rateUnavailable)) || (partial && pos.rateUnavailable)) && <Recommendation pos={pos} functionalCurrency={functionalCurrency} hidePct={hidePct} noShares={noShares} strings={strings} />}
           </div>
         ))}
       </div>
@@ -1450,6 +1459,9 @@ function ShareModal({
   const urlField = useRef<HTMLInputElement>(null);
   useEffect(() => {
     if (copyFailed && shareUrl) urlField.current?.focus();
+    // On a short screen (a phone held sideways) the bar can open below the
+    // part of the dialog in view: it is brought into view, the least way (#639).
+    if (shareUrl) urlField.current?.closest('.mcnw-shareUrlBar')?.scrollIntoView?.({ block: 'nearest' });
   }, [copyFailed, shareUrl, notice.n]);
 
   // The parent passes a new `onClose` on every render. Kept in a ref, it
@@ -1898,14 +1910,15 @@ function ConcentrationChart({ positions: allPositions, functionalCurrency, strin
           />
         </svg>
 
-        {/* Legend: each entry highlights its slice on hover, focus or tap. */}
+        {/* Legend: each entry highlights its slice on hover, focus or tap. Not a
+            toggle (no aria-pressed): focus picks an entry, so a second tap could
+            never release it; the region below says what is picked (#488). */}
         <ul className="mcnw-legend" id={legendId} aria-label={strings.chart.legendAria}>
           {arcs.map((arc) => (
             <li key={arc.pos.code}>
               <button
                 type="button"
                 className={`mcnw-legendItem${arc.pos.code === active ? ' mcnw-legendItem--on' : ''}`}
-                aria-pressed={arc.pos.code === active}
                 onMouseEnter={() => setActive(arc.pos.code)}
                 onFocus={() => setActive(arc.pos.code)}
                 onBlur={() => setActive(null)}

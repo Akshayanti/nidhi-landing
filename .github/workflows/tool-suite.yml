@@ -916,7 +916,7 @@ jobs:
           echo "run=$run" >> "$GITHUB_OUTPUT"
 
   text-size-tool:
-    name: 'Text size: ${{ matrix.tool }}'
+    name: "Text size: ${{ matrix.tool }}${{ matrix.fonts == 'fallback' && ' (fallback fonts)' || '' }}"
     needs: text-size-plan
     if: ${{ !cancelled() && needs.text-size-plan.outputs.run == 'true' }}
     runs-on: ubuntu-latest
@@ -933,6 +933,10 @@ jobs:
         # The TOOLS of scripts/audit-text-size.mjs; scripts/repo-hygiene.test.mjs
         # fails when one is missing here.
         tool: [loan-comparison, multi-currency-net-worth, monte-carlo-simulator, invest-or-pay-off, inflation-calculator]
+        # The site's fonts, and (nightly and by hand) the fallback fonts, each
+        # a job of its own: one job doing both ran past its time limit
+        # (Monte Carlo), and a failure in the first left the second unrun (#851).
+        fonts: ${{ fromJSON(github.event_name == 'pull_request' && '["web"]' || '["web", "fallback"]') }}
     steps:
       - name: Checkout
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -957,6 +961,31 @@ jobs:
       - name: Let Chrome use its sandbox
         run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
 
+      # The fallback fonts are the machine's own. A bare runner falls back to
+      # DejaVu Sans, wider than what a reader's device shows while the site's
+      # fonts load, and has no Devanagari of its own. So it gets the fonts a
+      # typical reader's device has, Noto (with Devanagari) and DejaVu, and
+      # "sans-serif" is Noto Sans, as on a phone (#851, owner, Nov 27 2026).
+      - name: Install the fallback fonts a reader's device has
+        if: matrix.fonts == 'fallback'
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq --no-install-recommends fonts-noto-core fonts-dejavu-core
+          mkdir -p "$HOME/.config/fontconfig"
+          cat > "$HOME/.config/fontconfig/fonts.conf" <<'CONF'
+          <?xml version="1.0"?>
+          <!DOCTYPE fontconfig SYSTEM "fonts.dtd">
+          <fontconfig>
+            <alias>
+              <family>sans-serif</family>
+              <prefer><family>Noto Sans</family><family>Noto Sans Devanagari</family></prefer>
+            </alias>
+          </fontconfig>
+          CONF
+          fc-cache -f
+          fc-match sans-serif
+          fc-match 'sans-serif:lang=hi'
+
       - name: Serve the build
         run: |
           npx astro preview --port 4480 --host 127.0.0.1 > "$RUNNER_TEMP/preview.log" 2>&1 &
@@ -966,17 +995,18 @@ jobs:
       # Pull requests: the edges and the middle of the range, in every
       # language and state. CLAUDE.md, "Layout is checked at every size at once".
       - name: Text size, bounded range
-        if: github.event_name == 'pull_request'
+        if: github.event_name == 'pull_request' && matrix.fonts == 'web'
         run: node scripts/audit-text-size.mjs http://127.0.0.1:4480 --tool ${{ matrix.tool }} --width 320,375,768,1280 --size 100,200,400
 
-      # Nightly and by hand: every width and size, then again in the
-      # fallback fonts (what a reader sees while the fonts load).
+      # Nightly and by hand: every width and size, in the site's fonts and,
+      # in a job of its own, in the fallback fonts (what a reader sees while
+      # the fonts load).
       - name: Text size, whole range
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && matrix.fonts == 'web'
         run: node scripts/audit-text-size.mjs http://127.0.0.1:4480 --tool ${{ matrix.tool }}
 
       - name: Text size, whole range, fallback fonts
-        if: github.event_name != 'pull_request'
+        if: github.event_name != 'pull_request' && matrix.fonts == 'fallback'
         run: node scripts/audit-text-size.mjs http://127.0.0.1:4480 --tool ${{ matrix.tool }} --no-fonts
 
   # The text-size suite's result: it passes only when every job above passed.

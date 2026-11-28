@@ -214,7 +214,8 @@ export const inflationEn = {
       /** The printed report's "What this means": interprets the answer, never advises. */
       meaning: 'Inflation is the rise in prices over time. Unless a country’s actual inflation was used, the figures assume the same rate every year; real inflation changes from year to year, and the prices you pay may rise faster or slower than the average.',
       moneyLabel: 'Amounts',
-      moneyText: "To the currency's smallest unit. The page rounds its headline; these are the exact figures behind it.",
+      /** True of every amount cell: one the unit cannot show (JPY 1.3, EUR 0.074, #922) holds two figures, never the unit's rounding. */
+      moneyText: "To the currency's smallest unit. The page rounds its results; these are the exact figures behind them. A small amount that the unit cannot show to two significant figures is given to two significant figures instead.",
       sheets: { answer: 'Answer', byYear: 'By year' },
       question: 'Question',
       country: 'Inflation history',
@@ -330,6 +331,9 @@ export const inflationEn = {
       pastMonthAverageFall: 'From {from} to {to}, they fell {average} a year on average.',
       pastMonthFurtherRise: 'Prices were {more} higher {inMonth} than on average in {to}.',
       pastMonthFurtherFall: 'Prices were {more} lower {inMonth} than on average in {to}.',
+      /** When a change is written as 0% at the digits shown, it is neither a rise nor a fall (#888): `{limit}` is half of the last digit shown, "0.5%" for the total and "0.05%" for a yearly average or the step to the month. `{year}` is the year the month is compared with. */
+      pastMonthFlat: 'Prices {inMonth} differed from their average in {year} by less than {limit}.',
+      pastMonthAverageFlat: 'From {from} to {to}, they changed by less than {limit} a year on average.',
       /** Under a month-ended answer whose index repeats a value within each recent quarter (`isQuarterly`): says what is seen, not how the country publishes. */
       quarterNote: 'For {country}, the index repeats one value within each recent quarter, so the month named here may carry a quarter’s figure.',
       /** Under a month-ended answer: which two sources are joined, and what one month is and is not. `{to}` is the last full year. */
@@ -353,6 +357,9 @@ export const inflationEn = {
       /** When the years chosen are one year, whose change is its own average. */
       pastCountryRiseOneYear: 'Prices rose about {total} in that one year.',
       pastCountryFallOneYear: 'Prices fell about {total} in that one year.',
+      /** When the total is written as 0%, in either direction: no rise or fall is claimed (#888). `{limit}` is "0.5%", half of the last digit the total is shown with. */
+      pastCountryFlat: 'Prices changed by less than {limit} in total over those {years}.',
+      pastCountryFlatOneYear: 'Prices changed by less than {limit} in that one year.',
       /** When the years chosen cross a change of currency unit (`currencyChanges.ts`): one or several after the first year. The answer is then in today's money. */
       currencyChanged: '{country} changed its currency in {year}: {ratio} units of the old money became 1 unit of the new. This answer takes the amount you typed as money of {from} and gives the result in today\'s money. If the amount you typed is already in today\'s money, the answer is {unconverted}.',
       currencyChangedUp: '{country} changed its currency in {year}: 1 unit of the old money became {ratio} units of the new. This answer takes the amount you typed as money of {from} and gives the result in today\'s money. If the amount you typed is already in today\'s money, the answer is {unconverted}.',
@@ -422,6 +429,10 @@ export const inflationEn = {
       copied: 'Link copied',
       /** The fallback prompt when the clipboard is unavailable. */
       copyPrompt: 'Copy this link:',
+      /** Over the copied address, kept under the buttons until the form changes (#711). */
+      copiedBar: 'Link copied. You can also copy it from here:',
+      shareUrlAria: 'Link to this calculation',
+      shareStatus: 'Link copied to the clipboard.',
       reset: 'Reset',
     },
   },
@@ -580,7 +591,7 @@ export const inflationHi: typeof inflationEn = {
     export: {
       meaning: 'महँगाई का मतलब है समय के साथ क़ीमतों का बढ़ना। जब तक किसी देश की असल महँगाई इस्तेमाल न हुई हो, ये आँकड़े हर साल एक ही दर मानते हैं; असल महँगाई साल-दर-साल बदलती है, और आप जो क़ीमतें चुकाते हैं वे औसत से तेज़ या धीमी बढ़ सकती हैं।',
       moneyLabel: 'रकम',
-      moneyText: 'मुद्रा की सबसे छोटी इकाई तक। पेज अपना मुख्य जवाब गोल करके दिखाता है; ये उसके पीछे के सटीक आँकड़े हैं।',
+      moneyText: 'मुद्रा की सबसे छोटी इकाई तक। पेज अपने नतीजे गोल करके दिखाता है; ये उनके पीछे के सटीक आँकड़े हैं। जो छोटी रकम उस इकाई में दो सार्थक अंकों तक न दिख सके, वह दो सार्थक अंकों तक दी गई है।',
       sheets: { answer: 'जवाब', byYear: 'हर साल' },
       question: 'सवाल',
       country: 'महँगाई का इतिहास',
@@ -689,6 +700,8 @@ export const inflationHi: typeof inflationEn = {
       pastMonthAverageFall: '{from} से {to} तक वे औसतन {average} सालाना घटीं।',
       pastMonthFurtherRise: '{inMonth} क़ीमतें {to} के औसत से {more} ज़्यादा थीं।',
       pastMonthFurtherFall: '{inMonth} क़ीमतें {to} के औसत से {more} कम थीं।',
+      pastMonthFlat: '{inMonth} क़ीमतों और {year} के औसत के बीच {limit} से कम का अंतर था।',
+      pastMonthAverageFlat: '{from} से {to} तक वे औसतन सालाना {limit} से कम बदलीं।',
       quarterNote: '{country} के सूचकांक में हाल की हर तिमाही के भीतर एक ही मान दोहराया गया है, इसलिए यहाँ बताए गए महीने का आँकड़ा पूरी तिमाही का हो सकता है।',
       joinNote: 'यहाँ आँकड़ों के दो समूह जोड़े गए हैं: {to} तक World Bank की सालाना महँगाई, और उसके बाद {source}, जो {to} के औसत से उस सबसे नए महीने तक का बदलाव बताता है जिसका आँकड़ा यहाँ है। एक महीने के आँकड़े में मौसमी उतार-चढ़ाव शामिल होते हैं और बाद में वह बदला भी जा सकता है। मासिक सूचकांक का आँकड़ा कोई आधिकारिक सालाना महँगाई दर नहीं है।',
       monthlySource: {
@@ -704,6 +717,8 @@ export const inflationHi: typeof inflationEn = {
       pastCountryFall: 'इन {years} में क़ीमतें कुल मिलाकर लगभग {total} घटीं, यानी औसतन {average} सालाना।',
       pastCountryRiseOneYear: 'उस एक साल में क़ीमतें लगभग {total} बढ़ीं।',
       pastCountryFallOneYear: 'उस एक साल में क़ीमतें लगभग {total} घटीं।',
+      pastCountryFlat: 'इन {years} में क़ीमतें कुल मिलाकर {limit} से कम बदलीं।',
+      pastCountryFlatOneYear: 'उस एक साल में क़ीमतें {limit} से कम बदलीं।',
       currencyChanged: '{country} ने {year} में अपनी मुद्रा बदली: पुरानी मुद्रा की {ratio} इकाइयाँ नई मुद्रा की 1 इकाई बनीं। यह जवाब आपकी भरी हुई रकम को {from} की मुद्रा में मानता है और नतीजा आज की मुद्रा में देता है। अगर आपकी भरी हुई रकम पहले से आज की मुद्रा में है, तो जवाब {unconverted} है।',
       currencyChangedUp: '{country} ने {year} में अपनी मुद्रा बदली: पुरानी मुद्रा की 1 इकाई नई मुद्रा की {ratio} इकाइयाँ बनीं। यह जवाब आपकी भरी हुई रकम को {from} की मुद्रा में मानता है और नतीजा आज की मुद्रा में देता है। अगर आपकी भरी हुई रकम पहले से आज की मुद्रा में है, तो जवाब {unconverted} है।',
       currencyChangedMore: '{country} ने {from} के बाद एक से ज़्यादा बार अपनी मुद्रा बदली ({years}): कुल मिलाकर {from} की मुद्रा की {ratio} इकाइयाँ आज की मुद्रा की 1 इकाई बनीं। यह जवाब आपकी भरी हुई रकम को {from} की मुद्रा में मानता है और नतीजा आज की मुद्रा में देता है। अगर आपकी भरी हुई रकम पहले से आज की मुद्रा में है, तो जवाब {unconverted} है।',
@@ -762,6 +777,9 @@ export const inflationHi: typeof inflationEn = {
       copy: 'इस हिसाब का लिंक कॉपी करें',
       copied: 'लिंक कॉपी हो गया',
       copyPrompt: 'यह लिंक कॉपी करें:',
+      copiedBar: 'लिंक कॉपी हो गया। आप इसे यहाँ से भी कॉपी कर सकते हैं:',
+      shareUrlAria: 'इस हिसाब का लिंक',
+      shareStatus: 'लिंक क्लिपबोर्ड पर कॉपी हो गया।',
       reset: 'रीसेट करें',
     },
   },
@@ -918,7 +936,7 @@ export const inflationEs: typeof inflationEn = {
     export: {
       meaning: 'La inflación es la subida de los precios con el tiempo. Salvo que se haya usado la inflación real de un país, las cifras suponen la misma tasa cada año; la inflación real cambia de un año a otro, y los precios que pagas pueden subir más rápido o más despacio que la media.',
       moneyLabel: 'Cantidades',
-      moneyText: 'Hasta la unidad más pequeña de la moneda. La página redondea su titular; estas son las cifras exactas que hay detrás.',
+      moneyText: 'Hasta la unidad más pequeña de la moneda. La página redondea sus resultados; estas son las cifras exactas que hay detrás. Una cantidad pequeña que esa unidad no puede mostrar con dos cifras significativas se da con dos cifras significativas.',
       sheets: { answer: 'Respuesta', byYear: 'Por año' },
       question: 'Pregunta',
       country: 'Historia de la inflación',
@@ -1027,6 +1045,8 @@ export const inflationEs: typeof inflationEn = {
       pastMonthAverageFall: 'De {from} a {to} bajaron un {average} al año de media.',
       pastMonthFurtherRise: 'Respecto a la media de {to}, los precios eran {inMonth} un {more} más altos.',
       pastMonthFurtherFall: 'Respecto a la media de {to}, los precios eran {inMonth} un {more} más bajos.',
+      pastMonthFlat: 'Los precios {inMonth} diferían de la media de {year} en menos de un {limit}.',
+      pastMonthAverageFlat: 'De {from} a {to} variaron menos de un {limit} al año de media.',
       quarterNote: 'En {country}, el índice repite un mismo valor dentro de cada trimestre reciente, así que el mes indicado aquí puede llevar la cifra de un trimestre.',
       joinNote: 'Aquí se unen dos series de cifras: la inflación anual del Banco Mundial hasta {to} y, después, {source}, para el paso desde la media de {to} hasta el último mes con cifra aquí. Un solo mes incluye altibajos estacionales y puede revisarse más adelante. Una lectura mensual del índice no es una tasa oficial de inflación anual.',
       monthlySource: {
@@ -1042,6 +1062,8 @@ export const inflationEs: typeof inflationEn = {
       pastCountryFall: 'Los precios bajaron alrededor de un {total} en total durante esos {years}, una media del {average} anual.',
       pastCountryRiseOneYear: 'Los precios subieron alrededor de un {total} en ese año.',
       pastCountryFallOneYear: 'Los precios bajaron alrededor de un {total} en ese año.',
+      pastCountryFlat: 'Los precios variaron menos de un {limit} en total durante esos {years}.',
+      pastCountryFlatOneYear: 'Los precios variaron menos de un {limit} en ese año.',
       currencyChanged: '{country} cambió de moneda en {year}: {ratio} unidades de la moneda anterior pasaron a ser 1 unidad de la nueva. Esta respuesta toma la cantidad que escribiste como moneda de {from} y da el resultado en la moneda de hoy. Si la cantidad que escribiste ya está en la moneda de hoy, la respuesta es {unconverted}.',
       currencyChangedUp: '{country} cambió de moneda en {year}: 1 unidad de la moneda anterior pasó a ser {ratio} unidades de la nueva. Esta respuesta toma la cantidad que escribiste como moneda de {from} y da el resultado en la moneda de hoy. Si la cantidad que escribiste ya está en la moneda de hoy, la respuesta es {unconverted}.',
       currencyChangedMore: '{country} cambió de moneda más de una vez después de {from} ({years}): en total, {ratio} unidades de la moneda de {from} pasaron a ser 1 unidad de la de hoy. Esta respuesta toma la cantidad que escribiste como moneda de {from} y da el resultado en la moneda de hoy. Si la cantidad que escribiste ya está en la moneda de hoy, la respuesta es {unconverted}.',
@@ -1100,6 +1122,9 @@ export const inflationEs: typeof inflationEn = {
       copy: 'Copiar un enlace a este cálculo',
       copied: 'Enlace copiado',
       copyPrompt: 'Copia este enlace:',
+      copiedBar: 'Enlace copiado. También puedes copiarlo desde aquí:',
+      shareUrlAria: 'Enlace a este cálculo',
+      shareStatus: 'Enlace copiado al portapapeles.',
       reset: 'Restablecer',
     },
   },
@@ -1259,7 +1284,7 @@ export const inflationCs: typeof inflationEn = {
     export: {
       meaning: 'Inflace je růst cen v průběhu času. Pokud nebyla použita skutečná inflace dané země, výpočet vychází ze stejné sazby v každém roce; skutečná inflace se rok od roku mění a ceny, které platíte, mohou růst rychleji i pomaleji než průměr.',
       moneyLabel: 'Částky',
-      moneyText: 'Na nejmenší jednotku měny. Stránka hlavní odpověď zaokrouhluje; tady jsou přesná čísla, ze kterých vychází.',
+      moneyText: 'Na nejmenší jednotku měny. Stránka výsledky zaokrouhluje; tady jsou přesná čísla, ze kterých vycházejí. Malá částka, kterou tato jednotka nedokáže ukázat na dvě platné číslice, je uvedena na dvě platné číslice.',
       sheets: { answer: 'Odpověď', byYear: 'Po letech' },
       question: 'Otázka',
       country: 'Historie inflace',
@@ -1368,6 +1393,8 @@ export const inflationCs: typeof inflationEn = {
       pastMonthAverageFall: 'Od roku {from} do roku {to} klesaly průměrně o {average} ročně.',
       pastMonthFurtherRise: 'Ceny byly {inMonth} o {more} vyšší než v průměru roku {to}.',
       pastMonthFurtherFall: 'Ceny byly {inMonth} o {more} nižší než v průměru roku {to}.',
+      pastMonthFlat: 'Ceny se {inMonth} lišily od průměru roku {year} o méně než {limit}.',
+      pastMonthAverageFlat: 'Od roku {from} do roku {to} se měnily průměrně o méně než {limit} ročně.',
       quarterNote: 'U země {country} se v indexu během každého z posledních čtvrtletí opakuje stejná hodnota, takže uvedený měsíc může nést údaj za celé čtvrtletí.',
       joinNote: 'Tady se spojují dvě řady údajů: roční inflace podle Světové banky do roku {to} a poté {source}, pro krok od průměru roku {to} k poslednímu měsíci, pro který tu je údaj. Jediný měsíc zahrnuje sezonní výkyvy a může být později upraven. Měsíční hodnota indexu není oficiální roční mírou inflace.',
       monthlySource: {
@@ -1383,6 +1410,8 @@ export const inflationCs: typeof inflationEn = {
       pastCountryFall: 'Za {years} klesly ceny celkem zhruba o {total}, v průměru o {average} ročně.',
       pastCountryRiseOneYear: 'Za ten jeden rok vzrostly ceny zhruba o {total}.',
       pastCountryFallOneYear: 'Za ten jeden rok klesly ceny zhruba o {total}.',
+      pastCountryFlat: 'Za {years} se ceny celkem změnily o méně než {limit}.',
+      pastCountryFlatOneYear: 'Za ten jeden rok se ceny změnily o méně než {limit}.',
       currencyChanged: 'V zemi {country} se v roce {year} změnila měna v poměru {ratio} : 1 (stará měna k nové). Tato odpověď bere zadanou částku jako částku v měně roku {from} a výsledek uvádí v dnešní měně. Pokud je zadaná částka už v dnešní měně, odpověď je {unconverted}.',
       currencyChangedUp: 'V zemi {country} se v roce {year} změnila měna v poměru 1 : {ratio} (stará měna k nové). Tato odpověď bere zadanou částku jako částku v měně roku {from} a výsledek uvádí v dnešní měně. Pokud je zadaná částka už v dnešní měně, odpověď je {unconverted}.',
       currencyChangedMore: 'V zemi {country} se po roce {from} měna změnila víckrát ({years}), celkem v poměru {ratio} : 1 (měna roku {from} k dnešní měně). Tato odpověď bere zadanou částku jako částku v měně roku {from} a výsledek uvádí v dnešní měně. Pokud je zadaná částka už v dnešní měně, odpověď je {unconverted}.',
@@ -1441,6 +1470,9 @@ export const inflationCs: typeof inflationEn = {
       copy: 'Kopírovat odkaz na tento výpočet',
       copied: 'Odkaz zkopírován',
       copyPrompt: 'Zkopírujte tento odkaz:',
+      copiedBar: 'Odkaz zkopírován. Můžete ho zkopírovat i\u00a0odsud:',
+      shareUrlAria: 'Odkaz na tento výpočet',
+      shareStatus: 'Odkaz zkopírován do schránky.',
       reset: 'Obnovit výchozí',
     },
   },
@@ -1591,7 +1623,7 @@ export const inflationMr: typeof inflationEn = {
     export: {
       meaning: 'महागाई म्हणजे काळानुसार किमती वाढणे. एखाद्या देशाची प्रत्यक्ष महागाई वापरली नसेल, तर हे आकडे दरवर्षी एकच दर धरतात; प्रत्यक्ष महागाई वर्षागणिक बदलते, आणि तुम्ही भरता त्या किमती सरासरीपेक्षा जलद किंवा हळू वाढू शकतात.',
       moneyLabel: 'रक्कम',
-      moneyText: 'चलनाच्या सर्वात लहान एककापर्यंत. पान मुख्य उत्तर पूर्णांकात दाखवते; हे त्यामागचे नेमके आकडे आहेत.',
+      moneyText: 'चलनाच्या सर्वात लहान एककापर्यंत. पान आपले निकाल जवळच्या आकड्यापर्यंत आणून दाखवते; हे त्यामागचे नेमके आकडे आहेत. जी लहान रक्कम त्या एककात दोन सार्थक अंकांपर्यंत दाखवता येत नाही, ती दोन सार्थक अंकांपर्यंत दिली आहे.',
       sheets: { answer: 'उत्तर', byYear: 'दरवर्षी' },
       question: 'प्रश्न',
       country: 'महागाईचा इतिहास',
@@ -1702,6 +1734,8 @@ export const inflationMr: typeof inflationEn = {
       pastMonthAverageFall: '{from} ते {to} या काळात त्या दरवर्षी सरासरी {average} घटल्या.',
       pastMonthFurtherRise: '{inMonth} किमती {to} सालच्या सरासरीपेक्षा {more} जास्त होत्या.',
       pastMonthFurtherFall: '{inMonth} किमती {to} सालच्या सरासरीपेक्षा {more} कमी होत्या.',
+      pastMonthFlat: '{inMonth} किमती आणि {year} सालची सरासरी यांच्यात {limit} पेक्षा कमी फरक होता.',
+      pastMonthAverageFlat: '{from} ते {to} या काळात त्या दरवर्षी सरासरी {limit} पेक्षा कमी बदलल्या.',
       quarterNote: '{country} च्या निर्देशांकात अलीकडच्या प्रत्येक तिमाहीत एकच मूल्य पुन्हा आले आहे, त्यामुळे इथे दिलेल्या महिन्याचा आकडा पूर्ण तिमाहीचा असू शकतो.',
       joinNote: 'इथे आकड्यांचे दोन संच जोडले आहेत: {to} पर्यंत World Bank ची वार्षिक महागाई, आणि त्यानंतर {source}, जो {to} सालच्या सरासरीपासून इथे आकडा असलेल्या सर्वात अलीकडच्या महिन्यापर्यंतचा बदल दाखवतो. एका महिन्याच्या आकड्यात हंगामी चढउतार असतात आणि तो नंतर सुधारला जाऊ शकतो. निर्देशांकाचा मासिक आकडा हा अधिकृत वार्षिक महागाई दर नाही.',
       monthlySource: {
@@ -1717,6 +1751,8 @@ export const inflationMr: typeof inflationEn = {
       pastCountryFall: 'या कालावधीत ({years}) किमती एकूण सुमारे {total} घटल्या, म्हणजे सरासरी दरवर्षी {average}.',
       pastCountryRiseOneYear: 'त्या एका वर्षात किमती सुमारे {total} वाढल्या.',
       pastCountryFallOneYear: 'त्या एका वर्षात किमती सुमारे {total} घटल्या.',
+      pastCountryFlat: 'या कालावधीत ({years}) किमती एकूण {limit} पेक्षा कमी बदलल्या.',
+      pastCountryFlatOneYear: 'त्या एका वर्षात किमती {limit} पेक्षा कमी बदलल्या.',
       currencyChanged: '{country} ने {year} साली आपले चलन बदलले: जुन्या चलनाची {ratio} एकके नव्या चलनाच्या 1 एककाएवढी झाली. हे उत्तर तुम्ही भरलेली रक्कम {from} सालच्या चलनात आहे असे धरते आणि निकाल आजच्या चलनात देते. तुम्ही भरलेली रक्कम आधीच आजच्या चलनात असेल, तर उत्तर {unconverted} आहे.',
       currencyChangedUp: '{country}\u00a0ने {year} साली आपले चलन बदलले: जुन्या चलनाचे 1 एकक नव्या चलनाच्या {ratio} एककांएवढे झाले. हे उत्तर तुम्ही भरलेली रक्कम {from} सालच्या चलनात आहे असे धरते आणि निकाल आजच्या चलनात देते. तुम्ही भरलेली रक्कम आधीच आजच्या चलनात असेल, तर उत्तर {unconverted} आहे.',
       currencyChangedMore: '{country} ने {from} नंतर एकापेक्षा जास्त वेळा चलन बदलले ({years}): एकूण, {from} सालच्या चलनाची {ratio} एकके आजच्या चलनाच्या 1 एककाएवढी झाली. हे उत्तर तुम्ही भरलेली रक्कम {from} सालच्या चलनात आहे असे धरते आणि निकाल आजच्या चलनात देते. तुम्ही भरलेली रक्कम आधीच आजच्या चलनात असेल, तर उत्तर {unconverted} आहे.',
@@ -1774,6 +1810,9 @@ export const inflationMr: typeof inflationEn = {
       copy: 'या हिशेबाची लिंक कॉपी करा',
       copied: 'लिंक कॉपी झाली',
       copyPrompt: 'ही लिंक कॉपी करा:',
+      copiedBar: 'लिंक कॉपी झाली. तुम्ही ती इथूनही कॉपी करू शकता:',
+      shareUrlAria: 'या हिशेबाची लिंक',
+      shareStatus: 'लिंक क्लिपबोर्डवर कॉपी झाली.',
       reset: 'रीसेट करा',
     },
   },

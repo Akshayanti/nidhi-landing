@@ -1,5 +1,5 @@
 import { useContext, useEffect, useId, useMemo, useRef, useState } from 'react';
-import { CURRENCIES } from '../utils/shared/money.ts';
+import { CURRENCIES, shownNumber } from '../utils/shared/money.ts';
 import { formatAmount, trueMinus } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amount, Amounts } from './Amounts.tsx';
@@ -24,6 +24,7 @@ import {
   inflationDefault,
   inputProblem,
   rates,
+  realReturnNote,
   returnNote,
   toReal,
   type Inputs,
@@ -41,7 +42,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { investOrPayOffSheets, type ShownComparison } from '../utils/invest-or-pay-off/export.ts';
 import { investOrPayOffReport } from '../utils/invest-or-pay-off/report.ts';
 import type { CountryOption } from './InflationCalculator.tsx';
-import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, ShareUrlBar, UnreadableContext, useShareLink, useToolReady, useResultGate, useSteadyAbove, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -84,9 +85,13 @@ function loadHistory(url: string): Promise<CompactHistory> {
   return historyRequest;
 }
 
-/** A rate in the page's marks, below zero with the true minus sign the amounts use (#884). */
+/**
+ * A rate in the page's marks, below zero with the true minus sign the amounts
+ * use (#884). A rate that rounds to nothing is "0%", never "−0%": a 3% loan
+ * with 3.03% inflation has a real rate of −0.03% (#888).
+ */
 function pct(v: number, locale: string, digits = 1): string {
-  return trueMinus(new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(v / 100));
+  return trueMinus(new Intl.NumberFormat(locale, { style: 'percent', maximumFractionDigits: digits, minimumFractionDigits: 0 }).format(shownNumber(v, digits) / 100));
 }
 
 /** "in 2 years and 4 months", from a month count. */
@@ -139,6 +144,7 @@ export default function InvestOrPayOff({
   // The form `settled` was worked out from.
   const [settledForm, setSettledForm] = useState(form);
   const [copied, setCopied] = useState(false);
+  const share = useShareLink(form, { status: strings.actions.shareStatus, prompt: strings.actions.copyPrompt });
   const [compact, setCompact] = useState<Record<string, CompactSeries>>(() =>
     initialHistory ? { [initialHistory.code]: initialHistory.series } : {},
   );
@@ -264,6 +270,18 @@ export default function InvestOrPayOff({
     return () => window.clearTimeout(timer);
   }, [form, hasErrors, numberLocale]);
   const { withheld, waiting } = useResultGate(hasErrors, form === settledForm);
+  // The form as the own-return note reads it: the same pause as the result,
+  // whatever the other boxes hold. A form set all at once (a link, a reset)
+  // is taken at once, as the result takes it.
+  const [noteForm, setNoteForm] = useState(form);
+  useEffect(() => {
+    if (form === settledForm) {
+      setNoteForm(form);
+      return undefined;
+    }
+    const timer = window.setTimeout(() => setNoteForm(form), 250);
+    return () => window.clearTimeout(timer);
+  }, [form, settledForm]);
 
   // The inflation the comparison uses: what the reader typed, else the
   // country's ten-year figure. Null means there is none yet.
@@ -307,13 +325,19 @@ export default function InvestOrPayOff({
     const state = publishableForm(form, numberLocale, defaultCurrency, defaultCountry);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=invest_or_pay_off';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
-    navigator.clipboard?.writeText(url).then(
-      () => {
-        setCopied(true);
-        window.setTimeout(() => setCopied(false), 2500);
-      },
-      () => window.prompt(strings.actions.copyPrompt, url),
-    );
+    const answer = share.start();
+    const done = () => {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2500);
+      answer.copied(url);
+    };
+    // Refused, or no clipboard at all (an in-app browser): the address is
+    // offered to copy by hand, and stays in the bar under the buttons (#711).
+    const refuse = () => {
+      if (answer.refused(url)) window.prompt(strings.actions.copyPrompt, url);
+    };
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, refuse);
+    else refuse();
     track('free_invest_or_pay_off_share_copied');
   }
 
@@ -382,13 +406,23 @@ export default function InvestOrPayOff({
   const formDefault = formSeries ? inflationDefault(formSeries, latestYear) : null;
   const formCountry = form.country ? countryByCode.get(form.country) ?? null : null;
   const formHistory = historyState(form.country);
+  // The note under the reader's own return is worked out from the form once
+  // typing has paused (noteForm), not on every keystroke: it sits in a live
+  // region, and a note that changed with each character was read out again
+  // and again (#786, #902). It pauses on its own: the result's settled form
+  // waits for every box to be right, and a wrong box elsewhere left the note
+  // describing an old return. While its own box holds an error there is none.
+  const noteSeries = seriesFor(noteForm.country);
+  const noteDefault = noteSeries ? inflationDefault(noteSeries, latestYear) : null;
   const ownReal = (() => {
-    const own = parseField('ownReturn', form.ownReturn, numberLocale);
-    const inf = form.inflation.trim() === '' ? formDefault?.average ?? null : parseField('inflation', form.inflation, numberLocale);
+    if (errors.ownReturn) return null;
+    const own = parseField('ownReturn', noteForm.ownReturn, numberLocale);
+    const inf = noteForm.inflation.trim() === '' ? noteDefault?.average ?? null : parseField('inflation', noteForm.inflation, numberLocale);
     return own === null || inf === null ? null : toReal(own, inf);
   })();
-  const formNote =
-    form.returns === 'own' && ownReal !== null ? (ownReal > REAL_RETURN_TOP + 1e-9 ? 'above' : ownReal < -1e-9 ? 'below' : null) : null;
+  // By the figure as written, as the table beside the result is (#888).
+  // Read only where the reader's own return is asked for.
+  const formNote = ownReal === null ? null : { kind: realReturnNote(ownReal), real: pct(ownReal, numberLocale) };
   const num = (n: number) => n.toLocaleString(numberLocale);
 
   // What the folded taxes and fees hold, in words and never in figures.
@@ -398,13 +432,17 @@ export default function InvestOrPayOff({
   const pristine = !hasErrors && isPristineState(toState(form, settled, numberLocale), defaultCurrency, defaultCountry);
 
   const toolReady = useToolReady();
+  // The example note goes at the first key, and the fold's status line hides
+  // when a box inside it is wrong: the box being typed in stays put (#827).
+  const exampleRow = useSteadyAbove<HTMLDivElement>();
+  const moreRow = useSteadyAbove<HTMLElement>();
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
     <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="ifc-root iop-root" {...heldUntilReady(toolReady)}>
       <form className="ifc-form ph-no-capture" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
-        <div className="iop-formHead">
+        <div className="iop-formHead" ref={exampleRow}>
           <p className="iop-example">{pristine ? strings.example : ''}</p>
           <button type="button" className="btn btn--quiet iop-reset" onClick={reset}>
             {strings.actions.reset}
@@ -512,9 +550,9 @@ export default function InvestOrPayOff({
             <>
               <Field id={id('ownReturn')} alsoDescribedBy={id('ownSwings')} label={strings.fields.ownReturn} value={form.ownReturn} onChange={update('ownReturn')} hint={strings.fields.ownReturnHint} error={errors.ownReturn ? t(strings.fields.percentError, { min: num(-99.99), max: num(MAX_INFLATION) }) : null} inputMode="text" unit="%" />
               <div className="iop-returnNote" aria-live="polite">
-                {formNote === 'above' && ownReal !== null && <p className="iop-note">{t(strings.returns.above, { real: pct(ownReal, numberLocale), historical: pct(QUOTED_RATES.historical.stocks * 100, numberLocale), top: REAL_RETURN_TOP })}</p>}
-                {formNote === 'below' && ownReal !== null && <p className="iop-note">{t(strings.returns.below, { real: pct(ownReal, numberLocale) })}</p>}
-                {formNote === null && ownReal !== null && <p className="ifc-hint">{t(strings.returns.realIs, { real: pct(ownReal, numberLocale) })}</p>}
+                {formNote?.kind === 'above-range' && <p className="iop-note">{t(strings.returns.above, { real: formNote.real, historical: pct(QUOTED_RATES.historical.stocks * 100, numberLocale), top: REAL_RETURN_TOP })}</p>}
+                {formNote?.kind === 'below-zero' && <p className="iop-note">{t(strings.returns.below, { real: formNote.real })}</p>}
+                {formNote?.kind === null && <p className="ifc-hint">{t(strings.returns.realIs, { real: formNote.real })}</p>}
               </div>
               <p id={id('ownSwings')} className="ifc-hint">{strings.returns.ownSwings}</p>
             </>
@@ -522,7 +560,7 @@ export default function InvestOrPayOff({
         </fieldset>
 
         <details className="iop-more" open={moreOpen || moreError} onToggle={(e) => { if (moreError && !e.currentTarget.open) e.currentTarget.open = true; else setMoreOpen(e.currentTarget.open); }}>
-          <summary className="iop-moreSummary disclosure">
+          <summary className="iop-moreSummary disclosure" ref={moreRow}>
             <span className="iop-moreTitle">{strings.more.title}</span>
             {!moreError && <span className="iop-moreStatus">{moreStatus}</span>}
           </summary>
@@ -560,6 +598,7 @@ export default function InvestOrPayOff({
       {/* The one announcement: the settled answer, or why there is none.
           The results below are not a live region. */}
       <ResultAnnouncement
+        notice={share.notice}
         quiet={!hydrated || (form === linkForm && historyState(settled.country) === 'loading')}
         delay={hasErrors ? WITHHELD_SAID_AFTER : undefined}
         text={hasErrors
@@ -606,6 +645,7 @@ export default function InvestOrPayOff({
             <span className="ifc-hint">{strings.actions.shareNote}</span>
           </span>
         }
+        shareResult={<ShareUrlBar url={share.url} failed={share.failed} label={strings.actions.copiedBar} failedLabel={strings.actions.copyPrompt} aria={strings.actions.shareUrlAria} count={share.notice.n} />}
         xlsxAttr="free-invest-or-pay-off-export-xlsx"
         pdfAttr="free-invest-or-pay-off-export-pdf"
         ready={!waiting && shownNow !== null}
@@ -824,6 +864,7 @@ function Field(props: {
       <label className="ifc-label" htmlFor={props.id}>{props.label}</label>
       <div className={`ifc-inputWrap${props.unit ? ' ifc-inputWrap--unit' : ''}`}>
         <input
+          enterKeyHint="done"
           {...markerSelect}
           id={props.id}
           className="ifc-input"
@@ -834,7 +875,8 @@ function Field(props: {
           placeholder={props.placeholder}
           onChange={props.onChange}
           aria-invalid={props.error ? true : undefined}
-          aria-errormessage={props.error ? errorId : undefined}
+          // The error is named once, through aria-describedby: given there and
+          // as aria-errormessage too, some screen readers read it twice (#899).
           aria-describedby={describedBy}
         />
         {props.unit && <span className="ifc-unit" aria-hidden="true">{props.unit}</span>}

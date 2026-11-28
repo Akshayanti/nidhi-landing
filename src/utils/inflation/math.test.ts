@@ -114,14 +114,29 @@ describe('the band either side of a rate', () => {
 });
 
 describe('roundAbout', () => {
-  it('keeps whole units below 100 and three significant figures above', () => {
+  it('keeps two significant figures below 10 (#868)', () => {
+    assert.equal(roundAbout(1.3439), 1.3);
+    assert.equal(roundAbout(0.7441), 0.74);
+    assert.equal(roundAbout(0.07441), 0.074);
+    assert.equal(roundAbout(0.4), 0.4);
+    assert.equal(roundAbout(1), 1);
+    assert.equal(roundAbout(0), 0);
+    assert.equal(roundAbout(9.94), 9.9);
+    assert.equal(roundAbout(-0.7441), -0.74);
+    // From 10 it is whole units: 9.96 is 10 either way, 10.4 is 10, never 10.4.
+    assert.equal(roundAbout(9.96), 10);
+    assert.equal(roundAbout(10), 10);
+    assert.equal(roundAbout(10.4), 10);
+    assert.equal(roundAbout(-10.4), -10);
+  });
+
+  it('keeps whole units from 10 to 100 and three significant figures above', () => {
     assert.equal(roundAbout(74.4), 74);
     assert.equal(roundAbout(744.09), 744);
     assert.equal(roundAbout(1343.92), 1340);
     assert.equal(roundAbout(13_439.16), 13_400);
     assert.equal(roundAbout(7_440_939), 7_440_000);
     assert.equal(roundAbout(99.6), 100);
-    assert.equal(roundAbout(0.4), 0);
   });
 
   it('rounds negatives symmetrically and leaves infinities alone', () => {

@@ -90,7 +90,7 @@ describe('the inflation calculator on its page', () => {
       assert.equal(box(f.years.buy).value, '10');
       assert.equal(box(f.years.buy).getAttribute('inputmode'), 'numeric');
       assert.equal(one(`#${CSS.escape(box(f.years.buy).getAttribute('aria-describedby') ?? '')}`).textContent, '1 to 100');
-      assert.equal(box(f.years.buy).parentElement?.querySelector('.ifc-unit'), null);
+      assert.ok(box(f.years.buy).parentElement?.querySelector('.ifc-unit') === null);
       assert.equal(new Set(all('.ifc-grid input, .ifc-grid select').map((el) => el.id)).size, 4);
       none('.ifc-error');
     }
@@ -772,7 +772,7 @@ describe('the inflation calculator on its page', () => {
         events.length = 0;
         mount();
         await historyArrives();
-        assert.equal(fold(), null);
+        assert.ok(fold() === null);
         assert.equal(choice(island.history.label).value, 'TST');
         assert.equal(choice(f.from).value, '2018');
         assert.equal(headline(), 'about €12,100');

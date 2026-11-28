@@ -296,6 +296,15 @@ export const MAX_PRINCIPAL_MINOR = 1e14;
 export const OPTIONAL_UNREADABLE = 'One of the optional boxes cannot be read. Use digits only, or clear the box.';
 
 /**
+ * The loan amount or the monthly payment holds something that is not a
+ * number ("abc", or Arabic and Latin marks mixed). Said as that, not as "a
+ * loan amount greater than zero", which is untrue of a reader who typed a
+ * number in their own digits (#898). Never quotes what was typed.
+ */
+export const AMOUNT_UNREADABLE = 'The loan amount could not be read. Use digits only, such as 250000.';
+export const PAYMENT_UNREADABLE = 'The monthly payment could not be read. Use digits only, such as 1500.';
+
+/**
  * The message for a lump sum whose month is not a whole one from 1 to
  * `MAX_TERM_MONTHS`. The advice above ("use digits only") is wrong for it:
  * the dot taken out of 12.5 gives month 125. Only the page's phrase list
@@ -303,6 +312,46 @@ export const OPTIONAL_UNREADABLE = 'One of the optional boxes cannot be read. Us
  * above, so that the tool's analytics files it under "other".
  */
 export const LUMP_MONTH = 'A lump sum needs a whole month from 1 to 1200, written as month:amount. Correct it, or clear the box.';
+
+/**
+ * The message for a fixed period that is not a whole number of months from 1
+ * up. Half a month used to be counted as one and 60.4 as 60, without a word
+ * (#914). Only the page's phrase list reads this sentence; the reader sees
+ * the catalog's. Written, like the ones above, to be filed under "other".
+ */
+export const INITIAL_FIXED_MONTHS = 'Initial fixed period must be a whole number of months, from 1 up.';
+
+/**
+ * A note, not an error: the fixed period is as long as the term or longer, so
+ * every payment is made at the first rate and the later rate the reader typed
+ * changes nothing (#914). The loan is worked out as a fixed one, and says so.
+ */
+export const RATE_NEVER_CHANGES = 'The rate does not change within this term, so the subsequent rate is not used.';
+
+/**
+ * A note, not an error: lump sums dated after the loan is paid off change
+ * nothing, since a loan that is paid off cannot be prepaid (#915). `fromMonth`
+ * is the first such month; every lump sum from it on is unused, so several
+ * are named by it. A lump sum in the payoff month itself is one of them when
+ * that month's payment already cleared the loan: it is paid after the payment.
+ */
+/**
+ * A note, not an error: a lump sum larger than what is owed in its month pays
+ * what is owed and no more (#925). No amount is named: the reader typed one,
+ * and the total paid already shows what was used.
+ */
+export function lumpPartUsedNote(month: number, several?: boolean): string {
+  // Two or more typed for one month are paid as one sum, and are named as the several they are.
+  return several
+    ? `The lump sums in month ${month} are more than is owed then, so only part of them is used.`
+    : `The lump sum in month ${month} is more than is owed then, so only part of it is used.`;
+}
+
+export function lumpsUnusedNote(unused: { fromMonth: number; count: number }, payoffMonth: number): string {
+  return unused.count === 1
+    ? `The lump sum in month ${unused.fromMonth} comes after this loan is paid off in month ${payoffMonth}, so it is not used.`
+    : `The lump sums from month ${unused.fromMonth} on come after this loan is paid off in month ${payoffMonth}, so they are not used.`;
+}
 
 export function computeScheduledPaymentMinor(
   principalMinor: number,
@@ -439,6 +488,12 @@ export function buildScheduleAdvanced(spec: {
   recastPaymentMinor?: number;
   /** Only when the payment is kept at the rate change and the loan is not paid off within the limit. */
   unpaid?: { outcome: 'never' | 'limit'; covers?: 'equal' | 'less'; fromMonth?: number };
+  /** Only for a loan that is paid off with lump sums left over: the first month whose lump sums were not paid, and how many there are from it on. */
+  unusedLumps?: { fromMonth: number; count: number };
+  /** Only when a month's lump sums came to more than was owed then: that month. It is the loan's last. */
+  partLumpMonth?: number;
+  /** Whether that month holds more than one lump sum. Present with `partLumpMonth`. */
+  partLumpSeveral?: boolean;
 } {
   const warnings: string[] = [];
   const principalMinor = spec.principalMinor;
@@ -461,11 +516,16 @@ export function buildScheduleAdvanced(spec: {
   // month by summing them (rather than rejecting); the user's intent is
   // unambiguous and rejecting would be needlessly strict.
   const lumpByMonth = new Map<number, number>();
+  // How many lump sums each month holds, for the note on the ones never paid.
+  const lumpCount = new Map<number, number>();
+  let partLumpMonth: number | undefined;
+  let partLumpSeveral = false;
   for (const ls of lumpSums) {
     if (!Number.isFinite(ls.month) || ls.month < 1) continue;
     if (!Number.isFinite(ls.amountMinor) || ls.amountMinor <= 0) continue;
     const m = Math.floor(ls.month);
     lumpByMonth.set(m, (lumpByMonth.get(m) ?? 0) + Math.floor(ls.amountMinor));
+    lumpCount.set(m, (lumpCount.get(m) ?? 0) + 1);
   }
 
   // Initial-month interest sanity: payment must cover at least the first
@@ -573,12 +633,17 @@ export function buildScheduleAdvanced(spec: {
     // is principal-only; it doesn't accrue interest the same month
     // because interest was already computed on the pre-payment balance.
     const lump = lumpByMonth.get(month) ?? 0;
-    // Stryker disable next-line LogicalOperator: equivalent. When the lump sum or the balance is 0, the amount applied is the smaller of the two, 0, so nothing changes.
     if (lump > 0 && balance > 0) {
       const applied = Math.min(lump, balance);
+      if (lump > balance) {
+        partLumpMonth = month;
+        partLumpSeveral = (lumpCount.get(month) as number) > 1;
+      }
       balance -= applied;
       payment += applied;
       principal += applied;
+      // Paid, in part at least: what is left in `lumpCount` at the end was never paid.
+      lumpCount.delete(month);
     }
 
     schedule.push({ month, payment, interest, principal, balance });
@@ -613,7 +678,12 @@ export function buildScheduleAdvanced(spec: {
     );
   }
 
-  return { schedule, warnings, recastPaymentMinor };
+  // The lump sums the loan was paid off before: none of their months came, or
+  // the payoff month's own payment had already cleared the balance.
+  const unusedCount = [...lumpCount.values()].reduce((sum, n) => sum + n, 0);
+  const unusedLumps = unusedCount > 0 ? { fromMonth: Math.min(...lumpCount.keys()), count: unusedCount } : undefined;
+
+  return { schedule, warnings, recastPaymentMinor, ...(unusedLumps ? { unusedLumps } : {}), ...(partLumpMonth === undefined ? {} : { partLumpMonth, partLumpSeveral }) };
 }
 
 /** Every code path that needs rate information gets a single shape, regardless of how the user entered it. */
@@ -671,14 +741,11 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
       return emptyResult(feeMinor, 'Enter a non-negative interest rate.');
     }
   }
-  if (rateSpec.kind === 'hybrid') {
-    if (
-      !Number.isFinite(rateSpec.initialMonths) ||
-      rateSpec.initialMonths <= 0 ||
-      rateSpec.initialMonths >= MAX_TERM_MONTHS
-    ) {
-      return emptyResult(feeMinor, 'Initial fixed period must be a positive number of months.');
-    }
+  // The month of the change is a whole one, from the first. No upper limit:
+  // a period longer than any term is one that outlasts this term, and the
+  // loan is then worked out at its first rate, with a note (#914).
+  if (rateSpec.kind === 'hybrid' && (!Number.isInteger(rateSpec.initialMonths) || rateSpec.initialMonths < 1)) {
+    return emptyResult(feeMinor, INITIAL_FIXED_MONTHS);
   }
 
   // Keeping the payment only means something when a payment is made at a
@@ -733,12 +800,22 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
     totalMonths = MAX_TERM_MONTHS;
   }
 
+  // A fixed period as long as the term is a fixed loan: no month is charged
+  // the later rate, not even a closing month past the term, where the rounding
+  // of a very long loan at a very high rate leaves more than one payment owed
+  // (#925). The note below still says the later rate went unused.
+  const scheduleSpec: RateSpec =
+    // Stryker disable next-line ConditionalExpression: equivalent. A fixed rate has no initial months, so the comparison after it is already false for one.
+    rateSpec.kind === 'hybrid' && rateSpec.initialMonths >= totalMonths
+      ? { kind: 'fixed', annualRate: rateSpec.initialAnnualRate }
+      : rateSpec;
+
   // Effective schedule: applies any voluntary extra principal AND lump
   // sums. Drives the user-facing "months", "total paid", and the
   // balance chart.
-  const { schedule, warnings, error, recastPaymentMinor, unpaid } = buildScheduleAdvanced({
+  const { schedule, warnings, error, recastPaymentMinor, unpaid, unusedLumps, partLumpMonth, partLumpSeveral } = buildScheduleAdvanced({
     principalMinor,
-    rateSpec,
+    rateSpec: scheduleSpec,
     totalMonths,
     basePaymentMinor: scheduledPayment,
     extraMonthlyMinor,
@@ -778,7 +855,7 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
   const contract = hasVoluntaryActions
     ? buildScheduleAdvanced({
         principalMinor,
-        rateSpec,
+        rateSpec: scheduleSpec,
         totalMonths,
         basePaymentMinor: scheduledPayment,
         extraMonthlyMinor: 0,
@@ -843,7 +920,13 @@ export function computeLoan(inputs: LoanInputs, mode: LoanMode): LoanResult {
       else paymentMinor = recastPaymentMinor + Math.max(0, Math.floor(extraMonthlyMinor));
     }
     rateChange = { month, paymentMinor, ...(row && schedule.length === month ? { last: true } : {}) };
+  } else if (rateSpec.kind === 'hybrid') {
+    // A fixed period that lasts the whole term: the later rate is never charged.
+    warnings.push(RATE_NEVER_CHANGES);
   }
+  // In the order they happen: the lump sum that ended the loan, then the ones after it.
+  if (partLumpMonth !== undefined) warnings.push(lumpPartUsedNote(partLumpMonth, partLumpSeveral));
+  if (unusedLumps) warnings.push(lumpsUnusedNote(unusedLumps, schedule.length));
 
   return {
     monthlyPaymentMinor: scheduledPayment,

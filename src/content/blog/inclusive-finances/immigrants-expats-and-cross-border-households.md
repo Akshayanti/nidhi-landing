@@ -53,7 +53,7 @@ faq:
   - question: "What happens to pension contributions I made in a country I left?"
     answer: "They usually remain yours, but they stay in that country's system until you claim them. Many countries have agreements that let periods of contribution in one country count toward qualifying for a pension in another, and the European Union coordinates this among its members. What matters now is evidence. Keep every contribution statement, your identification or insurance number in each country, and the dates you worked there. Tracing a pension decades later without those is slow and sometimes impossible."
   - question: "Is this immigration advice?"
-    answer: "No. This post is about money: accounts, credit, transfers, and records. Immigration status, the right to work, and what each status allows are legal questions that vary by country and change often, and the consequences of getting them wrong are serious. For those, use a qualified immigration adviser or a recognized support organization."
+    answer: "No. This lesson is about money: accounts, credit, transfers, and records. Immigration status, the right to work, and what each status allows are legal questions that vary by country and change often, and the consequences of getting them wrong are serious. For those, use a qualified immigration adviser or a recognized support organization."
 relatedTool:
   url: "/free/multi-currency-net-worth"
   label: "Net worth calculator (one currency or several)"
@@ -74,7 +74,7 @@ referentialReading:
 
 Someone has just moved countries. Back home they had twenty years of on-time repayments. In the new country a lender sees no credit file at all, the bank wants an address before opening an account, and the landlord wants a bank account before signing a lease.
 
-The [geographic arbitrage post](/blog/geographic-arbitrage/) treated moving as a planned strategy. Most people who cross a border are not running that play: they move for a job they need, to join a partner, to study, or because staying was not possible. Whatever the reason, the financial infrastructure built over years stays behind. This post covers rebuilding it and the cost of sending money home. It is not immigration advice: where status or the right to work is in question, a qualified adviser or a recognized support organization is the right source.
+The [geographic arbitrage lesson](/blog/geographic-arbitrage/) treated moving as a planned strategy. Most people who cross a border are not running that play: they move for a job they need, to join a partner, to study, or because staying was not possible. Whatever the reason, the financial infrastructure built over years stays behind. This lesson covers rebuilding it and the cost of sending money home. It is not immigration advice: where status or the right to work is in question, a qualified adviser or a recognized support organization is the right source.
 
 ## Checking what credit history and banking carry across a border
 
@@ -89,7 +89,7 @@ A settled adult has things they rarely notice: a credit file, a bank that knows 
 | [Tax residency](#term-tax-residency) | May apply in both countries in the year you move. |
 | Professional and rental references | Often not accepted from abroad. |
 
-The [credit scores post](/blog/credit-and-credit-scores/) explained how a score is built from your repayment record. That record is usually held in a national system, so a local lender may see no file even after two decades of on-time repayment elsewhere. This series calls that a [recognition gap](#term-recognition-gap): the distance between how your life works and what an institution can see.
+The [credit scores lesson](/blog/credit-and-credit-scores/) explained how a score is built from your repayment record. That record is usually held in a national system, so a local lender may see no file even after two decades of on-time repayment elsewhere. This series calls that a [recognition gap](#term-recognition-gap): the distance between how your life works and what an institution can see.
 
 ## Rebuilding follows an order
 
@@ -127,7 +127,7 @@ Many countries have agreements that let contribution periods in one country coun
 
 ## Comparing remittances by the amount actually received
 
-Migrants send hundreds of billions a year to family in their countries of origin, for many households a fixed monthly commitment as regular as rent. A [remittance](#term-remittance) has two costs, and only one is visible: the **fee**, often a flat amount that hits small transfers hardest, and the [exchange rate margin](#term-exchange-rate-margin), the gap between the market rate and the rate the provider gives you, which is rarely shown and often the larger cost. A "zero fee" transfer can still be expensive (the [currencies post](/blog/managing-money-across-currencies/) covered how margins work). The one comparison that captures both: **for a fixed amount sent, how much does the recipient actually receive?** A practical test is to fix the amount, check at least three providers on the same route, and compare only what arrives in the recipient's currency.
+Migrants send hundreds of billions a year to family in their countries of origin, for many households a fixed monthly commitment as regular as rent. A [remittance](#term-remittance) has two costs, and only one is visible: the **fee**, often a flat amount that hits small transfers hardest, and the [exchange rate margin](#term-exchange-rate-margin), the gap between the market rate and the rate the provider gives you, which is rarely shown and often the larger cost. A "zero fee" transfer can still be expensive (the [currencies lesson](/blog/managing-money-across-currencies/) covered how margins work). The one comparison that captures both: **for a fixed amount sent, how much does the recipient actually receive?** A practical test is to fix the amount, check at least three providers on the same route, and compare only what arrives in the recipient's currency.
 
 Cost depends on the [corridor](#term-corridor), the pair of sending and receiving countries. Busy corridors with many providers are cheap; thin ones are expensive; the same company can be cheap on one and dear on another. The World Bank's tracking puts the global average cost of sending the equivalent of $200 a little over 6% in recent years, against an internationally agreed target of 3%; the cheapest providers on competitive corridors charge a small fraction of that.
 
@@ -175,7 +175,7 @@ Banking access depends on the country. Some tax systems issue an identification 
 <details class="lesson-depth">
 <summary class="disclosure">Tax residency in the year you move</summary>
 
-In the year you move, two countries may each treat you as a tax resident. Some country pairs have a tax treaty that allocates taxing rights or provides relief from double taxation, but many do not. Even where a treaty applies, relief often has to be claimed rather than happening automatically. Three habits reduce the risk: recording arrival and departure dates and days in each country; keeping evidence of where you lived and worked (tenancy agreements, employment contracts, travel records); and declaring foreign accounts where required, since penalties can apply even when no tax was due. The geographic arbitrage post goes further into residency tests; beyond the simplest case, many people find a local tax professional worth the fee in the year of the move.
+In the year you move, two countries may each treat you as a tax resident. Some country pairs have a tax treaty that allocates taxing rights or provides relief from double taxation, but many do not. Even where a treaty applies, relief often has to be claimed rather than happening automatically. Three habits reduce the risk: recording arrival and departure dates and days in each country; keeping evidence of where you lived and worked (tenancy agreements, employment contracts, travel records); and declaring foreign accounts where required, since penalties can apply even when no tax was due. The geographic arbitrage lesson goes further into residency tests; beyond the simplest case, many people find a local tax professional worth the fee in the year of the move.
 
 </details>
 

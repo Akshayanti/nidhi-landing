@@ -250,9 +250,10 @@ describe('the chart of an answer, year by year', () => {
     assert.deepEqual(years().map((y) => [y.words, y.x, y.anchor]), [['2016', 131.6, 'middle'], ['2020', 342, 'end']]);
     clear();
     // Four years, 65.75 units each: few enough for a phone, but a label needs 95.2, so every second
-    // year again, 131.5 apart, and this time all three fit.
+    // year again, 131.5 apart, and this time all three fit. The first starts at the plot's edge rather
+    // than centred on it: centred, it reached under the amounts' "0" (#815).
     chart(RISING.slice(1), { calendar: true, narrow: true, axis: 'Year' });
-    assert.deepEqual(years().map((y) => [y.words, y.x, y.anchor]), [['2016', 79, 'middle'], ['2018', 210.5, 'middle'], ['2020', 342, 'end']]);
+    assert.deepEqual(years().map((y) => [y.words, y.x, y.anchor]), [['2016', 79, 'start'], ['2018', 210.5, 'middle'], ['2020', 342, 'end']]);
     clear();
     // The same from an odd year: the even years are the ones labelled, not the first and every second after it.
     chart(RISING.slice(0, 5), { calendar: true, narrow: true, axis: 'Year' });
@@ -260,11 +261,13 @@ describe('the chart of an answer, year by year', () => {
     clear();
     // A step whose labels fit exactly is used: with amount labels drawn 228 wide the plot is 476
     // across, 95.2 to a year, which is what "2020" and its gap need. Every year is a candidate, and
-    // only "2019" is left out, to keep the last year.
+    // "2019" is left out, to keep the last year; and "2016", since "2015" now starts at the plot's edge
+    // instead of reaching under the amounts (#815), and "2016" would touch it.
     textDrawnAs((cls) => (cls.includes('ifc-axisAmount') ? 228 : 0));
     chart(RISING, { calendar: true, axis: 'Year' });
     assert.deepEqual(gridlines().map((g) => g.x1), [256, 256, 256, 256, 256]);
-    assert.deepEqual(years().map((y) => y.words), ['2015', '2016', '2017', '2018', '2020']);
+    assert.deepEqual(years().map((y) => y.words), ['2015', '2017', '2018', '2020']);
+    assert.equal(years()[0].anchor, 'start');
   });
 
   it('year labels that would touch are left out', () => {

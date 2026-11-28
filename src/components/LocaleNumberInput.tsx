@@ -49,6 +49,8 @@ export function LocaleNumberInput({
   return (
     <input
       {...markerSelect}
+      // A phone's return key says what it does: the box is done (#488).
+      enterKeyHint="done"
       {...rest}
       type="text"
       value={draft}

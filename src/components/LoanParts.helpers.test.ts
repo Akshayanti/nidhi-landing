@@ -17,6 +17,8 @@ import {
   aprText,
   engineError,
   engineErrorKey,
+  VALIDATION_REASONS,
+  validationReason,
   engineWarning,
   isTypedName,
   months,
@@ -271,11 +273,13 @@ const ENGINE_MESSAGES: [raw: string, key: keyof typeof s.engine.errors][] = [
   ["Monthly payment is too low to ever pay off the loan; it does not even cover the first month's interest.", 'belowInterest'],
   ['Term must be at least one month.', 'term'],
   ['Enter a loan amount greater than zero.', 'amount'],
+  ['The loan amount could not be read. Use digits only, such as 250000.', 'amountUnreadable'],
+  ['The monthly payment could not be read. Use digits only, such as 1500.', 'paymentUnreadable'],
   ['This loan amount is too large for the tool. Enter a smaller amount.', 'amountMax'],
   ['The loan is too small for this term. Enter a larger amount or a shorter term.', 'tooSmall'],
   ['With this amount, rate and term, the monthly payment only covers the interest, so the loan is never paid off. Enter a lower rate, a shorter term or a larger amount.', 'interestOnly'],
   ['Enter a non-negative interest rate.', 'rate'],
-  ['Initial fixed period must be a positive number of months.', 'initialFixed'],
+  ['Initial fixed period must be a whole number of months, from 1 up.', 'initialFixed'],
   ['Enter a term of at least one month.', 'termMin'],
   ['Enter a monthly payment greater than zero.', 'paymentEnter'],
   ['Fixed-then-variable loans need a fixed term: under “Solve for”, choose “Monthly payment”.', 'hybridMode'],
@@ -309,6 +313,24 @@ describe('the engine\'s messages, in the reader\'s language', () => {
     assert.ok(s.card.initialFixed.toLowerCase().startsWith('initial fixed period'));
     assert.ok(s.card.subsequentRate.toLowerCase().startsWith('subsequent rate'));
     assert.equal(engineError('A changing offer needs both of its boxes: the months before the change and the percentage after it. Fill in both, or choose the fixed kind.', hi), hi.engine.errors.rateChangeIncomplete);
+  });
+
+  it('says what the month of a rate change has to be, naming its box and the other choice by their labels (issue 914)', () => {
+    // What the engine writes for 60.4 months, which used to be worked out as 60.
+    const raw = computeLoan(
+      { principalMinor: 120_000, annualRate: 0, rateSpec: { kind: 'hybrid', initialAnnualRate: 0, initialMonths: 60.4, subsequentAnnualRate: 0.12 } },
+      { kind: 'term', months: 120 },
+    ).error ?? '';
+    const shown = engineError(raw, s);
+    assert.equal(shown, 'The initial fixed period is a whole number of months, from 1 up. Correct it, or choose “Fixed” under “Rate structure”.');
+    for (const label of ['initial fixed period', `“${s.card.fixed}”`, `“${s.card.rateStructure.title}”`]) assert.ok(shown.includes(label), label);
+    assert.equal(engineErrorKey(raw), 'initialFixed');
+    for (const island of [es, hi]) {
+      assert.equal(engineError(raw, island), island.engine.errors.initialFixed);
+      for (const label of [island.card.fixed, island.card.rateStructure.title]) assert.ok(island.engine.errors.initialFixed.includes(label), label);
+    }
+    // The sentence it replaced is no longer one the engine writes.
+    assert.equal(engineErrorKey('Initial fixed period must be a positive number of months.'), undefined);
   });
 
   it('says how a lump sum is written, in the words of the box: the format as its help names it', () => {
@@ -371,16 +393,14 @@ describe('the engine\'s messages, in the reader\'s language', () => {
 
 describe('the engine\'s warnings, in the reader\'s language', () => {
   it('puts the two sums back into the precision warning', () => {
-    // As the code reads it today, the second sum takes the engine's full stop
-    // with it, so the sentence ends "120000.. Please": reported with #790, and
-    // to be corrected here when the reading is.
+    // The second sum is read without the engine's full stop: the sentence used to end "120000.. Please".
     assert.equal(
       engineWarning('Internal precision check: principal sum 119999 ≠ 120000. Please report this.', s),
-      'Internal precision check: principal sum 119999 ≠ 120000.. Please report this.',
+      'Internal precision check: principal sum 119999 ≠ 120000. Please report this.',
     );
     assert.equal(
       engineWarning('Internal precision check: principal sum 119999 ≠ 120000. Please report this.', es),
-      es.engine.warnings.precision.replace('{sum}', '119999').replace('{expected}', '120000.'),
+      es.engine.warnings.precision.replace('{sum}', '119999').replace('{expected}', '120000'),
     );
     assert.notEqual(es.engine.warnings.precision, s.engine.warnings.precision);
   });
@@ -403,5 +423,41 @@ describe('the engine\'s warnings, in the reader\'s language', () => {
 
   it('passes a warning it does not know through unchanged', () => {
     assert.equal(engineWarning('Something else to know.', es), 'Something else to know.');
+  });
+
+  it('shows the two notes of a real loan in the reader\'s language: a rate that never changes, a lump sum after the payoff', () => {
+    // 1,200.00 at 0% over 12 months, the rate to change after 12, a lump sum in month 13.
+    const r = computeLoan(
+      { principalMinor: 120_000, annualRate: 0, rateSpec: { kind: 'hybrid', initialAnnualRate: 0, initialMonths: 12, subsequentAnnualRate: 0.12 }, lumpSums: [{ month: 13, amountMinor: 5000 }] },
+      over12,
+    );
+    assert.deepEqual(r.warnings.map((w) => engineWarning(w, s)), [
+      'The rate does not change within this term, so the subsequent rate is not used.',
+      'This loan is paid off in month 12, before the lump sum in month 13 would be paid, so it is not used.',
+    ]);
+    assert.deepEqual(r.warnings.map((w) => engineWarning(w, es)), [
+      es.engine.warnings.rateNeverChanges,
+      es.engine.warnings.lumpUnused.replace('{month}', '13').replace('{payoffMonth}', '12'),
+    ]);
+  });
+});
+
+describe('the reason the validation event sends (#895)', () => {
+  const ALLOWED = new Set([
+    'missing_principal', 'principal_out_of_range', 'missing_rate', 'missing_term', 'term_out_of_range',
+    'missing_payment', 'payment_below_interest', 'rate_structure', 'optional_field', 'other',
+  ]);
+  it('gives every engine message one of a fixed set of kinds', () => {
+    for (const [, key] of ENGINE_PHRASES) assert.ok(ALLOWED.has(VALIDATION_REASONS[key]), key);
+    assert.deepEqual(Object.keys(VALIDATION_REASONS).sort(), [...new Set(ENGINE_PHRASES.map(([, key]) => key))].sort());
+  });
+  it('reads the kind from the message, not from its words or numbers', () => {
+    assert.equal(validationReason('Enter a loan amount greater than zero.'), 'missing_principal');
+    assert.equal(validationReason('This loan amount is too large for the tool.'), 'principal_out_of_range');
+    assert.equal(validationReason('Term cannot exceed 1200 months.'), 'term_out_of_range');
+    assert.equal(validationReason('Enter a term of at least one month.'), 'missing_term');
+    assert.equal(validationReason('Enter a monthly payment greater than zero.'), 'missing_payment');
+    assert.equal(validationReason('Something the engine grew later.'), 'other');
+    assert.equal(validationReason(''), 'other');
   });
 });

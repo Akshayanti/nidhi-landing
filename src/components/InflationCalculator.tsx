@@ -1,6 +1,6 @@
 import { useContext, useEffect, useId, useMemo, useRef, useState, useSyncExternalStore } from 'react';
-import { CURRENCIES, amountFormat, amountStyle } from '../utils/shared/money.ts';
-import { formatAmount } from '../utils/shared/formatAmount.ts';
+import { CURRENCIES, amountFormat, amountStyle, shownNumber } from '../utils/shared/money.ts';
+import { formatAmount, trueMinus } from '../utils/shared/formatAmount.ts';
 import { longestAmount } from '../utils/shared/amountUnits.ts';
 import { Amounts } from './Amounts.tsx';
 import { ChartUnit, ChartWordsContext, useAxisMargin, useChartAmounts } from './ChartAmounts.tsx';
@@ -12,6 +12,7 @@ import { formatForInput } from '../utils/shared/parseLocaleNumber.ts';
 import { arrivedByLanguageSwitch, publishToolState } from '../utils/shared/toolState.ts';
 import {
   DISPLAY_CEILING,
+  DISPLAY_FLOOR,
   MAX_AMOUNT,
   MAX_GROWTH,
   MAX_RATE,
@@ -50,7 +51,7 @@ import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportF
 import { currencyChangesBetween, mixedYearChange, type CurrencyChange } from '../utils/inflation/currencyChanges.ts';
 import { inflationReport } from '../utils/inflation/report.ts';
 import { inflationSheets, type InflationAnswer } from '../utils/inflation/export.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, UnreadableContext, useToolReady, useResultGate, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, markerSelect, ResultAnnouncement, ShareUrlBar, UnreadableContext, useShareLink, useToolReady, useResultGate, useSteadyAbove, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 // ===========================================================================
 // Copy
@@ -132,15 +133,16 @@ function loadHistory(url: string): Promise<CompactHistory> {
 /**
  * A percentage in the page's own number style ("1.94%", "1,94 %"), since it
  * sits in the page's sentences. Amounts follow `amountStyle`, as on the other
- * tools.
+ * tools. Below zero it carries the true minus sign the other tools write, and
+ * a rate that rounds to nothing is "0%", never "-0%" (#888).
  */
 function pct(v: number, locale: string, digits = 2, signed = false): string {
-  return new Intl.NumberFormat(locale, {
+  return trueMinus(new Intl.NumberFormat(locale, {
     style: 'percent',
     maximumFractionDigits: digits,
     minimumFractionDigits: 0,
     signDisplay: signed ? 'exceptZero' : 'auto',
-  }).format(v / 100);
+  }).format(shownNumber(v, digits) / 100));
 }
 
 /** What the reader typed, to the cent where they typed cents. */
@@ -155,11 +157,24 @@ function typedAmount(v: number, code: string, amountLocale: string | null): stri
   }).format(v);
 }
 
+/**
+ * An amount below 10 as `roundAbout` leaves it, to two significant figures:
+ * "€1.3", "€0.74", "€0.074", and "€7" without a zero after it. The same in a
+ * currency with no smaller unit ("¥1.3"): the figure measures buying power,
+ * it is not a sum to be paid, and "¥1" for everything from 0.6 to 1.4 hid it.
+ */
+function smallAmount(v: number, code: string, amountLocale: string | null): string {
+  const { display } = amountStyle(code, amountLocale);
+  return amountFormat(code, amountLocale, { style: 'currency', currency: code, currencyDisplay: display, maximumSignificantDigits: 2 }).format(v);
+}
+
 /** A result, rounded and said as "about", "more than" or "less than". */
 function aboutText(v: number, code: string, strings: Strings, amountLocale: string | null): string {
   if (!Number.isFinite(v) || v >= DISPLAY_CEILING) return t(strings.results.moreThan, { amount: formatAmount(DISPLAY_CEILING, code, false, amountLocale) });
-  if (v > 0 && roundAbout(v) < 1) return t(strings.results.lessThan, { amount: formatAmount(1, code, false, amountLocale) });
-  return t(strings.results.about, { amount: formatAmount(roundAbout(v), code, false, amountLocale) });
+  const rounded = roundAbout(v);
+  if (v > 0 && rounded < DISPLAY_FLOOR) return t(strings.results.lessThan, { amount: smallAmount(DISPLAY_FLOOR, code, amountLocale) });
+  // Stryker disable next-line EqualityOperator: equivalent. At exactly 10 both formats write the same whole amount.
+  return t(strings.results.about, { amount: rounded < 10 ? smallAmount(rounded, code, amountLocale) : formatAmount(rounded, code, false, amountLocale) });
 }
 
 function yearsPhrase(n: number, strings: Strings, numberLocale: string): string {
@@ -229,6 +244,7 @@ export default function InflationCalculator({
   // The form `settled` was worked out from.
   const [settledForm, setSettledForm] = useState(form);
   const [copied, setCopied] = useState(false);
+  const share = useShareLink(form, { status: strings.actions.shareStatus, prompt: strings.actions.copyPrompt });
   const [compact, setCompact] = useState<Record<string, CompactSeries>>(() =>
     initialHistory ? { [initialHistory.code]: initialHistory.series } : {},
   );
@@ -398,13 +414,19 @@ export default function InflationCalculator({
     const state = publishableForm(form, numberLocale, defaultCurrency, defaultCountry);
     const utm = 'utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=inflation_calculator';
     const url = `${window.location.origin}${window.location.pathname}?${utm}${state ? `#${state}` : ''}`;
-    navigator.clipboard?.writeText(url).then(
-      () => {
-        setCopied(true);
-        window.setTimeout(() => setCopied(false), 2500);
-      },
-      () => window.prompt(strings.actions.copyPrompt, url),
-    );
+    const answer = share.start();
+    const done = () => {
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 2500);
+      answer.copied(url);
+    };
+    // Refused, or no clipboard at all (an in-app browser): the address is
+    // offered to copy by hand, and stays in the bar under the buttons (#711).
+    const refuse = () => {
+      if (answer.refused(url)) window.prompt(strings.actions.copyPrompt, url);
+    };
+    if (navigator.clipboard) navigator.clipboard.writeText(url).then(done, refuse);
+    else refuse();
     track('free_inflation_share_copied');
   }
 
@@ -484,6 +506,8 @@ export default function InflationCalculator({
   const pristine = !hasErrors && isPristineState(toState(form, settled, numberLocale), defaultCurrency, defaultCountry);
 
   const toolReady = useToolReady();
+  // The example note goes at the first key: the box being typed in stays put (#827).
+  const exampleRow = useSteadyAbove<HTMLDivElement>();
   return (
     <AmountLocaleContext.Provider value={amountLocale}>
     <NumberLocaleContext.Provider value={numberLocale}>
@@ -492,7 +516,7 @@ export default function InflationCalculator({
     <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="ifc-root" {...heldUntilReady(toolReady)}>
       <form className="ifc-form" onSubmit={(e) => e.preventDefault()} aria-label={strings.formLabel}>
-        <div className="ifc-formHead">
+        <div className="ifc-formHead" ref={exampleRow}>
           <p className="ifc-example">{pristine ? strings.example : ''}</p>
           <button type="button" className="btn btn--quiet ifc-reset" onClick={reset} data-attr="free-inflation-reset">
             {strings.actions.reset}
@@ -654,6 +678,7 @@ export default function InflationCalculator({
             <SwapLabel label={strings.actions.copy} alternate={strings.actions.copied} swapped={copied} />
           </button>
         }
+        shareResult={<ShareUrlBar url={share.url} failed={share.failed} label={strings.actions.copiedBar} failedLabel={strings.actions.copyPrompt} aria={strings.actions.shareUrlAria} count={share.notice.n} />}
         xlsxAttr="free-inflation-export-xlsx"
         pdfAttr="free-inflation-export-pdf"
         ready={exportReady}
@@ -662,6 +687,8 @@ export default function InflationCalculator({
         onPrint={printPage}
       />
 
+      {/* The copied link is said here: the result's own announcement is inside Results (#711). */}
+      <ResultAnnouncement text="" notice={share.notice} />
       {report && !withheld && <ToolReport report={report} strings={exportStrings} locale={amountLocale ?? numberLocale} />}
     </div>
     </UnreadableContext.Provider>
@@ -691,6 +718,7 @@ function Field(props: {
       <label className="ifc-label" htmlFor={props.id}>{props.label}</label>
       <div className={`ifc-inputWrap${props.unit ? ' ifc-inputWrap--unit' : ''}`}>
         <input
+          enterKeyHint="done"
           {...markerSelect}
           id={props.id}
           className="ifc-input"
@@ -702,7 +730,8 @@ function Field(props: {
           value={props.value}
           onChange={props.onChange}
           aria-invalid={props.error ? true : undefined}
-          aria-errormessage={props.error ? errorId : undefined}
+          // The error is named once, through aria-describedby: given there and
+          // as aria-errormessage too, some screen readers read it twice (#899).
           aria-describedby={describedBy}
         />
         {props.unit && <span className="ifc-unit" aria-hidden="true">{props.unit}</span>}
@@ -1136,19 +1165,43 @@ function computeAnswer(
     }
     // Said as a fall when prices fell, never "rose about -28%", and over one
     // year without "those 1 year" or an average equal to the total (#868).
-    const fell = factor < 1;
-    const change = { total: pct(Math.abs(factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(Math.abs(average), numberLocale, 1) };
+    // Only the direction is asked: a level factor is said as flat below, so
+    // no sentence turns on where exactly 1 falls.
+    const fellBy = (f: number) => Math.sign(f - 1) === -1;
+    const fell = fellBy(factor);
+    // Over many years a small total is an average under 0.05% a year, which
+    // one decimal wrote as "an average of 0% a year" beside a rise of 1%: it
+    // then gets a second decimal (#888).
+    const averageDigits = shownNumber(average, 1) === 0 ? 2 : 1;
+    const change = { total: pct(Math.abs(factor - 1) * 100, numberLocale, 0), years: yearsPhrase(span, strings, numberLocale), average: pct(Math.abs(average), numberLocale, averageDigits) };
+    // A change written as 0% is neither a rise nor a fall: "fell about 0%"
+    // said more than the figure does (#888). It is said as less than half of
+    // the last digit shown, which is all the rounding tells.
+    const flat = (v: number, digits: number) => shownNumber(v, digits) === 0;
+    const limit = (digits: number) => pct(0.5 / 10 ** digits, numberLocale, digits + 1);
     if (end) {
       // Three lines, each over its own stretch: the whole rise to the month,
       // the yearly average over full years only (a part year is never made
       // into a yearly rate), and the step from the last year's average on.
-      sentences.push(t(total < 1 ? r.pastMonthFall : r.pastMonthRise, { total: pct(Math.abs(total - 1) * 100, numberLocale, 0), from, inMonth: endPhrase }));
-      if (span > 1) sentences.push(t(fell ? r.pastMonthAverageFall : r.pastMonthAverageRise, { from, to, average: change.average }));
-      sentences.push(t(end.factor < 1 ? r.pastMonthFurtherFall : r.pastMonthFurtherRise, { more: pct(Math.abs(end.factor - 1) * 100, numberLocale, 1), to, inMonth: endPhrase }));
+      const whole = Math.abs(total - 1) * 100;
+      const more = Math.abs(end.factor - 1) * 100;
+      sentences.push(flat(whole, 0)
+        ? t(r.pastMonthFlat, { limit: limit(0), inMonth: endPhrase, year: from })
+        : t(fellBy(total) ? r.pastMonthFall : r.pastMonthRise, { total: pct(whole, numberLocale, 0), from, inMonth: endPhrase }));
+      if (span > 1) {
+        sentences.push(flat(average, 1)
+          ? t(r.pastMonthAverageFlat, { from, to, limit: limit(1) })
+          : t(fell ? r.pastMonthAverageFall : r.pastMonthAverageRise, { from, to, average: change.average }));
+      }
+      sentences.push(flat(more, 1)
+        ? t(r.pastMonthFlat, { limit: limit(1), inMonth: endPhrase, year: to })
+        : t(fellBy(end.factor) ? r.pastMonthFurtherFall : r.pastMonthFurtherRise, { more: pct(more, numberLocale, 1), to, inMonth: endPhrase }));
       // Prices published by quarter: the month named is one of three that share a figure.
       if (end.quarterly) sentences.push(t(r.quarterNote, { country: country!.name }));
     } else {
-      sentences.push(t(span === 1 ? (fell ? r.pastCountryFallOneYear : r.pastCountryRiseOneYear) : fell ? r.pastCountryFall : r.pastCountryRise, change));
+      sentences.push(flat((factor - 1) * 100, 0)
+        ? t(span === 1 ? r.pastCountryFlatOneYear : r.pastCountryFlat, { limit: limit(0), years: change.years })
+        : t(span === 1 ? (fell ? r.pastCountryFallOneYear : r.pastCountryRiseOneYear) : fell ? r.pastCountryFall : r.pastCountryRise, change));
       sentences.push(t(r.latestYearNote, { to }));
       // A country with a monthly index that is not joined is told why.
       if (join && 'withheld' in join) {
@@ -1405,8 +1458,11 @@ function LineChart({
   const xStep = [1, 2, 5, 10, 20, 25, 50, 100].find((s) => span / s <= maxTicks && (s / span) * plotW >= textWidth(String(lastYear.x), fs) + fs) ?? 100;
   const xCandidates: number[] = [];
   for (let x = Math.ceil(x0 / xStep) * xStep; x <= x1; x += xStep) xCandidates.push(x);
-  // Labels that would touch, or run past the drawing, are left out.
-  const xTicks = placeLabels(xCandidates.map(px), xCandidates.map((x) => textWidth(String(x), fs)), 2, W - 2, 0.6 * fs)
+  // Labels that would touch, or run past the drawing, are left out. Where the
+  // amounts stand left of the plot, a year keeps clear of their column: the
+  // first year, centred on the plot's edge, reached under the "0" once a
+  // fallback font drew it wider than measured (#815).
+  const xTicks = placeLabels(xCandidates.map(px), xCandidates.map((x) => textWidth(String(x), fs)), margin.inside ? 2 : PAD.left - 0.3 * fs, W - 2, 0.6 * fs)
     .map(({ i, anchor }) => ({ x: xCandidates[i], anchor }));
   const titleHalf = (titleFit * Math.max(1, ...titleLines.map(titleWidth))) / 2 + 2;
   const titleX = Math.round(Math.min(Math.max(PAD.left + plotW / 2, titleHalf), W - titleHalf));

@@ -55,6 +55,8 @@ const DOLLAR = 'US Dollar (USD)';
 const YEN = 'Japanese Yen (JPY)';
 const KORUNA = 'Czech Koruna (CZK)';
 const NO_RATE = 'Rate unavailable';
+/** The spending currency with no rates at all: its rate is 1, its share is what is unknown (#922). */
+const NO_SHARE = 'Share unknown: no exchange rates';
 
 const MEANING = 'Net worth is what you own minus what you owe.';
 const SHARES = 'Each currency’s share shows how much of it moves when that currency rises or falls against the one you spend in.';
@@ -285,6 +287,28 @@ describe('net worth report: a shared view that hides amounts', () => {
     assert.ok(report.chart?.kind === 'bars');
     // 60 and 20 of 80.
     assert.deepEqual(report.chart.bars, [{ label: EURO, share: 75 }, { label: DOLLAR, share: 25 }]);
+  });
+
+  it('with no rates at all: both share cells say so for every currency, with no bar of 0% and no sentence about shares (#887)', () => {
+    const rows: AssetRow[] = [{ name: '', value: '1000', currency: 'EUR', type: 'asset' }, { name: '', value: '3000', currency: 'CZK', type: 'asset' }];
+    const report = hidden(aggregate(rows, 'EUR', null));
+    assert.deepEqual(report.tables, [{
+      caption: 'By currency',
+      head: ['Currency', 'Code', 'Concentration, %', 'Exposure, % of net worth', 'Share band'],
+      rows: [
+        [KORUNA, 'CZK', NO_RATE, NO_RATE, 'band:low'],
+        [EURO, 'EUR', NO_SHARE, NO_SHARE, 'band:functional'],
+      ],
+      note: undefined,
+      stack: true,
+    }]);
+    assert.ok(report.chart === null);
+    assert.equal(report.meaning, MEANING);
+    // A link from before links said which rates were missing: the same.
+    const older = hidden({ ...result, positions: [shareOnly('EUR', 0, 'functional'), shareOnly('USD', 0, 'low')] });
+    assert.deepEqual(older.tables[0].rows, [[EURO, 'EUR', NO_SHARE, NO_SHARE, 'band:functional'], [DOLLAR, 'USD', NO_RATE, NO_RATE, 'band:low']]);
+    assert.ok(older.chart === null);
+    assert.equal(older.meaning, MEANING);
   });
 
   it('draws no chart at all when no currency has a share to draw', () => {

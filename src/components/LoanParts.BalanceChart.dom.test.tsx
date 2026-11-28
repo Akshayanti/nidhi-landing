@@ -913,6 +913,22 @@ describe('the balance chart, at larger text and on a small screen', () => {
     assert.equal(one(root, 'p.tool-chartUnit').textContent, 'Amounts in thousands of €');
   });
 
+  it('keeps a copy of the amounts to pin at the left while the plot scrolls, at the chart\'s own scale (#758)', () => {
+    const root = draw([YEAR, LONGER]);
+    const pin = one(root, 'svg.lc-yPin');
+    assert.equal(pin.getAttribute('aria-hidden'), 'true');
+    assert.equal(pin.getAttribute('viewBox'), '0 0 56 400');
+    near(parseFloat((pin as SVGElement).style.width), (100 * 56) / 760, 'pinned width, in % of the chart');
+    assert.equal((pin as SVGElement).style.getPropertyValue('--chart-fs'), '14px');
+    const texts = [...pin.querySelectorAll('text')];
+    assert.deepEqual(texts.map((t) => t.textContent), amountAxis(root).map((a) => a.label));
+    texts.forEach((t, i) => {
+      near(num(t, 'x'), 45.5, 'pinned amount x');
+      near(num(t, 'y'), amountAxis(root)[i].y + 4.9, 'pinned amount y');
+    });
+    assert.deepEqual(['x', 'y', 'width', 'height'].map((a) => num(one(pin, 'rect.lc-yPinBg'), a)), [0, 0, 56, 400]);
+  });
+
   it('moves the amounts inside the plot when they would leave it too little room', () => {
     // Four times the default size, and the amounts measure 250 units as drawn.
     rootSize = '32px';
@@ -934,6 +950,8 @@ describe('the balance chart, at larger text and on a small screen', () => {
       near(num(a.text!, 'y'), a.y - 16.8, 'amount y');
     }
     assert.deepEqual(points(one(root, 'path.lc-balanceLine'))[0], { cmd: 'M', x: 32, y: 143 });
+    // Inside the plot the amounts scroll with it: there is no margin to pin.
+    assert.equal(root.querySelector('svg.lc-yPin'), null);
   });
 
   it('sizes the left margin from the amounts as drawn', () => {

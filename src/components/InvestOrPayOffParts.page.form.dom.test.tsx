@@ -139,6 +139,7 @@ describe('the invest or pay off calculator: the inflation figure and your own re
     assert.equal(one('.iop-returnNote p').className, 'ifc-hint');
     // A space in the inflation box is no figure: the Euro area's is used still.
     type('inflation', ' ');
+    clock.pass(250);
     assert.deepEqual(returnNoteText(), [fill(island.returns.realIs, { real: pctText(toReal(7, 2)) })]);
     type('inflation', '');
     clock.pass(250);
@@ -146,6 +147,7 @@ describe('the invest or pay off calculator: the inflation figure and your own re
     assert.equal(has('.iop-side'), false);
     // Above the optimistic setting: said, and the cautious and optimistic settings shown beside it.
     type('ownReturn', '20');
+    clock.pass(250);
     assert.deepEqual(returnNoteText(), [fill(island.returns.above, { real: pctText(toReal(20, 2)), historical: '5.3%', top: 6 })]);
     assert.equal(one('.iop-returnNote p').className, 'iop-note');
     clock.pass(250);
@@ -153,16 +155,46 @@ describe('the invest or pay off calculator: the inflation figure and your own re
     assert.ok(text('.iop-side th').includes(fill(r.side.yours, { rate: pctText(toReal(20, 2)) })));
     // Below zero: said.
     type('ownReturn', '1');
+    clock.pass(250);
     assert.deepEqual(returnNoteText(), [fill(island.returns.below, { real: pctText(toReal(1, 2)) })]);
+    assert.equal(one('.iop-returnNote p').className, 'iop-note');
+    // A return a hair under inflation is written as 0%, and a figure of 0% is not said to lose
+    // buying power (#888): 3% with 3.03% inflation is -0.03% after inflation.
+    type('inflation', '3.03');
+    type('ownReturn', '3');
+    clock.pass(250);
+    assert.ok(toReal(3, 3.03) < -0.02);
+    assert.deepEqual(returnNoteText(), [fill(island.returns.realIs, { real: '0%' })]);
+    assert.equal(one('.iop-returnNote p').className, 'ifc-hint');
+    // The first figure written below zero is said as a loss: 3% with 3.11% is -0.1%.
+    type('inflation', '3.11');
+    clock.pass(250);
+    assert.deepEqual(returnNoteText(), [fill(island.returns.below, { real: `${String.fromCodePoint(0x2212)}0.1%` })]);
     assert.equal(one('.iop-returnNote p').className, 'iop-note');
     // At the edges, with no inflation: exactly the top of the range, and exactly nothing, are inside it.
     type('inflation', '0');
     type('ownReturn', '6');
+    clock.pass(250);
     assert.deepEqual(returnNoteText(), [fill(island.returns.realIs, { real: '6%' })]);
+    // 6.04% is written "6%": no note saying it is above 6%, and no table for a gap the figure does not show (#888).
+    type('ownReturn', '6.04');
+    clock.pass(250);
+    assert.deepEqual(returnNoteText(), [fill(island.returns.realIs, { real: '6%' })]);
+    assert.equal(one('.iop-returnNote p').className, 'ifc-hint');
+    clock.pass(250);
+    assert.equal(has('.iop-side'), false);
+    // 6.06% is written "6.1%": the note and the table are both there.
+    type('ownReturn', '6.06');
+    clock.pass(250);
+    assert.deepEqual(returnNoteText(), [fill(island.returns.above, { real: '6.1%', historical: '5.3%', top: 6 })]);
+    clock.pass(250);
+    assert.equal(has('.iop-side'), true);
     type('ownReturn', '0');
+    clock.pass(250);
     assert.deepEqual(returnNoteText(), [fill(island.returns.realIs, { real: '0%' })]);
     // A figure that cannot be read: marked, and no note.
     type('ownReturn', '6x');
+    clock.pass(250);
     assert.deepEqual(returnNoteText(), []);
     assert.equal(own.getAttribute('aria-invalid'), 'true');
     assert.equal(withheld(), true);
@@ -178,11 +210,36 @@ describe('the invest or pay off calculator: the inflation figure and your own re
     nothingTypedSent('20', '6x');
   });
 
+  it('says the note once typing has paused, not on every keystroke (#786, #902)', () => {
+    mount();
+    pick('returns', 'own');
+    const before = returnNoteText();
+    assert.deepEqual(before, [fill(island.returns.realIs, { real: pctText(toReal(7, 2)) })]);
+    type('ownReturn', '1');
+    type('ownReturn', '12');
+    assert.deepEqual(returnNoteText(), before, 'unchanged while typing');
+    clock.pass(249);
+    assert.deepEqual(returnNoteText(), before, 'still unchanged just before the pause ends');
+    clock.pass(1);
+    assert.deepEqual(returnNoteText(), [fill(island.returns.above, { real: pctText(toReal(12, 2)), historical: '5.3%', top: 6 })]);
+  });
+
+  it('follows a new own return while another box is wrong (council)', () => {
+    mount();
+    pick('returns', 'own');
+    clock.pass(250);
+    type('balance', '');
+    type('ownReturn', '12');
+    clock.pass(250);
+    assert.deepEqual(returnNoteText(), [fill(island.returns.above, { real: pctText(toReal(12, 2)), historical: '5.3%', top: 6 })]);
+  });
+
   it('works an own return out against the country\'s figure until one is typed, and with none says nothing', () => {
     mount({ defaultCountry: '', initialHistory: null });
     pick('returns', 'own');
     assert.deepEqual(returnNoteText(), []);
     type('inflation', '2');
+    clock.pass(250);
     assert.deepEqual(returnNoteText(), [fill(island.returns.realIs, { real: pctText(toReal(7, 2)) })]);
     // A comparison of your own return is told with the side table only when it is above the range.
     clock.pass(250);

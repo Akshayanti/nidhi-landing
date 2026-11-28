@@ -58,9 +58,9 @@ faq:
   - question: "What is a recognition gap?"
     answer: "A recognition gap is the distance between how your household actually works and what the law or an institution recognizes. A partner of fifteen years may be a legal stranger for inheritance purposes. A marriage valid in one country may not count in another. A decade of on-time payments abroad may be invisible to a lender in your new country. You cannot always close a recognition gap. Naming it can show where a designation, a workaround or local advice could help, though some gaps cannot be fully closed."
   - question: "Does this mean I need a lawyer for everything?"
-    answer: "No. Many useful steps cost nothing: naming beneficiaries on pensions and insurance, recording who owns what share of a shared home and checking that the title or registry says the same, and keeping a list of accounts somewhere someone you trust can find it. A will and powers of attorney usually do need the form your jurisdiction requires, and for those many people find a local professional worth paying. The audit in this post is about finding out which defaults apply to you, so you know which few things deserve that money."
-  - question: "Is this post legal advice?"
-    answer: "No. The rules on inheritance, relationship recognition, tax, and decision-making authority differ from country to country and sometimes from region to region. This post teaches a way of asking the right questions. The answers for your own situation come from the rules where you live, and for anything with real money or real consequences attached, from a qualified local professional."
+    answer: "No. Many useful steps cost nothing: naming beneficiaries on pensions and insurance, recording who owns what share of a shared home and checking that the title or registry says the same, and keeping a list of accounts somewhere someone you trust can find it. A will and powers of attorney usually do need the form your jurisdiction requires, and for those many people find a local professional worth paying. The audit in this lesson is about finding out which defaults apply to you, so you know which few things deserve that money."
+  - question: "Is this lesson legal advice?"
+    answer: "No. The rules on inheritance, relationship recognition, tax, and decision-making authority differ from country to country and sometimes from region to region. This lesson teaches a way of asking the right questions. The answers for your own situation come from the rules where you live, and for anything with real money or real consequences attached, from a qualified local professional."
 reelPromise: "The three-question audit and the one-hour checklist for finding which financial defaults are quietly deciding things for you"
 relatedSlugs: ["life-events", "insurance-basics", "setting-financial-goals", "financial-dashboard"]
 referentialReading:
@@ -90,7 +90,7 @@ Nothing about the money was different. The only difference was which household t
 
 A **default** is what happens when you make no choice. Die without a will, and a fixed set of rules decides who inherits. Leave a pension's [beneficiary form](#term-beneficiary-form) blank, and the scheme's rulebook decides who is paid. Become unable to make decisions with nobody appointed, and a court or a statutory list decides who speaks for you.
 
-Defaults are useful: many people never write a will, and something sensible happening beats nothing happening. But each default is a guess about what you would have wanted, made with one household in mind. As the [life events](/blog/life-events/) post put it, the costly mistake is treating a foreseeable event as a surprise.
+Defaults are useful: many people never write a will, and something sensible happening beats nothing happening. But each default is a guess about what you would have wanted, made with one household in mind. As the [life events](/blog/life-events/) lesson put it, the costly mistake is treating a foreseeable event as a surprise.
 
 ## Rules written for one kind of household
 
@@ -113,7 +113,7 @@ None of the groups in the table's "Who it misses" column is unusual. The Interna
 
 </details>
 
-Every later post in this series leans on a few terms: a [default assumption](#term-default-assumption), a [deliberate designation](#term-deliberate-designation) and a [recognition gap](#term-recognition-gap). Each is defined in this lesson's [glossary card](#glossary), and in the site-wide [glossary](/blog/glossary/).
+Every later lesson in this series leans on a few terms: a [default assumption](#term-default-assumption), a [deliberate designation](#term-deliberate-designation) and a [recognition gap](#term-recognition-gap). Each is defined in this lesson's [glossary card](#glossary), and in the site-wide [glossary](/blog/glossary/).
 
 ## Ask what each rule assumes about you
 
@@ -146,17 +146,17 @@ The audit does not tell you what to decide. It shows which decisions are current
   <rect x="140" y="164" width="320" height="50" rx="10" class="fig-stroke-blue" stroke-width="2" />
   <text class="fig-label" x="300" y="195" text-anchor="middle">Does that hold for my household?</text>
   <polyline points="300,216 300,236 155,236 155,264" class="fig-stroke-muted" stroke-width="2" marker-end="url(#fig-audit-arrow-muted)" />
-  <polyline points="300,236 445,236 445,264" class="fig-stroke-teal" stroke-width="2.5" marker-end="url(#fig-audit-arrow-teal)" />
+  <polyline points="300,236 454,236 454,264" class="fig-stroke-teal" stroke-width="2.5" marker-end="url(#fig-audit-arrow-teal)" />
   <text class="fig-sublabel" x="143" y="258" text-anchor="end">Yes</text>
   <text class="fig-sublabel" x="457" y="258" text-anchor="start">No</text>
   <rect x="30" y="272" width="250" height="68" rx="10" class="fig-fill-card" />
   <rect x="30" y="272" width="250" height="68" rx="10" class="fig-stroke-muted" stroke-width="1.5" />
   <text class="fig-label" x="155" y="301" text-anchor="middle">Keep the default</text>
   <text class="fig-sublabel" x="155" y="323" text-anchor="middle">and recheck it each year</text>
-  <rect x="320" y="272" width="250" height="68" rx="10" class="fig-fill-teal-soft" />
-  <rect x="320" y="272" width="250" height="68" rx="10" class="fig-stroke-teal" stroke-width="2" />
-  <text class="fig-label" x="445" y="301" text-anchor="middle">What do I put in its place?</text>
-  <text class="fig-sublabel" x="445" y="323" text-anchor="middle" style="font-size: 12px;">designation, structure, or workaround</text>
+  <rect x="316" y="272" width="276" height="68" rx="10" class="fig-fill-teal-soft" />
+  <rect x="316" y="272" width="276" height="68" rx="10" class="fig-stroke-teal" stroke-width="2" />
+  <text class="fig-label" x="454" y="301" text-anchor="middle">What do I put in its place?</text>
+  <text class="fig-sublabel" x="454" y="323" text-anchor="middle">designation, structure, or workaround</text>
 </svg>
 <figcaption>The first two questions find the defaults that do not fit. The third finds what could replace them.</figcaption>
 </figure>
@@ -271,6 +271,6 @@ In some economies most workers have formal contracts and social insurance. In ot
 
 A common order is the one-hour audit first, then the free fixes, then the one paid item that matters most for that household, which depends on your country, your relationships and your work.
 
-Later posts take the audit into specific situations: working without an employer, borrowing and investing without interest, moving countries, relying on one income, and sharing a life without a marriage certificate.
+Later lessons take the audit into specific situations: working without an employer, borrowing and investing without interest, moving countries, relying on one income, and sharing a life without a marriage certificate.
 
 The defaults were never neutral. They were someone's best guess about a household that may not be yours. Which of these defaults is guessing about yours?

@@ -118,7 +118,7 @@ None of this argues against a career break, which is often right on its own meri
 
 ## A home purchase or a move abroad changes many inputs at once
 
-A home moves three lines together: a large asset appears, a large loan appears, and the monthly mortgage, maintenance, tax and insurance replace rent. The [real estate post](/blog/real-estate-as-investment/) covered rent against buy in general. A move abroad changes even more at once, which makes it the event where intuition is least reliable. For both, many people run the scenario each way over the real holding period or horizon rather than assuming the answer.
+A home moves three lines together: a large asset appears, a large loan appears, and the monthly mortgage, maintenance, tax and insurance replace rent. The [real estate lesson](/blog/real-estate-as-investment/) covered rent against buy in general. A move abroad changes even more at once, which makes it the event where intuition is least reliable. For both, many people run the scenario each way over the real holding period or horizon rather than assuming the answer.
 
 <details class="lesson-depth">
 <summary class="disclosure">The six inputs for a home purchase</summary>
@@ -139,7 +139,7 @@ A home moves three lines together: a large asset appears, a large loan appears, 
 2. **Income:** the realistic offer or range for you, not the city's median.
 3. **Tax:** effective rates on the same pay vary widely; treaties, double taxation and special regimes for new residents (Italy's inbound-worker regime, Portugal's winding-down NHR scheme, various expat schemes) all change take-home pay.
 4. **Retirement accounts:** cross-border rules differ by account and circumstance. Leaving can end employer contributions, impose restrictions on new deposits into accounts such as a US 401(k), UK ISA, Indian PPF, Australian super or Canadian RRSP, change tax relief, or leave the account open but treated differently by the new country. Both countries' rules for the specific account matter, and the new country's accounts may or may not be open to you.
-5. **Currency:** savings in one currency and spending in another expose the plan to exchange-rate moves; the [currencies post](/blog/managing-money-across-currencies/) covers this, and a range of rates says more than one.
+5. **Currency:** savings in one currency and spending in another expose the plan to exchange-rate moves; the [currencies lesson](/blog/managing-money-across-currencies/) covers this, and a range of rates says more than one.
 
 </details>
 

@@ -50,7 +50,7 @@ To the first, she says: "The annual fee is just 1%." He shrugs. One percent is n
 
 To the second, she says: "Over thirty years or so, that fee will quietly take roughly a quarter of the returns you'd otherwise have kept." He sits up. A quarter of his returns? He starts asking hard questions.
 
-Both clients heard a true statement. Both statements describe the identical fee. The only thing that changed was the frame, and the frame changed the decision. That is the whole subject of this post: how the wording of a choice, and the first number attached to it, can steer you without your noticing.
+Both clients heard a true statement. Both statements describe the identical fee. The only thing that changed was the frame, and the frame changed the decision. That is the whole subject of this lesson: how the wording of a choice, and the first number attached to it, can steer you without your noticing.
 
 ## Framing: same fact, different decision
 
@@ -120,4 +120,4 @@ Unlike most biases, framing and anchoring have a defence that is genuinely easy 
 - **Test sunk costs with one question.** Knowing what you know now, would you choose this fresh today? If not, the past spending is not a reason to continue.
 - **Frame your own goals on purpose.** Framing is not only used against you. You can use it for yourself: picturing a saving habit as its thirty-year total can make it feel as significant as it truly is.
 
-Framing and anchoring are about how outside wording and stray numbers steer a single decision. The next bias is about a different outside force, the most powerful one of all: other people. The pull to do what the crowd is doing builds bubbles on the way up and crashes on the way down. That is herd behaviour and FOMO, and it is where we go next.
+Framing and anchoring are about how outside wording and stray numbers steer a single decision. The next bias is about a different outside force, the most powerful one of all: other people. The pull to do what the crowd is doing builds bubbles on the way up and crashes on the way down. That is herd behaviour and FOMO, and it is the subject of the next lesson.

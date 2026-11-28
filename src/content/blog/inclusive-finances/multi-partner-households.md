@@ -63,7 +63,7 @@ referentialReading:
 
 Three adults share a home and a life as partners. The law where they live recognizes a marriage between two people, so at most one pair of them can marry. The married pair may get reciprocal legal protections; any partner outside it depends on the rights local law gives unmarried partners and on what is written down.
 
-The [unmarried couples post](/blog/unmarried-and-cohabiting-couples/) set out what marriage switches on and how two people can rebuild each piece with documents. This companion is for households of three or four partners. It assumes everyday money works as in the [shared households](/blog/shared-households-money-for-three-or-more/) post and any home is owned as in [owning with more than two people](/blog/owning-a-home-with-more-than-two-people/). What is left is what comes from being partners: inheritance, decisions, pensions, children and tax. Family law differs in every country; this teaches what to check, and it is not legal advice.
+The [unmarried couples lesson](/blog/unmarried-and-cohabiting-couples/) set out what marriage switches on and how two people can rebuild each piece with documents. This companion is for households of three or four partners. It assumes everyday money works as in the [shared households](/blog/shared-households-money-for-three-or-more/) lesson and any home is owned as in [owning with more than two people](/blog/owning-a-home-with-more-than-two-people/). What is left is what comes from being partners: inheritance, decisions, pensions, children and tax. Family law differs in every country; this teaches what to check, and it is not legal advice.
 
 ## The law offers one spouse slot
 
@@ -85,7 +85,7 @@ Holding the slot has two consequences. Partners outside the married pair cannot 
 
 ## Wills, forms and proxies for more than two partners
 
-The five documents from the unmarried couples post all apply, adapted for more than two:
+The five documents from the unmarried couples lesson all apply, adapted for more than two:
 
 - **Wills.** Each partner's will names each other partner by full legal name, with the share intended. A spouse may have a legal right to part of the estate whatever the will says, and where [forced heirship](#term-forced-heirship) applies, a will directs only what is left.
 - **A [beneficiary form](#term-beneficiary-form).** Many insurance and investment forms, and some pension forms, allow several names with percentages; the scheme's rules decide whether several names are allowed and whether the form is binding. Some schemes treat the form only as a guide for their trustees, and some pay the ongoing survivor pension only to a spouse even when a lump sum can go to anyone named.
@@ -120,21 +120,21 @@ Three things stay with one pair at most. Tax systems assess individuals and, in 
 
 **Tax.** Each adult is taxed on their own income, and allowances a couple can share are available to one pair. A dependant can usually be claimed only once, so the household agrees who claims and keeps records. Transfers between partners not married to each other can count as taxable gifts, and an inheritance between them may be taxed at the rate for unrelated people. The tools are the ones unmarried couples use: life insurance sized to the expected bill, lifetime gifts within allowances, and holding assets in the right names from the start. Rates and allowances are a question for your tax authority or adviser.
 
-**Immigration.** If the household moves abroad, each partner beyond the one covered needs a route of their own, through work, study or independent means, and their right to stay depends on it. A later post in this series covers what happens to a marriage and a household when it crosses a border.
+**Immigration.** If the household moves abroad, each partner beyond the one covered needs a route of their own, through work, study or independent means, and their right to stay depends on it. A later lesson in this series covers what happens to a marriage and a household when it crosses a border.
 
 </details>
 
 <details class="lesson-depth">
 <summary class="disclosure">Children, and the two parent limit</summary>
 
-Parentage is a legal question separate from love or care. A small number of jurisdictions in Canada and the US allow a child more than two legal parents in specific cases; most do not. A partner who parents without legal status may be unable to consent to medical treatment, deal with a school, claim allowances, or keep the child in their care if a legal parent dies. Three protections are common: each legal parent's will names a guardian; the legal parents sign an authorization for the other adults covering school and medical matters; and every partner's will and beneficiary forms name the children explicitly. A later post in this series covers non-biological co-parents and stepchildren in detail.
+Parentage is a legal question separate from love or care. A small number of jurisdictions in Canada and the US allow a child more than two legal parents in specific cases; most do not. A partner who parents without legal status may be unable to consent to medical treatment, deal with a school, claim allowances, or keep the child in their care if a legal parent dies. Three protections are common: each legal parent's will names a guardian; the legal parents sign an authorization for the other adults covering school and medical matters; and every partner's will and beneficiary forms name the children explicitly. A later lesson in this series covers non-biological co-parents and stepchildren in detail.
 
 </details>
 
 <details class="lesson-depth">
 <summary class="disclosure">When the carer needs care</summary>
 
-A household that plans to age together carries an untested assumption: that the partners will look after each other, until the person expected to help is the one who needs care. Survivor pensions and spousal benefits run through a legal spouse and stop there. Unpaid care can reduce earnings and pension saving; some countries give carers pension credits or benefits, but eligibility may depend on the recognized relationship, the hours of care or benefits claimed. A shared home may need a plan for a member who needs different housing or care. Households that grow older together often write down who takes which role, and what happens if someone can no longer contribute. The [solo agers post](/blog/solo-agers-and-single-income-households/) covers later life when a spouse is not the backstop; its documents apply to each partner here.
+A household that plans to age together carries an untested assumption: that the partners will look after each other, until the person expected to help is the one who needs care. Survivor pensions and spousal benefits run through a legal spouse and stop there. Unpaid care can reduce earnings and pension saving; some countries give carers pension credits or benefits, but eligibility may depend on the recognized relationship, the hours of care or benefits claimed. A shared home may need a plan for a member who needs different housing or care. Households that grow older together often write down who takes which role, and what happens if someone can no longer contribute. The [solo agers lesson](/blog/solo-agers-and-single-income-households/) covers later life when a spouse is not the backstop; its documents apply to each partner here.
 
 </details>
 

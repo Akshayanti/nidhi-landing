@@ -10,7 +10,7 @@ takeaways:
   - text: "Why warning-sign patterns matter more than specific scam scripts"
     href: "#warning-sign-patterns-matter-more-than-specific-scripts"
   - text: "Which cheap structural defences can block common attack routes"
-    href: "#cheap-structural-defenses-can-block-common-attack-routes"
+    href: "#cheap-structural-defences-can-block-common-attack-routes"
   - text: "Which emotional levers scammers pull and how to notice them"
     href: "#the-emotional-levers-scammers-pull"
   - text: "What to do first if fraud happens: freeze, document, report, monitor"
@@ -58,7 +58,7 @@ referentialReading:
 
 Eva's phone shows her bank's name. The caller says there is suspicious activity on her account, money is about to leave it, and she needs to move her savings to a "safe account" now, before it is too late. The number on the screen is genuine. The caller is not.
 
-Everything else at this level makes a growing portfolio work a little harder. This post protects it, because one successful fraud can undo years of careful saving, and the more someone has built, the more worth targeting they become. Reported fraud losses in the US alone reached $12.5 billion in 2024, according to the Federal Trade Commission. Most attempts fail or cost little; a few take a large share of a household's wealth. Scam scripts change faster than any awareness campaign, so this post covers the patterns behind them, the cheap defences that stop most attacks, and what to do if one gets through.
+Everything else at this level makes a growing portfolio work a little harder. This lesson protects it, because one successful fraud can undo years of careful saving, and the more someone has built, the more worth targeting they become. Reported fraud losses in the US alone reached $12.5 billion in 2024, according to the Federal Trade Commission. Most attempts fail or cost little; a few take a large share of a household's wealth. Scam scripts change faster than any awareness campaign, so this lesson covers the patterns behind them, the cheap defences that stop most attacks, and what to do if one gets through.
 
 ## Warning-sign patterns matter more than specific scripts
 
@@ -123,7 +123,7 @@ Three: unsolicited contact (the bank called her), time pressure (before it is to
 
 </details>
 
-## Cheap structural defenses can block common attack routes
+## <span id="cheap-structural-defenses-can-block-common-attack-routes"></span>Cheap structural defences can block common attack routes
 
 A few defences, many of them set up once, can block common routes into an account or make fraud easier to spot:
 
@@ -162,7 +162,7 @@ Fraud by family or business partners is more common than most people expect, esp
 
 Every scam works on a mental shortcut. Time pressure is the most common; the others are worth knowing by name, because naming the lever in the moment creates a pause.
 
-- **Fear of missing out and herd behaviour.** "Everyone in the neighbourhood is in", "don't be left behind". The [herd behaviour post](/blog/herd-behavior-and-fomo/) covered why this pull is strong. The feeling is not information about the opportunity.
+- **Fear of missing out and herd behaviour.** "Everyone in the neighbourhood is in", "don't be left behind". The [herd behaviour lesson](/blog/herd-behavior-and-fomo/) covered why this pull is strong. The feeling is not information about the opportunity.
 - **Authority.** Impersonated officials, police or executives. A claim of authority is checked through an independent channel, not accepted on its own word.
 - **Reciprocity.** A small gift or "advance access" creates a sense of obligation.
 - **Sunk cost.** The longer an interaction runs, the harder it feels to walk away; scammers stretch it out before asking for money.
@@ -196,6 +196,6 @@ Full recovery of lost money is unlikely for most fraud. A transfer caught within
 
 </details>
 
-The last Optimizing-level post covers advanced rebalancing: glide paths and bond tents for the move from saving to spending.
+The last Optimizing-level lesson covers advanced rebalancing: glide paths and bond tents for the move from saving to spending.
 
 Which of your financial accounts still relies on a text-message code, or no second step at all?

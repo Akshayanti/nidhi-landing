@@ -238,7 +238,8 @@ describe('tracked tool events carry choices, never values', { skip: readsSource 
     'free_monte_carlo_runs_changed.runs = paths',
     "free_monte_carlo_shared_view_opened.utm_source = new URLSearchParams(window.location.search).get('utm_source')",
     'free_monte_carlo_withdrawal_toggled.on = on',
-    'free_multi_currency_net_worth_asset_added.count = rows.length + 1',
+    // The row count kept ahead of the redraw, so two quick Adds count right (#826).
+    'free_multi_currency_net_worth_asset_added.count = rowCount.current',
     'free_multi_currency_net_worth_asset_removed.count = rows.length - 1',
     'free_multi_currency_net_worth_csv_downloaded.count = filled.length',
     'free_multi_currency_net_worth_csv_overwrite_confirmed.count = csvConfirmPending.length',

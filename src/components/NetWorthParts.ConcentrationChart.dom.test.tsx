@@ -158,15 +158,17 @@ describe('the currency donut', () => {
     assert.equal(sliceOf('USD').getAttribute('class'), 'mcnw-slice mcnw-slice--dim');
     assert.equal(markOf('EUR').getAttribute('opacity'), null);
     assert.equal(markOf('USD').getAttribute('opacity'), '0.35');
-    assert.equal(legendEntry('EUR').getAttribute('aria-pressed'), 'true');
+    assert.equal(legendEntry('EUR').classList.contains('mcnw-legendItem--on'), true);
+    // Not a toggle: focus picks an entry, so no pressed state is claimed that a second tap cannot release (#488).
+    assert.ok(!legendEntry('EUR').hasAttribute('aria-pressed'));
     assert.equal(legendEntry('EUR').className, 'mcnw-legendItem mcnw-legendItem--on');
-    assert.equal(legendEntry('USD').getAttribute('aria-pressed'), 'false');
+    assert.equal(legendEntry('USD').classList.contains('mcnw-legendItem--on'), false);
     assert.equal(legendEntry('USD').className, 'mcnw-legendItem');
     assert.equal(said(), 'Euro (EUR): 75.0% of your net worth, €300.');
     assert.deepEqual(centre(), ['EUR', '75.0%', '€300']);
     // Pressed again, it stays highlighted.
     fireEvent.click(legendEntry('EUR'));
-    assert.equal(legendEntry('EUR').getAttribute('aria-pressed'), 'true');
+    assert.equal(legendEntry('EUR').classList.contains('mcnw-legendItem--on'), true);
     fireEvent.click(legendEntry('USD'));
     assert.equal(sliceOf('USD').getAttribute('transform'), `translate(-${dx} -${dx})`);
     assert.equal(said(), 'US Dollar (USD): 25.0% of your net worth, €100.');
@@ -176,9 +178,9 @@ describe('the currency donut', () => {
     chart(QUARTERS());
     assert.equal(said(), '');
     fireEvent.focus(legendEntry('USD'));
-    assert.equal(legendEntry('USD').getAttribute('aria-pressed'), 'true');
+    assert.equal(legendEntry('USD').classList.contains('mcnw-legendItem--on'), true);
     fireEvent.blur(legendEntry('USD'));
-    assert.equal(legendEntry('USD').getAttribute('aria-pressed'), 'false');
+    assert.equal(legendEntry('USD').classList.contains('mcnw-legendItem--on'), false);
     assert.equal(said(), '');
     assert.deepEqual(centre(), ['2', 'currencies']);
   });
@@ -186,25 +188,25 @@ describe('the currency donut', () => {
   it('the mouse over a legend entry or a slice highlights it; leaving the chart with the mouse clears it, a touch does not', () => {
     chart(QUARTERS());
     fireEvent.mouseEnter(legendEntry('USD'));
-    assert.equal(legendEntry('USD').getAttribute('aria-pressed'), 'true');
+    assert.equal(legendEntry('USD').classList.contains('mcnw-legendItem--on'), true);
     fireEvent.pointerOver(sliceOf('EUR'), { pointerType: 'mouse' });
-    assert.equal(legendEntry('EUR').getAttribute('aria-pressed'), 'true');
+    assert.equal(legendEntry('EUR').classList.contains('mcnw-legendItem--on'), true);
     fireEvent.pointerOver(sliceOf('USD'), { pointerType: 'touch' });
-    assert.equal(legendEntry('EUR').getAttribute('aria-pressed'), 'true');
+    assert.equal(legendEntry('EUR').classList.contains('mcnw-legendItem--on'), true);
     fireEvent.pointerOut(one('.mcnw-chartWrap'), { pointerType: 'touch', relatedTarget: document.body });
-    assert.equal(legendEntry('EUR').getAttribute('aria-pressed'), 'true');
+    assert.equal(legendEntry('EUR').classList.contains('mcnw-legendItem--on'), true);
     fireEvent.pointerOut(one('.mcnw-chartWrap'), { pointerType: 'mouse', relatedTarget: document.body });
-    assert.equal(legendEntry('EUR').getAttribute('aria-pressed'), 'false');
+    assert.equal(legendEntry('EUR').classList.contains('mcnw-legendItem--on'), false);
   });
 
   it('a tap on a slice highlights it, and a second tap clears it', () => {
     chart(QUARTERS());
     fireEvent.click(sliceOf('USD'));
-    assert.equal(legendEntry('USD').getAttribute('aria-pressed'), 'true');
+    assert.equal(legendEntry('USD').classList.contains('mcnw-legendItem--on'), true);
     fireEvent.click(sliceOf('EUR'));
-    assert.equal(legendEntry('EUR').getAttribute('aria-pressed'), 'true');
+    assert.equal(legendEntry('EUR').classList.contains('mcnw-legendItem--on'), true);
     fireEvent.click(sliceOf('EUR'));
-    assert.equal(legendEntry('EUR').getAttribute('aria-pressed'), 'false');
+    assert.equal(legendEntry('EUR').classList.contains('mcnw-legendItem--on'), false);
     assert.equal(said(), '');
   });
 
@@ -212,13 +214,13 @@ describe('the currency donut', () => {
     chart(QUARTERS());
     fireEvent.click(sliceOf('USD'));
     fireEvent.keyDown(window, { key: 'Enter' });
-    assert.equal(legendEntry('USD').getAttribute('aria-pressed'), 'true');
+    assert.equal(legendEntry('USD').classList.contains('mcnw-legendItem--on'), true);
     fireEvent.keyDown(window, { key: 'Escape' });
-    assert.equal(legendEntry('USD').getAttribute('aria-pressed'), 'false');
+    assert.equal(legendEntry('USD').classList.contains('mcnw-legendItem--on'), false);
     // Highlighted again after that, Escape still clears it.
     fireEvent.click(sliceOf('EUR'));
     fireEvent.keyDown(document.body, { key: 'Escape' });
-    assert.equal(legendEntry('EUR').getAttribute('aria-pressed'), 'false');
+    assert.equal(legendEntry('EUR').classList.contains('mcnw-legendItem--on'), false);
   });
 
   it('stops listening for Escape when it goes', () => {

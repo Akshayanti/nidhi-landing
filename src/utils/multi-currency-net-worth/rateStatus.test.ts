@@ -281,6 +281,23 @@ describe('float residue is a net worth of zero (#795)', () => {
       assert.match(sent, /~z~k/);
     });
   }
+  it('500000.30 less 499000.10 in one currency, less 1100.22 in another: the link the tool writes says so too (#824)', () => {
+    const rows = [row('500000.30', 'EUR'), row('499000.10', 'EUR', 'liability'), row('1100.22', 'USD', 'liability')];
+    const result = aggregate(rows, 'EUR', { EUR: 1, USD: 1.1 });
+    assert.equal(result.totalNetWorthFunctional, 0);
+    assert.equal(result.noShares, true);
+    // Without amounts the link carries the concentration and the no-shares mark, never a share of residue.
+    const sent = encodeShared(rows, result.positions, 'EUR', 'redacted');
+    assert.equal(open(sent).refused, undefined);
+    assert.match(sent, /p_EUR=50\.0~functional~~z~k/);
+    assert.match(sent, /p_USD=50\.0~net-debt~~z~k/);
+    // With amounts, what arrives totals nothing as well.
+    const full = encodeShared(rows, result.positions, 'EUR', 'full');
+    assert.equal(open(full).refused, undefined);
+    assert.equal(shown(full).totalNetWorthFunctional, 0);
+    assert.equal(shown(full).noShares, true);
+  });
+
   it('a real difference at a large gross stays', () => {
     const rows = [row('100000000000999', 'EUR'), row('100000000000000', 'EUR', 'liability'), row('900000000000000', 'USD'), row('900000000000000', 'USD', 'liability'), row('500000000000000', 'CZK'), row('499999999999000', 'GBP', 'liability')];
     const result = aggregate(rows, 'EUR', { EUR: 1, USD: 1, CZK: 1, GBP: 1 });

@@ -47,13 +47,13 @@ referentialReading:
     type: "paper"
 ---
 
-The previous post treated taxes as a concept: four points of contact, three functional patterns, the long-term cost of ignoring them. This post gets concrete about the *vehicles* those patterns live in. Your country almost certainly has several purpose-built accounts that give you tax breaks in exchange for playing by specific rules. Knowing which ones exist, which order to fill them in, and which trade-offs each involves can matter as much as which fund you pick.
+The previous lesson treated taxes as a concept: four points of contact, three functional patterns, the long-term cost of ignoring them. This lesson gets concrete about the *vehicles* those patterns live in. Your country almost certainly has several purpose-built accounts that give you tax breaks in exchange for playing by specific rules. Knowing which ones exist, which order to fill them in, and which trade-offs each involves can matter as much as which fund you pick.
 
-The universal principle: **a tax-advantaged euro grows faster than a taxed one, and the gap compounds**. The [taxes post](/blog/taxes-and-your-financial-plan/) worked out the maths: 7% a year untaxed against as little as 5.25% if every year's return were taxed at 25%, though buy-and-hold investors taxed only when they sell often see a smaller drag.
+The universal principle: **a tax-advantaged euro grows faster than a taxed one, and the gap compounds**. The [taxes lesson](/blog/taxes-and-your-financial-plan/) worked out the maths: 7% a year untaxed against as little as 5.25% if every year's return were taxed at 25%, though buy-and-hold investors taxed only when they sell often see a smaller drag.
 
-The names and rules differ across countries, but the functional categories are remarkably consistent. This post is organized around those functions, with regional examples in each category so readers can map what they have locally.
+The names and rules differ across countries, but the functional categories are remarkably consistent. This lesson is organized around those functions, with regional examples in each category so readers can map what they have locally.
 
-> **Educational content, not advice.** This post lists vehicles across multiple jurisdictions for educational purposes only. Tax rules, contribution limits, and account availability change frequently and depend on your individual circumstances and country of tax residence. Nothing here is personalized investment, tax, or legal advice. Confirm current local rules and consider professional advice before making decisions involving real money.
+> **Educational content, not advice.** This lesson lists vehicles across multiple jurisdictions for educational purposes only. Tax rules, contribution limits, and account availability change frequently and depend on your individual circumstances and country of tax residence. Nothing here is personalized investment, tax, or legal advice. Confirm current local rules and consider professional advice before making decisions involving real money.
 
 ## The five functional categories
 
@@ -69,9 +69,9 @@ Most countries have something in categories 1 and 2; category 3 and beyond vary 
 
 ## The order commonly suggested
 
-Most personal-finance literature converges on a similar ordering. It builds on the saving-vs-investing sequence from the [saving vs. investing post](/blog/saving-vs-investing/) and extends it to the investing stage. It is a description of a common default, not a prescription:
+Most personal-finance literature converges on a similar ordering. It builds on the saving-vs-investing sequence from the [saving vs. investing lesson](/blog/saving-vs-investing/) and extends it to the investing stage. It is a description of a common default, not a prescription:
 
-1. **A starter emergency fund.** About one month of essential expenses in an instant-access account, per the [emergency fund post](/blog/emergency-fund/). This stops a single surprise from undoing everything below.
+1. **A starter emergency fund.** About one month of essential expenses in an instant-access account, per the [emergency fund lesson](/blog/emergency-fund/). This stops a single surprise from undoing everything below.
 2. **[High-interest debt](/blog/how-to-get-out-of-debt/).** By a common rule of thumb in a low-inflation economy, anything over roughly 8-10% (credit cards, some personal loans); in higher-inflation countries, the rate is judged against inflation instead. There is no universal cutoff: the comparison depends on the debt's after-tax cost, uncertain investment returns, liquidity and risk. This is a certain saving equal to the interest rate. If investment returns were taxed in full each year at a 30% rate, an 8% debt would need a return of about 11% before tax to match; with deferred or sheltered gains the gap is smaller. Either way, it is hard to beat with diversified investments.
 3. **Any employer match (Category 1).** A 50 to 100% immediate uplift on your own contribution beats most other available moves, though it only matters once you can afford to leave the contribution in place. It is often taken alongside step 2 or before it, as soon as the starter fund exists. Where employer contributions are compulsory rather than matched, this step happens without a decision; the only choice is about voluntary top-ups.
 4. **A fuller emergency fund.** Often three to six months of essential expenses.
@@ -82,7 +82,7 @@ Most personal-finance literature converges on a similar ordering. It builds on t
 
 The logic is to get the most benefit from each euro of savings while staying resilient. Plenty of legitimate reasons exist to deviate from it (an immediate employer-match deadline, imminent debt distress, irregular income, near-term liquidity needs, jurisdictional quirks), which is why it works best as a starting map for your own situation rather than a fixed answer.
 
-The rest of this post explains what each category looks like in practice, with a reference of country-specific vehicles at the end.
+The rest of this lesson explains what each category looks like in practice, with a reference of country-specific vehicles at the end.
 
 ## Category 1: Employer-contributed retirement accounts
 
@@ -90,7 +90,7 @@ The rest of this post explains what each category looks like in practice, with a
 
 **Why a match is a high priority:** An employer match is typically a 50% to 100% immediate uplift on your own contribution: if your employer matches 100% of the first 5% of salary you contribute, every euro up to that threshold is doubled (subject to vesting, which is how long you must stay before the employer's money is fully yours, and to continued employment). Few moves available to a retail investor produce a comparable bump.
 
-**Common examples:** 401(k) plans in the US; workplace pensions under auto-enrolment in the UK; the Employees' Provident Fund (EPF) in India; Superannuation in Australia; CPF in Singapore. How it works varies widely. US employers typically match 50 to 100% of your first 3 to 6% of salary; UK auto-enrolment requires at least 3% from the employer and 8% in total; Australian employers must pay 12% of qualifying earnings (broadly ordinary pay) into super; employers covered by India's EPF pay 12% of basic wages; Singapore's CPF takes contributions from both employer and employee at age-based rates. The country reference at the end of this post has the full list.
+**Common examples:** 401(k) plans in the US; workplace pensions under auto-enrolment in the UK; the Employees' Provident Fund (EPF) in India; Superannuation in Australia; CPF in Singapore. How it works varies widely. US employers typically match 50 to 100% of your first 3 to 6% of salary; UK auto-enrolment requires at least 3% from the employer and 8% in total; Australian employers must pay 12% of qualifying earnings (broadly ordinary pay) into super; employers covered by India's EPF pay 12% of basic wages; Singapore's CPF takes contributions from both employer and employee at age-based rates. The country reference at the end of this lesson has the full list.
 
 ## Category 2: Tax-deferred personal retirement accounts
 
@@ -192,4 +192,4 @@ A dash means there is no widely-used vehicle in that category in that jurisdicti
 4. **The account type follows the tax situation.** High bracket now and lower expected later tends to favour tax-deferred; low bracket now and higher expected later tends to favour tax-free-growth. When the future is uncertain, many savers split across both to keep optionality.
 5. **Perfect can be the enemy of started.** Delay from over-analysis can easily cost more than a slightly imperfect account choice, since contributions can usually be redirected in future years but missed years of growth can't be recovered.
 
-The next post covers rebalancing: how to maintain your target allocation over time once you're actually investing across these accounts.
+The next lesson covers rebalancing: how to maintain your target allocation over time once you're actually investing across these accounts.

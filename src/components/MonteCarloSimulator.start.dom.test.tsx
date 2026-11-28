@@ -116,7 +116,7 @@ describe('the page as it starts', () => {
       const user = reader();
       await user.click(screen.getByRole('button', { name: island.quick.jump }));
       assert.deepEqual(scrolled, { block: 'start' });
-      assert.equal(document.activeElement, h);
+      assert.ok(document.activeElement === h);
     }
   });
 

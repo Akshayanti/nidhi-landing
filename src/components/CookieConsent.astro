@@ -154,6 +154,24 @@ const strings = dict(locale);
     }
   }
 
+  /* With the text made so large that the screen is short for it (the same
+     rem test as above, the other way round), the two answers come straight
+     after the title, before the explanation (owner, Nov 27, 2026, #769):
+     the sheet opens on them, and neither has to be found thousands of pixels
+     down a scroll area. Only the drawing order changes: a screen reader and
+     the Tab key still meet the explanation, then "No thanks", "Sure", the
+     link. */
+  @media (height < 30rem) {
+    .cookie-sheet:not([hidden]) {
+      display: flex;
+      flex-direction: column;
+    }
+    .cookie-title { order: 0; }
+    .cookie-actions { order: 1; margin-block: 0 var(--space-3); }
+    .cookie-text { order: 2; }
+    .cookie-sub { order: 3; }
+  }
+
   /* The shared .btn roles (docs/color-palette.md, "Buttons"). Declining is as
      easy to see as accepting: the two are the same width, height and weight,
      and they stack when they do not fit side by side. Side by side down to

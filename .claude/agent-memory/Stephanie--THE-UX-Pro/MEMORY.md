@@ -27,3 +27,10 @@
 - [Hero + sticky cookie answers 25 Nov](hero-cookie-sticky-review-2026-11-25.md) — pinning and 39dvh only at ~100-175% on phones (rem guard); #769 unchanged; planner focus partly under sheet at 400%
 - [Loan rate change review 26 Nov](loan-rate-change-review-2026-11-26.md) — required box vs FAQ; error far above fold; comma-decimal lump month; orphaned "*" at 400%
 - [Inflation month review 25 Nov](inflation-month-review-2026-11-25.md) — legend lacked the month despite brief; 12k px answer at 400%; hi/mr desc postposition clash
+- [Number edges review 27 Nov](number-edges-review-2026-11-27.md) — flat 0% sentences, U+2212, nw zero; real-data probe countries; rates intercept recipe
+- [Loan links and notes 27 Nov](loan-links-notes-review-2026-11-27.md) — NBSP mark still drops alone at 400%/320 (emergency breaks); damaged-link view sound; probe recipe
+- [Number edges round 2 27 Nov](number-edges-round2-2026-11-27.md) — 2-sig-fig amounts per locale via one Intl call; #887 donut empty state; straddling-10 ranges
+- [Old-anchor spans 27 Nov](old-anchor-spans-review-2026-11-27.md) — span at heading end lands mid-heading; dt span loses :target/scroll-margin; worktree dev islands 403
+- [Tool loose ends 27 Nov](toolcode-loose-ends-review-2026-11-27.md) — c3012bf: arrived ? marks all required boxes with one "This value" message; useChartRem flushSync untested
+- [Site pages a11y 27 Nov](sitepages-review-2026-11-27.md) — email label 1.87:1 on blue boxes; #841 still letter-breaks; dead :has padding; Chrome socket path symlink
+- [Tools a11y 28 Nov](toolsa11y-review-2026-11-28.md) — loan chart ring clipped by scroller (pre-existing); export stack <640 already on main; guide notes disc column

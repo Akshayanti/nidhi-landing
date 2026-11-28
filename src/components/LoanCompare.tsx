@@ -25,14 +25,15 @@ import {
   MIN_VENDORS,
   VENDOR_LABELS,
   canonicalLumpSums,
-  decodeFromQueryString,
   displayLumpSums,
   defaultGlobalState,
-  encodeToQueryString,
+  decodeFromQueryString,
+  encodeSharedState,
   isPristineState,
   makeAddedVendor,
   makeDefaultVendor,
   publishableState,
+  readSharedState,
   SHARED_STATE_GLOBAL,
   type AnalysisTab,
   type GlobalState,
@@ -56,11 +57,13 @@ import {
   OPTIONAL_UNREADABLE,
   parseNumber,
   pointsCostAboveFee,
+  fixedPeriodFault,
   missingRateChangeFields,
   unreadableOptionalFields,
   type OptionalField,
   comparisonWithheld,
   holdsMarker,
+  valueHoldsMarker,
 } from '../utils/loan/inputs.ts';
 import { CHART_SERIES, CHART_SERIES_ON } from '../styles/palette.ts';
 import { MarkerGlyph, SeriesMarker } from './chart/SeriesMarker.tsx';
@@ -70,8 +73,9 @@ import type { Dict } from '../i18n/strings/types.ts';
 import { SwapLabel, ToolExport, ToolReport } from './ToolExport.tsx';
 import { downloadWorkbook, isoDate, printResults } from '../utils/shared/exportFile.ts';
 import { loanSheets } from '../utils/loan/export.ts';
+import { engineNote } from '../utils/loan/notes.ts';
 import { loanReport } from '../utils/loan/report.ts';
-import { ErrorLeadContext, ErrorText, heldUntilReady, LinkField, ResultAnnouncement, type Notice, UnreadableContext, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
+import { ErrorLeadContext, ErrorText, heldUntilReady, LinkField, ResultAnnouncement, type Notice, UnreadableContext, useSteadyAbove, useToolReady, Withheld, WITHHELD_SAID_AFTER } from './toolShared.tsx';
 
 /**
  * The tool's words, for one locale.
@@ -198,7 +202,7 @@ export const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['erro
   ['loan is too small for this term', 'tooSmall'],
   ['monthly payment only covers the interest', 'interestOnly'],
   ['enter a non-negative interest rate', 'rate'],
-  ['initial fixed period must be a positive number', 'initialFixed'],
+  ['initial fixed period must be a whole number', 'initialFixed'],
   ['enter a term of at least one month', 'termMin'],
   ['term cannot exceed', 'termMax'],
   ['enter a monthly payment greater than zero', 'paymentEnter'],
@@ -213,6 +217,8 @@ export const ENGINE_PHRASES: [phrase: string, key: keyof Strings['engine']['erro
   ['original loan is invalid', 'refiOriginal'],
   // `computeFromInput` (src/utils/loan/inputs.ts).
   ['optional boxes cannot be read', 'optionalUnreadable'],
+  ['loan amount could not be read', 'amountUnreadable'],
+  ['monthly payment could not be read', 'paymentUnreadable'],
   ['points cost is more than the fee', 'pointsAboveFee'],
   ['changing offer needs both of its boxes', 'rateChangeIncomplete'],
   // `computeLoan` and `computeFromInput`.
@@ -240,6 +246,11 @@ export function engineError(raw: string, s: Strings): string {
   return s.engine.errors[key];
 }
 
+/** The offer with the boxes edited on this card left out, for `holdsMarker`. */
+function unedited(vendor: VendorInput, edited: ReadonlySet<string>): VendorInput {
+  return Object.fromEntries(Object.entries(vendor).filter(([key]) => !edited.has(key))) as VendorInput;
+}
+
 /** Which of the engine's messages this is, by the catalog key of its translation. */
 export function engineErrorKey(raw: string): keyof Strings['engine']['errors'] | undefined {
   const lower = raw.toLowerCase();
@@ -247,17 +258,58 @@ export function engineErrorKey(raw: string): keyof Strings['engine']['errors'] |
 }
 
 /**
- * The engine's warnings, addressed the same way. There are two, both rare: one
- * is an internal invariant that should never fire, the other a rate so high the
- * recast payment barely covers interest.
+ * The coarse kind of problem the validation event sends as `firstReason`
+ * (#895). It is read from which engine message an offer has, so every message
+ * lands in one bucket whatever its wording; the `Record` makes the compiler
+ * ask for a bucket when the engine grows a message. A choice, never a value:
+ * no amount, rate or month goes with it. Refinance messages never reach an
+ * offer card, so they share `other` with a message no phrase knows.
+ */
+export const VALIDATION_REASONS = {
+  amount: 'missing_principal',
+  principal: 'missing_principal',
+  amountMax: 'principal_out_of_range',
+  tooSmall: 'principal_out_of_range',
+  rate: 'missing_rate',
+  term: 'missing_term',
+  termMin: 'missing_term',
+  termMax: 'term_out_of_range',
+  payment: 'missing_payment',
+  paymentEnter: 'missing_payment',
+  belowInterest: 'payment_below_interest',
+  interestOnly: 'payment_below_interest',
+  notAmortizing: 'payment_below_interest',
+  initialFixed: 'rate_structure',
+  hybridMode: 'rate_structure',
+  rateChangeIncomplete: 'rate_structure',
+  optionalUnreadable: 'optional_field',
+  // The same reasons as before #898, when these were "greater than zero".
+  amountUnreadable: 'missing_principal',
+  paymentUnreadable: 'missing_payment',
+  pointsAboveFee: 'optional_field',
+  lumpMonth: 'optional_field',
+  refiMonth: 'other',
+  refiMonthEnd: 'other',
+  refiRate: 'other',
+  refiTerm: 'other',
+  refiBalance: 'other',
+  newLoan: 'other',
+  refiOriginal: 'other',
+} as const satisfies Record<keyof Strings['engine']['errors'], string>;
+
+export type ValidationReason = (typeof VALIDATION_REASONS)[keyof typeof VALIDATION_REASONS];
+
+export function validationReason(raw: string): ValidationReason {
+  const key = engineErrorKey(raw);
+  return key ? VALIDATION_REASONS[key] : 'other';
+}
+
+/**
+ * The engine's notes on a result, addressed the same way. The exports carry
+ * the same sentences, so the reading of them is theirs too (`notes.ts`).
  */
 function engineWarning(raw: string, s: Strings): string {
-  if (/precision check/i.test(raw)) {
-    const m = /principal sum (\S+) ≠ (\S+)/.exec(raw);
-    return format(s.engine.warnings.precision, { sum: m?.[1] ?? '', expected: m?.[2] ?? '' });
-  }
-  if (/recast payment barely covers/i.test(raw)) return s.engine.warnings.subsequentRate;
-  return raw;
+  return engineNote(raw, s.engine.warnings);
 }
 
 // -----------------------------------------------------------------------------
@@ -584,6 +636,24 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
               </g>
             )}
           </svg>
+          {/* On a phone the chart scrolls sideways, and at a large text size
+              its amounts took most of what was in view: a copy of the
+              amounts stays at the left while the plot scrolls under it
+              (#758, owner, Nov 27 2026). Drawn to the chart's own scale;
+              the chart says the amounts to a screen reader, so this does not. */}
+          {!margin.inside && (
+            <svg
+              className="lc-yPin"
+              aria-hidden="true"
+              viewBox={`0 0 ${BPAD.left} ${Math.ceil(BH)}`}
+              style={{ width: `${(100 * BPAD.left) / BW}%`, '--chart-fs': `${fs}px` } as React.CSSProperties}
+            >
+              <rect className="lc-yPinBg" x={0} y={0} width={BPAD.left} height={Math.ceil(BH)} />
+              {yTicks.map((t) => (
+                <text key={`yp${t}`} className="lc-chartTick" x={BPAD.left - 0.75 * fs} y={y(t) + 0.35 * fs} textAnchor="end">{unit.tick(t)}</text>
+              ))}
+            </svg>
+          )}
           <span className="chart-srOnly" aria-live="polite">{announce}</span>
         </div>
       </div>
@@ -1041,6 +1111,14 @@ export default function LoanCompare({
   const [vendors, setVendors] = useState<VendorInput[]>(DEFAULT_VENDORS);
   const [globalState, setGlobalState] = useState<GlobalState>(() => defaultGlobalState(defaultCurrency));
   const [hydrated, setHydrated] = useState(false);
+  // A link written with a check that did not arrive whole (#820): its state as
+  // it arrived, which is shown to nobody and used for nothing. While it is
+  // set the page shows one notice in place of the tool: no offer, example or
+  // result, and nothing to copy or save. `null` on every other visit.
+  const [damagedLink, setDamagedLink] = useState<string | null>(null);
+  // Where the keyboard goes when the notice gives way to the tool.
+  const exampleRef = useRef<HTMLParagraphElement>(null);
+  const startedNew = useRef(false);
   const [copied, setCopied] = useState(false);
   const [shareUrl, setShareUrl] = useState('');
   // The browser would not copy: the bar asks the reader to copy the address by hand.
@@ -1079,8 +1157,15 @@ export default function LoanCompare({
     // Stryker disable next-line StringLiteral: equivalent. Effects run only in a browser, where `window` is always there, so the guard never returns whatever it is compared with.
     if (typeof window === 'undefined') return;
     const raw = (window as unknown as Record<string, unknown>)[SHARED_STATE_GLOBAL];
-    const shared = typeof raw === 'string' ? raw : '';
-    const { vendors: decoded, global: decodedGlobal } = decodeFromQueryString(shared);
+    const arrived = typeof raw === 'string' ? raw : '';
+    const read = readSharedState(arrived);
+    // A link that did not arrive whole: nothing of it is loaded, and no event
+    // is sent, since no comparison was opened. Behind the notice the tool is
+    // what it is with no link at all, unseen until the reader asks for a new
+    // comparison.
+    if (!read) setDamagedLink(arrived);
+    const shared = read ? arrived : '';
+    const { vendors: decoded, global: decodedGlobal } = read ?? decodeFromQueryString('');
     setVendors(decoded);
     // No shared state: start in this page's currency. A shared state keeps
     // the codec's reading (no `c` means EUR), so links mean the same anywhere.
@@ -1118,9 +1203,25 @@ export default function LoanCompare({
   useEffect(() => {
     if (!hydrated) return;
     // Untouched publishes '' so the other language opens with its own
-    // starting currency; anything changed carries as encoded.
-    publishToolState(SHARED_STATE_GLOBAL, publishableState(vendors, globalState, defaultCurrency));
-  }, [hydrated, vendors, globalState, defaultCurrency]);
+    // starting currency; anything changed carries as encoded. A link that did
+    // not arrive whole is carried as it arrived, so the other language shows
+    // the same notice and never a link made valid again from the examples.
+    publishToolState(SHARED_STATE_GLOBAL, damagedLink ?? publishableState(vendors, globalState, defaultCurrency));
+  }, [hydrated, damagedLink, vendors, globalState, defaultCurrency]);
+
+  // "Start a new comparison": the notice goes and the tool opens as it does
+  // with no link at all. The button goes with the notice, so the keyboard is
+  // put on the line that says what is now on the page, the example offers.
+  const startNew = () => {
+    startedNew.current = true;
+    setDamagedLink(null);
+  };
+  useEffect(() => {
+    // Only after the button: a page that opens with the tool leaves the keyboard where it is.
+    if (!startedNew.current) return;
+    // Stryker disable next-line OptionalChaining: equivalent. The notice has just given way to the untouched starting offers, which always show the example line.
+    exampleRef.current?.focus();
+  }, [damagedLink]);
 
   const updateVendor = useCallback((index: number, patch: Partial<VendorInput>) => {
     setVendors((prev) => {
@@ -1182,7 +1283,9 @@ export default function LoanCompare({
   // effect re-runs on every keystroke because `results` is a fresh
   // reference, but the timer collapses bursts into one event 600ms after
   // the user stops typing. We never ship the error message; only the
-  // count and a coarse `firstReason` bucket inferred from keywords.
+  // count and a coarse `firstReason` bucket selected through the fixed
+  // engine-message phrase table (`validationReason`); no message text or
+  // numbers are sent.
   const validationTrackTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   useEffect(() => {
     if (!hydrated) return;
@@ -1194,20 +1297,7 @@ export default function LoanCompare({
         .filter((x) => Boolean(x.r.error));
       if (errored.length === 0) return;
       // Stryker disable next-line StringLiteral: equivalent. Only offers with an error are here, so the fallback for a missing message is never used.
-      const firstMsg = (errored[0].r.error ?? '').toLowerCase();
-      let firstReason:
-        | 'missing_principal'
-        | 'missing_rate'
-        | 'missing_term'
-        | 'payment_below_interest'
-        | 'rate_out_of_range'
-        | 'term_out_of_range'
-        | 'other' = 'other';
-      if (firstMsg.includes('principal')) firstReason = 'missing_principal';
-      else if (firstMsg.includes('payment') && firstMsg.includes('interest')) firstReason = 'payment_below_interest';
-      else if (firstMsg.includes('rate') && firstMsg.includes('range')) firstReason = 'rate_out_of_range';
-      else if (firstMsg.includes('rate')) firstReason = 'missing_rate';
-      else if (firstMsg.includes('term')) firstMsg.includes('range') ? (firstReason = 'term_out_of_range') : (firstReason = 'missing_term');
+      const firstReason = validationReason(errored[0].r.error ?? '');
       track('free_loan_comparison_validation_error', {
         count: errored.length,
         firstReason,
@@ -1249,7 +1339,7 @@ export default function LoanCompare({
     if (typeof window === 'undefined') return;
     if (withheld) return;
     track('free_loan_comparison_share_modal_opened');
-    const url = `${window.location.origin}${window.location.pathname}?utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=loan_comparison#${encodeToQueryString(vendors, globalState)}`;
+    const url = `${window.location.origin}${window.location.pathname}?utm_source=share&utm_medium=referral&utm_campaign=free_tools&utm_content=loan_comparison#${encodeSharedState(vendors, globalState)}`;
     try {
       await navigator.clipboard.writeText(url);
       setShareUrl(url);
@@ -1304,6 +1394,10 @@ export default function LoanCompare({
   };
 
   const toolReady = useToolReady();
+  // The offers' tabs and the example note sit above every box, and change as
+  // one is typed in: a name grows its tab, the note goes at the first key (#827).
+  const tabsRow = useSteadyAbove<HTMLDivElement>();
+  const exampleRow = useSteadyAbove<HTMLDivElement>();
   return (
     <NumberLocaleContext.Provider value={numberLocale}>
     <AmountLocaleContext.Provider value={amountLocale}>
@@ -1311,6 +1405,18 @@ export default function LoanCompare({
     <ErrorLeadContext.Provider value={exportStrings.fieldError}>
     <UnreadableContext.Provider value={exportStrings.fieldUnreadable}>
     <div className="lc-root" {...heldUntilReady(toolReady)}>
+      {damagedLink !== null ? (
+        // The whole tool gives way to this (#820). An alert: it takes the place
+        // of what the link was opened for, and is said once, as it appears.
+        // The button has no click label: it sends no event of its own.
+        <div className="lc-linkDamaged">
+          {/* For a reader who moves by headings; the sentence below says it to everyone. */}
+          <h2 className="lc-srOnly">{strings.link.damagedHeading}</h2>
+          <p className="tool-resultReason" role="alert">{strings.link.damaged}</p>
+          <button type="button" className="btn btn--outline" onClick={startNew}>{strings.link.startNew}</button>
+        </div>
+      ) : (
+      <>
       <div className="lc-toolbar" role="toolbar" aria-label={strings.toolbar.aria}>
         <div className="lc-currencyField">
           <label className="lc-fieldLabel" htmlFor={currencySelectId}>
@@ -1380,7 +1486,7 @@ export default function LoanCompare({
           in here. Choosing one fires no event of its own. "+ Add" is the
           same action as the dashed card on wider screens, with the same
           label and event. */}
-      <div className="lc-vendorTabs" role="group" aria-label={strings.phoneTabs.groupAria}>
+      <div className="lc-vendorTabs" ref={tabsRow} role="group" aria-label={strings.phoneTabs.groupAria}>
         {vendors.map((v, i) => (
           <button
             key={i}
@@ -1425,7 +1531,11 @@ export default function LoanCompare({
       </p>
 
       {/* The starting offers are an example until one of them is changed. */}
-      {isPristineState(vendors, globalState, defaultCurrency) && <p className="lc-example">{strings.example}</p>}
+      {/* The note goes at the first key; its row keeps the note's height while
+          the reader is in the box that key was typed in (#827). */}
+      <div className="lc-exampleRow" ref={exampleRow}>
+        {isPristineState(vendors, globalState, defaultCurrency) && <p className="lc-example" ref={exampleRef} tabIndex={-1}>{strings.example}</p>}
+      </div>
 
       <h2 className="lc-srOnly" id={`${aprDocsId}-h`}>{strings.cardsHeading}</h2>
       {/* Why the APR here can read lower than the one on a lender's document. */}
@@ -1474,6 +1584,7 @@ export default function LoanCompare({
         withheld={withheld}
         paidOff={withTotal.map((x) => x.r)}
         validCount={validResults.length}
+        noted={validResults.map(({ r, i }) => ({ name: shownName(vendors[i].name, i, strings), notes: r.warnings.map((w) => engineWarning(w, strings)) }))}
         currency={currency}
         strings={strings}
         also={refiSaid}
@@ -1550,6 +1661,8 @@ export default function LoanCompare({
       </details>
 
       {!withheld && <PrintedReport strings={strings} exportStrings={exportStrings} currency={currency} vendors={vendors} results={results} />}
+      </>
+      )}
     </div>
     </UnreadableContext.Provider>
     </ErrorLeadContext.Provider>
@@ -1639,26 +1752,50 @@ function VendorCard({
   const id = (suffix: string) => `${baseId}-${suffix}`;
   // Stryker disable next-line StringLiteral: equivalent. An empty suffix still gives the card a unique id, and the message and the boxes that point at it use the same one.
   const errorId = id('error');
+  // A field's help is always part of its description, and its error joins it
+  // while the field holds one (#916 review): a screen reader hears both.
+  const describedBy = (field: string, bad: boolean) => (bad ? `${id(`${field}-help`)} ${errorId}` : id(`${field}-help`));
   const hasError = Boolean(result.error);
+  // The results sit above the optional boxes, and change as those are typed
+  // in (an error in their place, a note more or less): the box stays put (#827).
+  const results = useSteadyAbove<HTMLDivElement>();
+  // So does the card's heading, which shows the name as it is typed.
+  const header = useSteadyAbove<HTMLElement>();
   // The mark that arrived, as against text being typed here.
   const unreadableText = useContext(UnreadableContext);
-  const [typed, setTyped] = useState(false);
-  const arrived = !typed && holdsMarker(vendor);
-  const onChange = (patch: Parameters<VendorCardProps['onChange']>[0]) => { setTyped(true); onEdit(patch); };
+  // Kept per box (#825): editing the name or another box leaves a ? that
+  // arrived explained as one that could not be read; editing that box itself
+  // turns it into text being typed here.
+  const [edited, setEdited] = useState<ReadonlySet<string>>(() => new Set());
+  const arrived = holdsMarker(unedited(vendor, edited));
+  const onChange = (patch: Parameters<VendorCardProps['onChange']>[0]) => {
+    setEdited((before) => new Set([...before, ...Object.keys(patch)]));
+    onEdit(patch);
+  };
+  // An amount or payment that cannot be read is named by itself, and only
+  // its box is marked: not an optional box, nor the rate or term (#898, council).
+  const errorKey = result.error ? engineErrorKey(result.error) : undefined;
+  const unreadableRequired = errorKey === 'amountUnreadable' ? 'principal' : errorKey === 'paymentUnreadable' ? 'monthlyPayment' : null;
   // The optional boxes that cannot be read: each is marked and pointed at
   // the card's message, as the required boxes are.
-  const badOptional = new Set<OptionalField>([
+  const badOptional = unreadableRequired ? new Set<OptionalField>() : new Set<OptionalField>([
     ...unreadableOptionalFields(vendor),
     // A points cost above the fee it is part of is marked the same way.
     ...(pointsCostAboveFee(vendor) ? (['pointsCostMajor'] as const) : []),
     // So is a box of a changing rate that is left out: both are needed.
     ...missingRateChangeFields(vendor),
+    // And a month of the change that is part of a month (#914).
+    ...(fixedPeriodFault(vendor) ? (['initialFixedMonths'] as const) : []),
   ]);
   // When that is what is wrong, the required boxes are not marked as well.
   // Nor for a changing rate on a loan set by its payment: the message says
   // where to go, and the amount, rate and payment are not what is wrong.
-  const errorKey = result.error ? engineErrorKey(result.error) : undefined;
   const requiredError = hasError && badOptional.size === 0 && errorKey !== 'hybridMode';
+  // While a ? that arrived is still unedited, only the box holding it is
+  // marked: the message says "this value", and a reader moving through the
+  // boxes should not hear it on the one they just typed in (#825 review).
+  const marked = (field: 'principal' | 'annualRatePct' | 'termMonths' | 'monthlyPayment') =>
+    arrived ? !edited.has(field) && valueHoldsMarker(vendor[field]) : unreadableRequired ? field === unreadableRequired : requiredError;
   // Stryker disable next-line StringLiteral: equivalent. An empty suffix still gives the card a unique id, and the heading and what it labels use the same one.
   const headingId = id('heading');
   const notPaid = isNotPaidOff(result);
@@ -1712,7 +1849,7 @@ function VendorCard({
       style={{ '--lc-color': color } as React.CSSProperties}
       aria-labelledby={headingId}
     >
-      <header className="lc-cardHeader">
+      <header className="lc-cardHeader" ref={header}>
         {/*
           h3 (not h2): an h2 per vendor card padded the document outline
           with up to five "Vendor A / B / C…" entries that contributed
@@ -1759,6 +1896,7 @@ function VendorCard({
       <div className="lc-field">
         <label className="lc-fieldLabel" htmlFor={id('name')}>{strings.card.name}</label>
         <input
+          enterKeyHint="done"
           id={id('name')}
           type="text"
           className="lc-input"
@@ -1772,8 +1910,8 @@ function VendorCard({
       </div>
 
       <div className="lc-field">
-        <label className="lc-fieldLabel" htmlFor={id('principal')}>
-          {strings.card.principal} <RequiredMark title={strings.card.requiredTitle} /> <span className="lc-fieldHint">({currency})</span>
+        <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('principal')}>
+          <RequiredLabel title={strings.card.requiredTitle}>{strings.card.principal}</RequiredLabel> <span className="lc-fieldHint">({currency})</span>
         </label>
         <LocaleNumberInput
           id={id('principal')}
@@ -1781,16 +1919,16 @@ function VendorCard({
           className="lc-input"
           value={vendor.principal}
           onValueChange={(v) => onChange({ principal: v })}
-          aria-invalid={requiredError || undefined}
+          aria-invalid={marked('principal') || undefined}
           aria-required="true"
-          aria-describedby={requiredError ? errorId : undefined}
+          aria-describedby={marked('principal') ? errorId : undefined}
           autoComplete="off"
         />
       </div>
 
       <div className="lc-field">
-        <label className="lc-fieldLabel" htmlFor={id('rate')}>
-          {strings.card.rate} <RequiredMark title={strings.card.requiredTitle} />
+        <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('rate')}>
+          <RequiredLabel title={strings.card.requiredTitle}>{strings.card.rate}</RequiredLabel>
         </label>
         <LocaleNumberInput
           id={id('rate')}
@@ -1798,15 +1936,15 @@ function VendorCard({
           className="lc-input"
           value={vendor.annualRatePct}
           onValueChange={(v) => onChange({ annualRatePct: v })}
-          aria-invalid={requiredError || undefined}
+          aria-invalid={marked('annualRatePct') || undefined}
           aria-required="true"
-          aria-describedby={requiredError ? errorId : undefined}
+          aria-describedby={marked('annualRatePct') ? errorId : undefined}
           autoComplete="off"
         />
       </div>
 
       <fieldset className="lc-modeFieldset">
-        <legend className="lc-fieldLabel">{strings.card.solveFor} <RequiredMark title={strings.card.requiredTitle} /></legend>
+        <legend className="lc-fieldLabel lc-fieldLabel--required"><RequiredLabel title={strings.card.requiredTitle}>{strings.card.solveFor}</RequiredLabel></legend>
         <div className="lc-modeRow">
           <label className={`lc-modeOption ${vendor.modeKind === 'term' ? 'lc-modeOptionActive' : ''}`}>
             <input
@@ -1839,8 +1977,8 @@ function VendorCard({
 
       {vendor.modeKind === 'term' ? (
         <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={id('term')}>
-            {strings.card.term} <RequiredMark title={strings.card.requiredTitle} />
+          <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('term')}>
+            <RequiredLabel title={strings.card.requiredTitle}>{strings.card.term}</RequiredLabel>
           </label>
           <LocaleNumberInput
             id={id('term')}
@@ -1848,16 +1986,16 @@ function VendorCard({
             className="lc-input"
             value={vendor.termMonths}
             onValueChange={(v) => onChange({ termMonths: v })}
-            aria-invalid={requiredError || undefined}
+            aria-invalid={marked('termMonths') || undefined}
             aria-required="true"
-            aria-describedby={requiredError ? errorId : undefined}
+            aria-describedby={marked('termMonths') ? errorId : undefined}
             autoComplete="off"
           />
         </div>
       ) : (
         <div className="lc-field">
-          <label className="lc-fieldLabel" htmlFor={id('monthly')}>
-            {strings.card.monthly} <RequiredMark title={strings.card.requiredTitle} /> <span className="lc-fieldHint">({currency})</span>
+          <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('monthly')}>
+            <RequiredLabel title={strings.card.requiredTitle}>{strings.card.monthly}</RequiredLabel> <span className="lc-fieldHint">({currency})</span>
           </label>
           <LocaleNumberInput
             id={id('monthly')}
@@ -1865,16 +2003,16 @@ function VendorCard({
             className="lc-input"
             value={vendor.monthlyPayment}
             onValueChange={(v) => onChange({ monthlyPayment: v })}
-            aria-invalid={requiredError || undefined}
+            aria-invalid={marked('monthlyPayment') || undefined}
             aria-required="true"
-            aria-describedby={requiredError ? errorId : undefined}
+            aria-describedby={marked('monthlyPayment') ? errorId : undefined}
             autoComplete="off"
           />
         </div>
       )}
 
       {/* Not a live region: the tool's one announcement says the settled result. */}
-      <div className="lc-results">
+      <div className="lc-results" ref={results}>
         {hasError ? (
           <p className="lc-error" id={errorId}>
             <ErrorText>{arrived ? unreadableText : engineError(result.error ?? '', strings)}</ErrorText>
@@ -2029,7 +2167,10 @@ function VendorCard({
           </>
         )}
         {result.warnings.map((w, i) => (
-          <p key={i} className="lc-warning" role="status">{engineWarning(w, strings)}</p>
+          // Not a live region: typing a lump sum's month digit by digit would have a
+          // screen reader speak every change. The tool's one announcement says an
+          // offer's notes with its figures, once typing has paused (`announcedNotes`).
+          <p key={i} className="lc-warning">{engineWarning(w, strings)}</p>
         ))}
       </div>
 
@@ -2097,8 +2238,8 @@ function VendorCard({
         {vendor.rateKind === 'hybrid' && vendor.modeKind === 'term' && (
           <>
             <div className="lc-field">
-              <label className="lc-fieldLabel" htmlFor={id('initialFixedMonths')}>
-                {strings.card.initialFixed} <RequiredMark title={strings.card.requiredTitle} />
+              <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('initialFixedMonths')}>
+                <RequiredLabel title={strings.card.requiredTitle}>{strings.card.initialFixed}</RequiredLabel>
               </label>
               <LocaleNumberInput
                 id={id('initialFixedMonths')}
@@ -2108,14 +2249,14 @@ function VendorCard({
                 onValueChange={(v) => onChange({ initialFixedMonths: v })}
                 aria-invalid={badOptional.has('initialFixedMonths') || undefined}
                 aria-required="true"
-                aria-describedby={badOptional.has('initialFixedMonths') ? errorId : undefined}
+                aria-describedby={describedBy('initialFixedMonths', badOptional.has('initialFixedMonths'))}
                 autoComplete="off"
               />
-              <p className="lc-fieldHelp">{strings.card.initialFixedHelp}</p>
+              <p id={id('initialFixedMonths-help')} className="lc-fieldHelp">{strings.card.initialFixedHelp}</p>
             </div>
             <div className="lc-field">
-              <label className="lc-fieldLabel" htmlFor={id('subsequentRatePct')}>
-                {strings.card.subsequentRate} <RequiredMark title={strings.card.requiredTitle} />
+              <label className="lc-fieldLabel lc-fieldLabel--required" htmlFor={id('subsequentRatePct')}>
+                <RequiredLabel title={strings.card.requiredTitle}>{strings.card.subsequentRate}</RequiredLabel>
               </label>
               <LocaleNumberInput
                 id={id('subsequentRatePct')}
@@ -2125,10 +2266,10 @@ function VendorCard({
                 onValueChange={(v) => onChange({ subsequentRatePct: v })}
                 aria-invalid={badOptional.has('subsequentRatePct') || undefined}
                 aria-required="true"
-                aria-describedby={badOptional.has('subsequentRatePct') ? errorId : undefined}
+                aria-describedby={describedBy('subsequentRatePct', badOptional.has('subsequentRatePct'))}
                 autoComplete="off"
               />
-              <p className="lc-fieldHelp">
+              <p id={id('subsequentRatePct-help')} className="lc-fieldHelp">
                 {strings.card.subsequentRateHelp}
               </p>
             </div>
@@ -2186,10 +2327,10 @@ function VendorCard({
             value={vendor.pointsCostMajor}
             onValueChange={(v) => onChange({ pointsCostMajor: v })}
             aria-invalid={badOptional.has('pointsCostMajor') || undefined}
-            aria-describedby={badOptional.has('pointsCostMajor') ? errorId : undefined}
+            aria-describedby={describedBy('pointsCost', badOptional.has('pointsCostMajor'))}
             autoComplete="off"
           />
-          <p className="lc-fieldHelp">
+          <p id={id('pointsCost-help')} className="lc-fieldHelp">
             {strings.card.pointsCostHelp}
           </p>
         </div>
@@ -2204,10 +2345,10 @@ function VendorCard({
             value={vendor.pointsRateReductionPct}
             onValueChange={(v) => onChange({ pointsRateReductionPct: v })}
             aria-invalid={badOptional.has('pointsRateReductionPct') || undefined}
-            aria-describedby={badOptional.has('pointsRateReductionPct') ? errorId : undefined}
+            aria-describedby={describedBy('pointsReduction', badOptional.has('pointsRateReductionPct'))}
             autoComplete="off"
           />
-          <p className="lc-fieldHelp">{strings.card.pointsReductionHelp}</p>
+          <p id={id('pointsReduction-help')} className="lc-fieldHelp">{strings.card.pointsReductionHelp}</p>
         </div>
       </FieldGroup>
 
@@ -2239,12 +2380,12 @@ function VendorCard({
             value={vendor.lumpSumsEncoded}
             onValueChange={(v) => onChange({ lumpSumsEncoded: v })}
             aria-invalid={badOptional.has('lumpSumsEncoded') || undefined}
-            aria-describedby={badOptional.has('lumpSumsEncoded') ? errorId : undefined}
+            aria-describedby={describedBy('lumpSums', badOptional.has('lumpSumsEncoded'))}
             autoComplete="off"
             spellCheck={false}
             placeholder="12:5000;36:3000"
           />
-          <p className="lc-fieldHelp">
+          <p id={id('lumpSums-help')} className="lc-fieldHelp">
             {strings.card.lumpsHelp.before}
             <code>{strings.card.lumpsHelp.format}</code>
             {strings.card.lumpsHelp.mid}
@@ -2281,10 +2422,10 @@ function VendorCard({
             value={vendor.prepayPenaltyUntilMonth}
             onValueChange={(v) => onChange({ prepayPenaltyUntilMonth: v })}
             aria-invalid={badOptional.has('prepayPenaltyUntilMonth') || undefined}
-            aria-describedby={badOptional.has('prepayPenaltyUntilMonth') ? errorId : undefined}
+            aria-describedby={describedBy('prepayUntil', badOptional.has('prepayPenaltyUntilMonth'))}
             autoComplete="off"
           />
-          <p className="lc-fieldHelp">
+          <p id={id('prepayUntil-help')} className="lc-fieldHelp">
             {strings.card.penaltyUntilHelp}
           </p>
         </div>
@@ -2295,15 +2436,29 @@ function VendorCard({
 
 // ---- Form helpers ----------------------------------------------------------
 
-/** A small red asterisk used to mark required fields. The asterisk is
- *  presentational; the real semantic signal is the `aria-required` on
- *  the input itself. We hide the asterisk character from screen readers
- *  via aria-hidden so they don't read "required asterisk". */
-function RequiredMark({ title }: { title: string }) {
+/**
+ * The text of a required box's label, with its mark. The mark and the last
+ * word of the label are one unit that cannot break: with a space between
+ * them, or a no-break space, the asterisk still went to a line of its own
+ * under a long label at large text, because a label may break anywhere when
+ * a word is wider than its line (#917). Where the unit is wider than the
+ * label's line, the CSS draws it smaller by just enough to fit
+ * (`.lc-requiredPair`), from its length in characters, as an amount is.
+ *
+ * The asterisk is presentational: the real signal is `aria-required` on the
+ * box, so the character is hidden from screen readers.
+ */
+function RequiredLabel({ children, title }: { children: string; title: string }) {
+  const cut = children.lastIndexOf(' ') + 1;
+  const word = children.slice(cut);
   return (
-    <span className="lc-required" aria-hidden="true" title={title}>
-      *
-    </span>
+    <>
+      {children.slice(0, cut)}
+      <span className="lc-requiredPair" style={{ '--pair-len': word.length + 1 } as React.CSSProperties}>
+        {word}
+        <span className="lc-required" aria-hidden="true" title={title}>*</span>
+      </span>
+    </>
   );
 }
 
@@ -2396,12 +2551,34 @@ function announcedResult(
     : `${d.rangeBefore}${formatMoney(low, currency)}${d.rangeTo}${formatMoney(high, currency)}${d.rangeAcross}${formatMoney(high - low, currency)}${d.rangeAfter}`;
 }
 
+/** A valid offer as the announcement names it, with the notes under its result, in the card's order. */
+interface NotedOffer {
+  name: string;
+  notes: string[];
+}
+
+/**
+ * The notes under the offers' results, as they are said after the figures:
+ * each offer's notes in the card's order, the offers in theirs. With one
+ * offer the notes are its own; with several, each offer's notes follow its
+ * name, as in the printed report. Nothing for offers with no notes.
+ */
+function announcedNotes(noted: NotedOffer[]): string {
+  const several = noted.length > 1;
+  return noted
+    .filter((offer) => offer.notes.length > 0)
+    .map((offer) => `${several ? `${offer.name}: ` : ''}${offer.notes.join(' ')}`)
+    .join(' ');
+}
+
 /** The loan tool's one announcement, inside the money context it formats with. */
-function LoanAnnouncement({ withheld, paidOff, validCount, currency, strings, also, notice }: { withheld: boolean; paidOff: LoanResult[]; validCount: number; currency: string; strings: Strings; also: string | undefined; notice: Notice }) {
+function LoanAnnouncement({ withheld, paidOff, validCount, noted, currency, strings, also, notice }: { withheld: boolean; paidOff: LoanResult[]; validCount: number; noted: NotedOffer[]; currency: string; strings: Strings; also: string | undefined; notice: Notice }) {
   const { formatMoney } = useMoney();
+  // The figures, then the notes: one text, so a keystroke that changes both is said once.
+  const result = [announcedResult(paidOff, validCount, currency, strings, formatMoney), announcedNotes(noted)].filter(Boolean).join(' ');
   return (
     <ResultAnnouncement
-      text={withheld ? strings.delta.fix : announcedResult(paidOff, validCount, currency, strings, formatMoney)}
+      text={withheld ? strings.delta.fix : result}
       delay={withheld ? WITHHELD_SAID_AFTER : undefined}
       also={withheld ? undefined : also}
       notice={notice}
@@ -3110,7 +3287,12 @@ function HorizonSection({
   const { formatMoney } = useMoney();
   const horizonId = useId();
   const horizonErrorId = useId();
-  const badHorizon = isUnreadable(horizonMonths);
+  // A horizon box left empty is flagged and holds the panel back, as one
+  // that cannot be read does: it used to show results at 60 months while
+  // the box was blank (#823, owner, Nov 27, 2026).
+  const emptyHorizon = horizonMonths.trim() === '';
+  const badHorizon = isUnreadable(horizonMonths) || emptyHorizon;
+  const horizonFault = emptyHorizon ? strings.horizon.required : null;
   // Debounced engagement signal. We don't want to fire one event per
   // slider tick (a single drag would send dozens), so we schedule a
   // track() 600ms after the last change. The ref persists across
@@ -3180,7 +3362,7 @@ function HorizonSection({
           onChange={(e) => handleHorizonChange(e.target.value)}
           // aria-valuetext lets screen readers announce a human-friendly
           // value ("2 yr 6 mo") instead of just the raw integer.
-          aria-valuetext={badHorizon ? engineError(OPTIONAL_UNREADABLE, strings) : months(horizon, strings.months)}
+          aria-valuetext={badHorizon ? horizonFault ?? engineError(OPTIONAL_UNREADABLE, strings) : months(horizon, strings.months)}
           className="lc-horizonSlider"
         />
         <LocaleNumberInput
@@ -3195,7 +3377,7 @@ function HorizonSection({
       </div>
 
       {badHorizon ? (
-        <p className="lc-error" id={horizonErrorId} role="alert"><ErrorText>{typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText}</ErrorText></p>
+        <p className="lc-error" id={horizonErrorId} role="alert"><ErrorText>{horizonFault ?? (typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText)}</ErrorText></p>
       ) : validRows.length === 0 ? (
         <p className="lc-deltaEmpty">{strings.horizon.empty}</p>
       ) : (
@@ -3389,7 +3571,17 @@ function RefinanceSection({
   const badRate = isUnreadable(state.refiNewRatePct);
   const badTerm = isUnreadable(state.refiNewTermMonths);
   const badFee = isUnreadable(state.refiNewFeeMajor);
-  const badRefi = badAtMonth || badRate || badTerm || badFee;
+  // A required box left empty (the month, the rate, the term) is flagged and
+  // holds the scenario back, as one that cannot be read does (#823). An
+  // empty fee is none paid.
+  const emptyAt = state.refiAtMonth.trim() === '';
+  const emptyRate = state.refiNewRatePct.trim() === '';
+  const emptyTerm = state.refiNewTermMonths.trim() === '';
+  const unreadableRefi = badAtMonth || badRate || badTerm || badFee;
+  const badRefi = unreadableRefi || emptyAt || emptyRate || emptyTerm;
+  // One empty box is named by itself; two or three, together.
+  const emptyCount = [emptyAt, emptyRate, emptyTerm].filter(Boolean).length;
+  const emptyMessage = emptyCount > 1 ? strings.refi.required : emptyAt ? strings.refi.requiredMonth : emptyRate ? strings.refi.requiredRate : strings.refi.requiredTerm;
 
   const cmp =
     !badRefi && original && Number.isFinite(atMonth) && Number.isFinite(newRate) && Number.isFinite(newTerm)
@@ -3442,8 +3634,8 @@ function RefinanceSection({
             id={atMonthId}
             inputMode="numeric"
             className="lc-input"
-            aria-invalid={badAtMonth || undefined}
-            aria-describedby={badAtMonth ? refiErrorId : undefined}
+            aria-invalid={badAtMonth || emptyAt || undefined}
+            aria-describedby={badAtMonth || emptyAt ? refiErrorId : undefined}
             value={state.refiAtMonth}
             onValueChange={(v) => {
               onChange({ refiAtMonth: v });
@@ -3458,8 +3650,8 @@ function RefinanceSection({
             id={newRateId}
             inputMode="decimal"
             className="lc-input"
-            aria-invalid={badRate || undefined}
-            aria-describedby={badRate ? refiErrorId : undefined}
+            aria-invalid={badRate || emptyRate || undefined}
+            aria-describedby={badRate || emptyRate ? refiErrorId : undefined}
             value={state.refiNewRatePct}
             onValueChange={(v) => {
               onChange({ refiNewRatePct: v });
@@ -3474,8 +3666,8 @@ function RefinanceSection({
             id={newTermId}
             inputMode="numeric"
             className="lc-input"
-            aria-invalid={badTerm || undefined}
-            aria-describedby={badTerm ? refiErrorId : undefined}
+            aria-invalid={badTerm || emptyTerm || undefined}
+            aria-describedby={badTerm || emptyTerm ? refiErrorId : undefined}
             value={state.refiNewTermMonths}
             onValueChange={(v) => {
               onChange({ refiNewTermMonths: v });
@@ -3519,7 +3711,7 @@ function RefinanceSection({
       </div>
 
       {badRefi ? (
-        <p className="lc-error" id={refiErrorId} role="alert"><ErrorText>{typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText}</ErrorText></p>
+        <p className="lc-error" id={refiErrorId} role="alert"><ErrorText>{unreadableRefi ? (typed ? engineError(OPTIONAL_UNREADABLE, strings) : unreadableText) : emptyMessage}</ErrorText></p>
       ) : !cmp ? (
         <p className="lc-deltaEmpty">
           {strings.refi.empty}
@@ -3589,7 +3781,7 @@ function RefinanceSection({
 // default export.
 export {
   AnalysisTabs, BalanceChart, ChartsPanel, DeltaRow, DeltaSummary, FieldGroup, HorizonSection, HowItWorksPanel,
-  LoanAnnouncement, PaymentSteps, PrintedReport, RefinanceSection, RequiredMark, ResultRow, SplitChart, VendorCard,
-  analysisTabs, announcedRefinance, announcedResult, aprText, engineWarning, formatYearLabel, isTypedName, months,
+  LoanAnnouncement, PaymentSteps, PrintedReport, RefinanceSection, RequiredLabel, ResultRow, SplitChart, VendorCard,
+  analysisTabs, announcedNotes, announcedRefinance, announcedResult, aprText, engineWarning, formatYearLabel, isTypedName, months,
   noTotalText, payoffText, sampleSchedule, shownName, spokenMonths, usePhone,
 };

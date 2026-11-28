@@ -153,6 +153,6 @@ Both are real. Both can be managed, but only if you're aware of them.
 
 Understanding exchange rates and PPP is the foundation for managing money across borders. Whether you're comparing job offers in different countries, planning a move, or simply wondering why your holiday budget stretches further in some places than others, thinking in real terms instead of nominal ones is the skill that ties it all together.
 
-In the [previous post](/blog/purchasing-power/), we looked at how purchasing power erodes over time through inflation. Here, we've seen how it varies across space. Both forces shape what your money is actually worth, and both matter when you're making decisions about where to live, work, and invest.
+The [previous lesson](/blog/purchasing-power/) looked at how purchasing power erodes over time through inflation. This one has shown how it varies across space. Both forces shape what your money is actually worth, and both matter when you're making decisions about where to live, work, and invest.
 
-So we know that money loses value over time (inflation) and across borders (exchange rates). The next question is practical: what should you do about it? When should you save your money, and when should you invest it? They're not the same thing, and the order often matters more than it first seems.
+So money loses value over time (inflation) and across borders (exchange rates). The next question is practical: what should you do about it? When should you save your money, and when should you invest it? They're not the same thing, and the order often matters more than it first seems.
