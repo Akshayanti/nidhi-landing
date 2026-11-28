@@ -213,10 +213,11 @@ export function useShareLink(stale: unknown, words: { status: string; prompt: st
   const [notice, setNotice] = useState<Notice>({ text: '', n: 0 });
   // The clipboard answers later: an answer for a form that has changed since
   // the click is dropped, so the bar never brings back the address of
-  // something no longer on the page. The form is noted as each render reads
-  // it, so a change counts at once, not only after its effects have run.
+  // something no longer on the page. The form is noted as it commits, before
+  // the page is painted: a change counts at once, and a drawing React set
+  // aside never counts.
   const latest = useRef(stale);
-  latest.current = stale;
+  useLayoutEffect(() => { latest.current = stale; }, [stale]);
   useEffect(() => { setUrl(''); }, [stale]);
   /** Call when a copy starts; the answers it returns count only while the form is unchanged. */
   const start = useCallback(() => {
