@@ -3,11 +3,6 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [main]
-    # Pushes that only update the newsletter marker file shouldn't trigger
-    # a rebuild/redeploy: prevents a self-triggering loop after the
-    # newsletter workflow commits .last-sent-guid.txt back to main.
-    paths-ignore:
-      - '.last-sent-guid.txt'
   schedule:
     # Daily rebuild to publish date-gated posts. Since 27 Aug 2026 GitHub
     # starts this repository's scheduled workflows 4.5 to 10 hours after

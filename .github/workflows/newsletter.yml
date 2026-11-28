@@ -177,7 +177,12 @@ jobs:
             git show origin/newsletter-state:.last-sent-guid.txt > .last-sent-guid.txt
             echo "Marker loaded from newsletter-state."
           elif [ "$status" = "2" ] && [ "${BOOTSTRAP:-}" = "1" ]; then
-            echo "::warning title=First run::No newsletter-state branch: starting it from the marker on main (NEWSLETTER_STATE_BOOTSTRAP=1). Remove that variable after this run."
+            # main keeps no copy of the record (it stopped there on Oct 21,
+            # 2026, and a stale copy would be read as the truth). A first run
+            # starts empty: the sender then sends only the newest lesson,
+            # records the rest, and never sends one older than 14 days.
+            : > .last-sent-guid.txt
+            echo "::warning title=First run::No newsletter-state branch: starting an empty record (NEWSLETTER_STATE_BOOTSTRAP=1). Remove that variable after this run."
           elif [ "$status" = "2" ]; then
             echo "::error title=No newsletter marker::The newsletter-state branch is missing, so which lessons went out is unknown. Nothing is sent. Restore the branch, or for a first run set NEWSLETTER_STATE_BOOTSTRAP=1."
             exit 1
@@ -223,8 +228,8 @@ jobs:
           for attempt in 1 2 3; do
             rm -rf "$STATE"
             git worktree prune
-            # Start from the branch; from main only when it does not exist yet
-            # (the load step allowed that only for a first run). A branch that
+            # Start from the branch; from an empty record only when it does not
+            # exist yet (the load step allowed that only for a first run). A branch that
             # cannot be read is retried, never replaced.
             status=0
             git ls-remote --exit-code --heads origin newsletter-state >/dev/null || status=$?
@@ -237,6 +242,7 @@ jobs:
               sleep 5
               continue
             fi
+            touch "$STATE/.last-sent-guid.txt"
             grep -vxFf "$STATE/.last-sent-guid.txt" .last-sent-guid.txt >> "$STATE/.last-sent-guid.txt" || true
             if git -C "$STATE" diff --quiet -- .last-sent-guid.txt && git rev-parse --verify --quiet origin/newsletter-state >/dev/null; then
               echo "No marker changes to commit."

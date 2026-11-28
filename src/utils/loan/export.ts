@@ -14,7 +14,7 @@
  */
 import type { Dict } from '../../i18n/strings/types.ts';
 import { MAX_CELL_TEXT, amountFormat, typedRate, type Cell, type Sheet } from '../shared/xlsx.ts';
-import { fromMinor, getCurrency, isNotPaidOff, MAX_TERM_MONTHS, type LoanResult } from './math.ts';
+import { fromMinor, getCurrency, toMinor, isNotPaidOff, MAX_TERM_MONTHS, type LoanResult } from './math.ts';
 import { parseNumber } from './inputs.ts';
 import { lumpSumFault, parseLumpSums, type VendorInput } from './url.ts';
 import { resultNotes } from './notes.ts';
@@ -84,9 +84,13 @@ export function loanSheets({ island, common, currency, vendors, results, names, 
   const decimals = Math.round(Math.log10(getCurrency(currency).factor));
   const fmt = amountFormat(decimals);
   const minor = (units: number): Cell => ({ n: fromMinor(units, currency), fmt });
+  // A typed amount as the tool counts it: rounded to the currency's unit the
+  // way the engine rounds (`toMinor`, a half upwards), so the sheet never
+  // shows 1,000.00 where the results used 1,000.01.
+  const counted = (n: number): number => fromMinor(toMinor(n, currency), currency);
   const major = (raw: string): Cell => {
     const n = parseNumber(raw);
-    return Number.isFinite(n) ? { n: Number(n.toFixed(decimals)), fmt } : null;
+    return Number.isFinite(n) ? { n: counted(n), fmt } : null;
   };
   const rate = (raw: string): Cell => {
     const n = parseNumber(raw);
@@ -106,7 +110,7 @@ export function loanSheets({ island, common, currency, vendors, results, names, 
     if (!encoded.trim()) return [];
     const entries = parseLumpSums(encoded);
     if (entries.length === 0 || lumpSumFault(encoded) !== null) return [encoded];
-    return packCells(entries.map((l) => `${island.balance.month.replace('{m}', String(l.month)).replace(/ /g, '\u00a0')}: ${amountText.format(l.amountMajor)}`), '; ', MAX_CELL_TEXT);
+    return packCells(entries.map((l) => `${island.balance.month.replace('{m}', String(l.month)).replace(/ /g, '\u00a0')}: ${amountText.format(counted(l.amountMajor))}`), '; ', MAX_CELL_TEXT);
   };
   const whole = (raw: string): Cell => {
     const n = parseNumber(raw);
