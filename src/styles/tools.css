@@ -3873,6 +3873,11 @@ legend.lc-fieldLabel--required {
   .lc-yPin {
     display: block;
   }
+  /* As wide as the chart it scrolls, so the pinned amounts can stay at the
+     left the whole way across: a sticky part cannot leave its box. */
+  .lc-chartBox {
+    min-width: 600px;
+  }
 }
 
 /* Multi-currency net worth: interactive donut */
