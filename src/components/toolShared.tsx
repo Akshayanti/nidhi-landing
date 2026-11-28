@@ -211,26 +211,25 @@ export function useShareLink(stale: unknown, words: { status: string; prompt: st
   const [url, setUrl] = useState('');
   const [failed, setFailed] = useState(false);
   const [notice, setNotice] = useState<Notice>({ text: '', n: 0 });
-  // Each change to the form starts a new generation. The clipboard answers
-  // later: an answer for a form that has changed since is dropped, so the bar
-  // never brings back the address of something no longer on the page.
-  const generation = useRef(0);
-  useEffect(() => {
-    generation.current += 1;
-    setUrl('');
-  }, [stale]);
+  // The clipboard answers later: an answer for a form that has changed since
+  // the click is dropped, so the bar never brings back the address of
+  // something no longer on the page. The form is noted as each render reads
+  // it, so a change counts at once, not only after its effects have run.
+  const latest = useRef(stale);
+  latest.current = stale;
+  useEffect(() => { setUrl(''); }, [stale]);
   /** Call when a copy starts; the answers it returns count only while the form is unchanged. */
   const start = useCallback(() => {
-    const at = generation.current;
+    const at = latest.current;
     return {
       copied: (link: string) => {
-        if (at !== generation.current) return;
+        if (!Object.is(at, latest.current)) return;
         setUrl(link);
         setFailed(false);
         setNotice((was) => ({ text: words.status, n: was.n + 1 }));
       },
       refused: (link: string) => {
-        if (at !== generation.current) return;
+        if (!Object.is(at, latest.current)) return;
         setUrl(link);
         setFailed(true);
         setNotice((was) => ({ text: words.prompt, n: was.n + 1 }));

@@ -51,6 +51,8 @@ describe('useShareLink', () => {
     act(() => late.refused(LINK));
     assert.ok(field() === null);
     assert.equal(share.notice.n, 0);
+    // Nothing is said for it either.
+    assert.ok(document.querySelector('.lc-shareUrlLabel') === null);
     // A copy started after the change still counts.
     act(() => share.start().copied(LINK));
     assert.ok(field()?.value === LINK);
