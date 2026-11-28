@@ -155,11 +155,11 @@ export const CHANGE_DAYS: ChangeDay[] = [
       {
         id: 'amounts-true-minus-and-yen',
         text: {
-          en: 'Amounts below zero now start with a true minus sign in every tool and chart, so an amount owed in Swiss francs reads “−CHF\u00a01,650”, not “CHF-1,650”. The yen is written “¥”, like the page’s other symbols, and the currency code after a dollar amount no longer drops onto a line of its own.',
-          hi: 'शून्य से कम राशियाँ अब हर टूल और चार्ट में असली माइनस चिह्न से शुरू होती हैं, इसलिए स्विस फ़्रैंक में बकाया राशि “−CHF\u00a01,650” लिखी जाती है, “CHF-1,650” नहीं। येन अब “¥” लिखा जाता है, जैसे पेज बाक़ी चिह्न लिखता है, और डॉलर की राशि के बाद का मुद्रा कोड अब अकेले अगली पंक्ति पर नहीं जाता।',
-          es: 'Las cantidades por debajo de cero llevan ahora un signo menos de verdad (−) en todas las herramientas y gráficos, no un guion, y siempre delante de la cantidad. El yen se escribe «¥», como los demás símbolos de la página, y el código que sigue a una cantidad en dólares ya no puede quedarse solo en otra línea.',
+          en: 'Amounts below zero now start with a true minus sign in every tool and chart, so an amount owed in Swiss francs reads “−CHF\u00a01,650”, not “CHF\u20111,650”. The yen is written “¥”, like the page’s other symbols, and the currency code after a dollar amount no longer drops onto a line of its own.',
+          hi: 'शून्य से कम राशियाँ अब हर टूल और चार्ट में असली माइनस चिह्न से शुरू होती हैं, इसलिए स्विस फ़्रैंक में बकाया राशि “−CHF\u00a01,650” लिखी जाती है, “CHF\u20111,650” नहीं। येन अब “¥” लिखा जाता है, पेज के बाक़ी चिह्नों की तरह, और डॉलर की राशि के बाद का मुद्रा कोड अब अकेले अगली पंक्ति पर नहीं जाता।',
+          es: 'Las cantidades por debajo de cero llevan ahora un auténtico signo menos (−) en todas las herramientas y gráficos, no un guion, y siempre delante de la cantidad. El yen se escribe «¥», como los demás símbolos de la página, y el código que sigue a una cantidad en dólares ya no puede quedarse solo en otra línea.',
           cs: 'Částky pod nulou mají teď ve všech nástrojích a\u00a0grafech skutečné znaménko minus (−), ne spojovník, a\u00a0vždy před částkou. Japonský jen se píše „¥“ jako ostatní symboly na stránce a\u00a0kód měny za částkou v\u00a0dolarech už nemůže zůstat sám na dalším řádku.',
-          mr: 'शून्यापेक्षा कमी रकमा आता प्रत्येक साधनात आणि आलेखात खऱ्या मायनस चिन्हाने सुरू होतात, त्यामुळे स्विस फ्रँकमधील देणे असलेली रक्कम “−CHF\u00a01,650” अशी लिहिली जाते, “CHF-1,650” नाही. येन आता “¥” असे लिहिले जाते, पानावरील इतर चिन्हांसारखे, आणि डॉलरमधील रकमेनंतरचा चलन कोड आता एकटा पुढच्या ओळीवर जात नाही.',
+          mr: 'शून्यापेक्षा कमी रकमा आता प्रत्येक साधनात आणि आलेखात खऱ्या मायनस चिन्हाने सुरू होतात, त्यामुळे स्विस फ्रँकमधील देणे असलेली रक्कम “−CHF\u00a01,650” अशी लिहिली जाते, “CHF\u20111,650” नाही. येन आता “¥” असे लिहिले जाते, पानावरील इतर चिन्हांसारखे, आणि डॉलरमधील रकमेनंतरचा चलन कोड आता एकटा पुढच्या ओळीवर जात नाही.',
         },
       },
       {

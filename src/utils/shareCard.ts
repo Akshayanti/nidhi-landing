@@ -9,7 +9,6 @@
  * site's default card, so a new lesson or tool never breaks the build.
  */
 import { existsSync } from 'node:fs';
-import { join } from 'node:path';
 
 export type ShareCardKind = 'how-to' | 'lessons' | 'tools';
 
@@ -26,6 +25,8 @@ export function shareCardAlt(title: string, what: string): string {
 
 /** The page's card, or undefined when it has none and the default card applies. */
 export function shareCard(kind: ShareCardKind, slug: string, title: string, what: string): ShareCard | undefined {
+  // Read from where the build runs, as GuidePage reads its card: a path with
+  // a known start, so the mutation analysis ties it to these cards only.
   const image = `/brand/social/${kind}/${slug}.png`;
-  return existsSync(join(process.cwd(), 'public', image)) ? { image, imageAlt: shareCardAlt(title, what) } : undefined;
+  return existsSync(`public/brand/social/${kind}/${slug}.png`) ? { image, imageAlt: shareCardAlt(title, what) } : undefined;
 }

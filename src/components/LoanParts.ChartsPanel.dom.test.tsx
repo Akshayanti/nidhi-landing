@@ -160,7 +160,7 @@ describe('the charts panel', () => {
     const split = shown(root);
     assert.equal(split.name, 'Offer B');
     assert.equal(split.caption, 'Interest and principal split for Offer B, sampled across the loan');
-    assert.deepEqual(split.rows[0], ['Year 1', '€172.55', '€10.00', '€162.55']);
+    assert.deepEqual(split.rows[0], ['Month 1', '€172.55', '€10.00', '€162.55']);
     assert.deepEqual(split.colours, [`fill: ${CHART_SERIES[1]};`]);
     assert.equal(sentence(root), `Showing Offer B's contract schedule${SENTENCE_END}`);
   });
@@ -171,7 +171,7 @@ describe('the charts panel', () => {
     const split = shown(root);
     assert.equal(split.name, 'Credit union');
     assert.equal(split.caption, 'Interest and principal split for Credit union, sampled across the loan');
-    assert.deepEqual(split.rows[0], ['Year 1', '€100.00', '€0.00', '€100.00']);
+    assert.deepEqual(split.rows[0], ['Month 1', '€100.00', '€0.00', '€100.00']);
     assert.deepEqual(split.colours, ['fill: var(--chart-1);']);
     assert.equal(sentence(root), `Showing Credit union's contract schedule${SENTENCE_END}`);
     // The second offer, chosen by hand where the first is lowest in cost.
@@ -230,7 +230,7 @@ describe('the charts panel', () => {
     const split = shown(root);
     // "Vendor B" keeps its letter in the third slot, and takes the slot's colour.
     assert.equal(split.name, 'Offer B');
-    assert.deepEqual(split.rows[0], ['Year 1', '€172.55', '€10.00', '€162.55']);
+    assert.deepEqual(split.rows[0], ['Month 1', '€172.55', '€10.00', '€162.55']);
     assert.deepEqual(split.colours, ['fill: var(--chart-3);']);
   });
 
@@ -293,7 +293,7 @@ describe('the charts panel', () => {
     const withExtra = charts([WITH_EXTRA, SECOND], { lowest: 0 });
     assert.equal(sentence(withExtra), `Showing Broker's contract schedule (without optional extra principal; APR-equivalent view)${SENTENCE_END}`);
     // The contract's €100 a month is drawn, not the €150 the reader pays.
-    assert.deepEqual(shown(withExtra).rows[0], ['Year 1', '€100.00', '€0.00', '€100.00']);
+    assert.deepEqual(shown(withExtra).rows[0], ['Month 1', '€100.00', '€0.00', '€100.00']);
     // The other offer has none: an extra of "0", and an empty box.
     assert.equal(sentence(charts([WITH_EXTRA, SECOND], { lowest: 0, chosen: 1 })), `Showing Offer B's contract schedule${SENTENCE_END}`);
     assert.equal(sentence(charts([{ ...UNION, extraMonthly: '' }, SECOND], { lowest: 0 })), `Showing Credit union's contract schedule${SENTENCE_END}`);
@@ -308,9 +308,9 @@ describe('the charts panel', () => {
     // Month 1 is interest-free: the whole €100 is principal. After that the
     // interest due is more than the €100 paid, so all of it goes on interest
     // and none on principal (not the engine's negative principal).
-    assert.deepEqual(split.rows[0], ['Year 1', '€100.00', '€0.00', '€100.00']);
+    assert.deepEqual(split.rows[0], ['Month 1', '€100.00', '€0.00', '€100.00']);
     assert.deepEqual(split.rows.slice(1).map((r) => r.slice(1)), Array.from({ length: 5 }, () => ['€100.00', '€100.00', '€0.00']));
-    assert.equal(split.rows.at(-1)![0], 'Year 2');
+    assert.equal(split.rows.at(-1)![0], 'Month 24');
     // By itself it is drawn over its own term, one year.
     const alone = shown(charts([NO_AMOUNT, NEVER], { lowest: -1 }));
     assert.equal(alone.rows.at(-1)![0], 'Month 12');

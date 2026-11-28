@@ -28,6 +28,7 @@ const GUIDES = join(ROOT, 'src/content/guides');
 const LESSONS = join(ROOT, 'src/content/blog');
 const SOCIAL = join(ROOT, 'public/brand/social');
 const { en } = await import('../src/i18n/strings/en.ts');
+const { LADDER_LEVELS } = await import('../src/utils/home/startingPoints.ts');
 /** The free tools, by the catalog key their hub card uses, and their address. */
 const TOOLS = {
   multiCurrencyNetWorth: 'multi-currency-net-worth',
@@ -74,10 +75,17 @@ function readLesson(path) {
     slug: field(block, 'slug'),
     title: field(block, 'title'),
     kicker: 'Lesson',
-    group: en.learn.levels[field(block, 'level')] ?? '',
+    group: levelLine(field(block, 'level')),
     meta: 'Sources cited · free',
     where: 'nidhi.today/blog',
   };
+}
+
+/** "Level 1 of 5 · Discovery" on the ladder; a lesson outside it has its group's name. */
+function levelLine(level) {
+  const at = LADDER_LEVELS.indexOf(level);
+  const name = en.learn.levels[level] ?? '';
+  return at < 0 ? name : `Level ${at + 1} of ${LADDER_LEVELS.length} · ${name}`;
 }
 
 function readTools() {
@@ -86,7 +94,8 @@ function readTools() {
     slug,
     title: en.freeHub.tools[key].title,
     kicker: 'Free tool',
-    group: '',
+    // The line its card on the tools page has, so the card says what it is for.
+    group: en.freeHub.tools[key].kicker,
     meta: 'No sign-up · what you type stays in your browser',
     where: 'nidhi.today/free',
   }));
@@ -105,13 +114,14 @@ function html(g) {
     * { box-sizing: border-box; margin: 0; }
     body { width: 1200px; height: 630px; background: #F8F9FA; font-family: Roboto, sans-serif; }
     .card { position: absolute; inset: 0; padding: 64px 80px; display: flex; flex-direction: column; border-left: 18px solid #005B4F; }
-    .kicker { font-family: Inter; font-weight: 700; font-size: 26px; letter-spacing: 0.08em; text-transform: uppercase; color: #005B4F; }
+    .kicker { font-family: Inter; font-weight: 700; font-size: 26px; letter-spacing: 0.08em; text-transform: uppercase; color: #004D40; }
     .group { font-size: 26px; color: #4A4A4A; margin-top: 8px; }
     h1 { font-family: Inter; font-weight: 700; font-size: ${size}px; line-height: 1.12; letter-spacing: -0.02em; color: #0A3D8F; margin-top: 40px; max-width: 1000px; }
-    .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; font-size: 26px; color: #4A4A4A; }
+    .foot { margin-top: auto; display: flex; justify-content: space-between; align-items: flex-end; gap: 48px; font-size: 26px; color: #4A4A4A; }
+    .foot > div:first-child { max-width: 620px; }
     .brand { display: flex; align-items: center; gap: 16px; font-family: Inter; font-weight: 700; font-size: 40px; color: #0A3D8F; }
     .brand img { width: 64px; height: 64px; border-radius: 14px; }
-    .brand span { display: block; font-family: Roboto; font-weight: 400; font-size: 22px; color: #005B4F; }
+    .brand span { display: block; font-family: Roboto; font-weight: 400; font-size: 22px; color: #004D40; }
   </style></head><body><div class="card">
     <div class="kicker">${esc(g.kicker)}</div>
     ${g.group ? `<div class="group">${esc(g.group)}</div>` : ''}

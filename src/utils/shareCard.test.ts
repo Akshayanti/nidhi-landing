@@ -22,7 +22,7 @@ describe('a page’s own share card', () => {
   });
 
   it('has a card for each of the five tools', () => {
-    const drawn = readdirSync(new URL('../../public/brand/social/tools/', import.meta.url)).sort();
+    const drawn = readdirSync('public/brand/social/tools').sort();
     assert.deepEqual(drawn, ['inflation-calculator.png', 'invest-or-pay-off.png', 'loan-comparison.png', 'monte-carlo-simulator.png', 'multi-currency-net-worth.png']);
   });
 });

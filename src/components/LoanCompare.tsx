@@ -754,7 +754,11 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   const plotW = width - padL - padR;
   const plotH = (phone ? 330 : 360) - 56 - 64;
   const factor = getCurrency(currency).factor;
-  const choices = [6, 3, 2].map((n) => pickSplitSamples(schedule.length, n));
+  // A loan of up to three years is named by month, every sample kept; a
+  // longer one by year, with one sample a year at most, so no two bars share
+  // a name ("Year 3" under months 25 and 36 of a five-year loan).
+  const byYear = schedule.length > 36;
+  const choices = [6, 3, 2].map((n) => (byYear ? oneAYear : (m: number[]) => m)(pickSplitSamples(schedule.length, n)));
   const candidates = [...new Set(choices.flat())].map((m) => schedule[m - 1]).filter(Boolean);
   // The chart names its unit once, in the heading above it, and the bars
   // carry bare numbers, like every other chart. Whole units while every
@@ -767,7 +771,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   // How wide each label is drawn, measured in the drawing (#521, #676).
   const measured = useMeasuredText(svgRef, [
     ...candidates.flatMap((r) => [...labelForms(r.interest), ...labelForms(r.principal)]).map((text) => ({ cls: 'lc-splitValueInterest', text, size: fs })),
-    ...candidates.flatMap((r) => words(formatYearLabel(r.month, strings))).map((text) => ({ cls: 'lc-splitTickX', text, size: fs })),
+    ...candidates.flatMap((r) => words(formatYearLabel(r.month, strings, byYear))).map((text) => ({ cls: 'lc-splitTickX', text, size: fs })),
     ...['', ' lc-splitEyebrow--plain'].flatMap((plain) => [
       ...words(strings.split.eyebrowInterest).map((text) => ({ cls: `lc-splitEyebrowInterest${plain}`, text, size: fs })),
       ...words(strings.split.eyebrowPrincipal).map((text) => ({ cls: `lc-splitEyebrowPrincipal${plain}`, text, size: fs })),
@@ -789,7 +793,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   }
 
   // As many sample years as let each year's label fit its column on one line.
-  const samples = choices.find((c, k) => k === choices.length - 1 || c.every((m) => lineWidth('lc-splitTickX', formatYearLabel(m, strings)) + 0.6 * fs <= plotW / c.length))!;
+  const samples = choices.find((c, k) => k === choices.length - 1 || c.every((m) => lineWidth('lc-splitTickX', formatYearLabel(m, strings, byYear)) + 0.6 * fs <= plotW / c.length))!;
   const rows = samples.map((m) => schedule[m - 1]);
   // The table for screen readers keeps all six sample years whatever the
   // drawing shows: it is where the years a narrow drawing leaves out are given.
@@ -822,7 +826,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   const plain = capsFit ? '' : ' lc-splitEyebrow--plain';
   const eyeI = wrapped(`lc-splitEyebrowInterest${plain}`, strings.split.eyebrowInterest, plotW);
   const eyeP = wrapped(`lc-splitEyebrowPrincipal${plain}`, strings.split.eyebrowPrincipal, plotW);
-  const ticks = rows.map((r) => wrapped('lc-splitTickX', formatYearLabel(r.month, strings), column - 0.4 * fs));
+  const ticks = rows.map((r) => wrapped('lc-splitTickX', formatYearLabel(r.month, strings, byYear), column - 0.4 * fs));
   const tickLines = Math.max(...ticks.map((t) => t.lines.length));
   const foot = wrapped('lc-splitFootnote', strings.split.footnote, width - 8);
 
@@ -897,7 +901,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
       .map((r) => {
         const pctInterest = (r.interest / r.payment) * 100;
         return format(strings.split.ariaRow, {
-          when: formatYearLabel(r.month, strings),
+          when: formatYearLabel(r.month, strings, byYear),
           interest: formatMoney(r.interest, currency),
           pct: pctInterest.toFixed(0),
           principal: formatMoney(r.principal, currency),
@@ -990,7 +994,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
               >
                 {barLabel(row.principal)}
               </text>}
-              {/* X-axis label: "Year N" or "Month N" for very short loans */}
+              {/* X-axis label: "Year N", or "Month N" on a loan of up to three years */}
               <text
                 x={x + barWidth / 2}
                 y={tickTop}
@@ -1033,7 +1037,7 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
           <tbody>
             {tableRows.map((r) => (
               <tr key={r.month}>
-                <th scope="row">{formatYearLabel(r.month, strings)}</th>
+                <th scope="row">{formatYearLabel(r.month, strings, byYear)}</th>
                 <td><Amount>{formatMoney(r.payment, currency)}</Amount></td>
                 <td><Amount>{formatMoney(r.interest, currency)}</Amount></td>
                 <td><Amount>{formatMoney(r.principal, currency)}</Amount></td>
@@ -1046,18 +1050,26 @@ function SplitChart({ schedule, currency, vendorName, vendorColor, vendorInk, st
   );
 }
 
-/** Render a sampled month as a "Year N" label, falling back to "Month N"
- *  for short-term loans where year framing would be misleading. */
-function formatYearLabel(month: number, strings: Strings): string {
-  if (month <= 12) {
-    return month === 1
-      ? format(strings.balance.year, { y: 1 })
-      : format(strings.balance.month, { m: month });
+/**
+ * The sampled months with at most one in each year, so no two bars carry the
+ * same name ("Year 3" under months 25 and 36 of a five-year loan). The first
+ * month stays, as the start; in a later year the last sample in it stays,
+ * the nearest to the year's end. Used on loans longer than three years,
+ * which have a year for each of the bars a drawing needs.
+ */
+function oneAYear(months: number[]): number[] {
+  const out: number[] = [];
+  for (const m of months) {
+    const last = out[out.length - 1];
+    if (last === undefined || Math.ceil(last / 12) !== Math.ceil(m / 12)) out.push(m);
+    else if (out.length > 1 || last !== 1) out[out.length - 1] = m;
   }
-  // Months that fall on a year boundary read as "Year N"; off-boundary
-  // months read as the year they fall in, so the user can still locate them.
-  if (month % 12 === 0) return format(strings.balance.year, { y: month / 12 });
-  return format(strings.balance.year, { y: Math.floor(month / 12) + 1 });
+  return out;
+}
+
+/** A sampled month as "Year N", the year it falls in, or "Month N" on a loan of up to three years. */
+function formatYearLabel(month: number, strings: Strings, byYear: boolean): string {
+  return byYear ? format(strings.balance.year, { y: Math.ceil(month / 12) }) : format(strings.balance.month, { m: month });
 }
 
 // ---- Phone layout ------------------------------------------------------------
@@ -2615,8 +2627,10 @@ function DeltaSummary({ withheld, reasonId, results, vendors, currency, strings 
     .filter((x) => !x.r.error && x.r.schedule.length > 0);
 
   if (valid.length < 2) {
+    // Named by its heading as with two offers, so it stays the same landmark
+    // whether or not the comparison can be made yet.
     return (
-      <section className="lc-deltaSection">
+      <section className="lc-deltaSection" aria-labelledby="lc-delta-h">
         <h2 id="lc-delta-h" className="lc-sectionTitle" tabIndex={-1}>{strings.delta.heading}</h2>
         <Withheld reason={reason} reasonId={reasonId}>
           <p className="lc-deltaEmpty">
@@ -3782,6 +3796,6 @@ function RefinanceSection({
 export {
   AnalysisTabs, BalanceChart, ChartsPanel, DeltaRow, DeltaSummary, FieldGroup, HorizonSection, HowItWorksPanel,
   LoanAnnouncement, PaymentSteps, PrintedReport, RefinanceSection, RequiredLabel, ResultRow, SplitChart, VendorCard,
-  analysisTabs, announcedNotes, announcedRefinance, announcedResult, aprText, engineWarning, formatYearLabel, isTypedName, months,
+  analysisTabs, announcedNotes, announcedRefinance, announcedResult, aprText, engineWarning, formatYearLabel, isTypedName, months, oneAYear,
   noTotalText, payoffText, sampleSchedule, shownName, spokenMonths, usePhone,
 };

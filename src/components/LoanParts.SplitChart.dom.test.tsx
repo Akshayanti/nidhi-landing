@@ -38,7 +38,8 @@ describe('the payment split chart on a wide screen at normal text', () => {
     assert.equal(c.unit, 'Amounts in €');
     assert.equal(c.viewBox, '0 0 800 365');
     assert.equal(c.textSize, '14px');
-    assert.deepEqual(c.months, ['Year 1', 'Month 2', 'Month 3']);
+    // A loan of up to three years is named by month, its first month included.
+    assert.deepEqual(c.months, ['Month 1', 'Month 2', 'Month 3']);
 
     // The plot is 720 across from 56 and 240 tall from 56. Three bars of 70
     // leave four gaps of (720 − 210) / 4 = 127.5.
@@ -117,7 +118,7 @@ describe('the payment split chart on a wide screen at normal text', () => {
     assert.equal(
       c.said,
       'Where each monthly payment goes for Riverside Bank. '
-      + 'Year 1: interest €3.00 (3%), principal €99.01. '
+      + 'Month 1: interest €3.00 (3%), principal €99.01. '
       + 'Month 2: interest €2.01 (2%), principal €100.00. '
       + 'Month 3: interest €1.01 (1%), principal €100.99.',
     );
@@ -135,7 +136,7 @@ describe('the payment split chart on a wide screen at normal text', () => {
     assert.deepEqual([...document.querySelectorAll('div.lc-srOnly tbody th')].map((th) => th.getAttribute('scope')), ['row', 'row', 'row']);
     assert.deepEqual(c.table, [
       ['Month', 'Payment', 'Interest', 'Principal'],
-      ['Year 1', '€102.01', '€3.00', '€99.01'],
+      ['Month 1', '€102.01', '€3.00', '€99.01'],
       ['Month 2', '€102.01', '€2.01', '€100.00'],
       ['Month 3', '€102.00', '€1.01', '€100.99'],
     ]);
@@ -143,29 +144,30 @@ describe('the payment split chart on a wide screen at normal text', () => {
     assert.equal(document.querySelectorAll('div.lc-srOnly tbody td > span.amt').length, 9);
   });
 
-  it('samples six months across a five-year loan, the first and the last among them', () => {
+  it('samples one month a year across a five-year loan, the first and the last among them', () => {
     const schedule = fiveYears();
     const c = chart(schedule);
-    // Months 1, 13, 25, 36, 48 and 60.
-    const rows = [1, 13, 25, 36, 48, 60].map((m) => schedule[m - 1]);
-    assert.deepEqual(rows.map((r) => r.month), [1, 13, 25, 36, 48, 60]);
+    // Months 1, 13, 25, 36, 48 and 60 are sampled; 25 and 36 both fall in
+    // year 3, so 36, the nearer the year's end, stays: one bar a year.
+    const rows = [1, 13, 36, 48, 60].map((m) => schedule[m - 1]);
+    assert.deepEqual(rows.map((r) => r.month), [1, 13, 36, 48, 60]);
     assert.deepEqual([rows[0].payment, rows[0].interest, rows[0].principal], [115997, 30000, 85997], '0.5% of 60,000 is 300.00');
     assert.equal(c.unit, 'Amounts in €');
     assert.equal(c.viewBox, '0 0 800 365');
-    assert.deepEqual(c.months, ['Year 1', 'Year 2', 'Year 3', 'Year 3', 'Year 4', 'Year 5']);
-    // Six bars of 70 leave seven gaps of (720 − 420) / 7.
+    assert.deepEqual(c.months, ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5']);
+    // Five bars of 70 leave six gaps of (720 − 350) / 6.
     checkBars(c, rows, { left: 56, right: 776, top: 56, height: 240 }, 70);
-    near(c.bars[0].interest.x, 56 + 300 / 7, 'the first bar starts one gap in');
+    near(c.bars[0].interest.x, 56 + 370 / 6, 'the first bar starts one gap in');
     near(c.bars[0].interest.height, (240 * 30000) / 115997, 'month 1: 300.00 of 1,159.97 is interest');
     near(c.bars[0].principal.height, (240 * 85997) / 115997, 'month 1: 859.97 of 1,159.97 is principal');
 
-    assert.deepEqual(c.interestLabels, ['300', '247', '191', '136', '73', '6']);
-    assert.deepEqual(c.principalLabels, ['860', '913', '969', '1,024', '1,087', '1,154']);
+    assert.deepEqual(c.interestLabels, ['300', '247', '136', '73', '6']);
+    assert.deepEqual(c.principalLabels, ['860', '913', '1,024', '1,087', '1,154']);
     // An interest part two lines of text tall or more (28 of the 240) holds
     // its figure, in the dark ink that reads on orange; a thinner one has it
     // above the bar.
     const inside = c.bars.map((b) => b.interest.height >= 28);
-    assert.deepEqual(inside, [true, true, true, true, false, false]);
+    assert.deepEqual(inside, [true, true, true, false, false]);
     c.bars.forEach((bar, i) => {
       assert.equal(bar.interestLabel!.fill, inside[i] ? 'var(--chart-on-warn)' : 'var(--chart-text-warn)');
       near(bar.interestLabel!.y, inside[i] ? bar.interest.y + 1.15 * 14 : bar.interest.y - 0.3 * 14, `bar ${i}: where its interest figure sits`);
@@ -178,7 +180,6 @@ describe('the payment split chart on a wide screen at normal text', () => {
       'Where each monthly payment goes for Riverside Bank. '
       + 'Year 1: interest €300.00 (26%), principal €859.97. '
       + 'Year 2: interest €246.96 (21%), principal €913.01. '
-      + 'Year 3: interest €190.65 (16%), principal €969.32. '
       + 'Year 3: interest €135.98 (12%), principal €1,023.99. '
       + 'Year 4: interest €72.82 (6%), principal €1,087.15. '
       + 'Year 5: interest €5.77 (0%), principal €1,154.06.',
@@ -186,7 +187,6 @@ describe('the payment split chart on a wide screen at normal text', () => {
     assert.deepEqual(c.table.slice(1), [
       ['Year 1', '€1,159.97', '€300.00', '€859.97'],
       ['Year 2', '€1,159.97', '€246.96', '€913.01'],
-      ['Year 3', '€1,159.97', '€190.65', '€969.32'],
       ['Year 3', '€1,159.97', '€135.98', '€1,023.99'],
       ['Year 4', '€1,159.97', '€72.82', '€1,087.15'],
       ['Year 5', '€1,159.83', '€5.77', '€1,154.06'],
@@ -197,7 +197,7 @@ describe('the payment split chart on a wide screen at normal text', () => {
     // €100,000,000 over 5 years at 2%: €1,752,776.01 a month. "1,586,109"
     // is wider than a bar of 70, so the whole chart counts in millions.
     const schedule = loan(10000000000, 0.02, 60);
-    const rows = [1, 13, 25, 36, 48, 60].map((m) => schedule[m - 1]);
+    const rows = [1, 13, 36, 48, 60].map((m) => schedule[m - 1]);
     assert.deepEqual([rows[0].payment, rows[0].interest], [175277601, 16666667], 'a twelfth of 2% of 100,000,000 is 166,666.67');
     const c = chart(schedule);
     assert.equal(c.unit, 'Amounts in millions of €');
@@ -207,14 +207,16 @@ describe('the payment split chart on a wide screen at normal text', () => {
     assert.equal(c.principalLabels[0], '1.59');
     // The last month's interest is a few thousand euros: "0" in millions, so
     // it is left off rather than say the month charged none.
-    assert.ok(rows[5].interest > 0 && rows[5].interest < 500000);
-    assert.deepEqual(c.interestLabels.slice(1), [...rows.slice(1, 5).map((r) => millions(r.interest)), null]);
+    assert.ok(rows[4].interest > 0 && rows[4].interest < 500000);
+    assert.deepEqual(c.interestLabels.slice(1), [...rows.slice(1, 4).map((r) => millions(r.interest)), null]);
     assert.equal(c.interestLabels[1], '0.13');
-    // The first month's interest part is too thin to hold "0.17", and above
-    // the bar it would run into the legend.
-    assert.equal(c.interestLabels[0], null);
+    // The first month's interest part is too thin to hold "0.17", so it is
+    // written above the bar: with five bars the first starts far enough in
+    // to clear the legend.
+    assert.equal(c.interestLabels[0], '0.17');
+    assert.equal(c.bars[0].interestLabel!.fill, 'var(--chart-text-warn)');
     // The table still has it, in full.
-    assert.equal(c.table[6][2], '€2,916.43');
+    assert.equal(c.table[5][2], '€2,916.43');
   });
 
   it('leaves off a whole-unit figure that would read as nothing, and keeps a true zero', () => {
@@ -282,17 +284,17 @@ describe('the payment split chart with nothing to draw', () => {
 });
 
 describe('the payment split chart as the text grows', () => {
-  it('keeps six years at 200% while their names fit, in bars as wide as the plot allows', () => {
+  it('keeps every year at 200% while their names fit, in bars as wide as the plot allows', () => {
     browser.wide(2);
     const schedule = fiveYears();
     const c = chart(schedule);
     assert.equal(c.textSize, '28px');
-    assert.deepEqual(c.months, ['Year 1', 'Year 2', 'Year 3', 'Year 3', 'Year 4', 'Year 5']);
-    // Five text sizes would be 140; six bars have room for (720 − 20) / 6 − 14.
+    assert.deepEqual(c.months, ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5']);
+    // Five text sizes would be 140; five bars have room for (720 − 20) / 5 − 14.
     // The plot starts lower, to keep the legend above it: 2.6 × 28, rounded up.
-    checkBars(c, [1, 13, 25, 36, 48, 60].map((m) => schedule[m - 1]), { left: 56, right: 776, top: 73, height: 240 }, 700 / 6 - 14);
+    checkBars(c, [1, 13, 36, 48, 60].map((m) => schedule[m - 1]), { left: 56, right: 776, top: 73, height: 240 }, 700 / 5 - 14);
     assert.equal(c.unit, 'Amounts in €');
-    assert.deepEqual(c.principalLabels, ['860', '913', '969', '1,024', '1,087', '1,154']);
+    assert.deepEqual(c.principalLabels, ['860', '913', '1,024', '1,087', '1,154']);
   });
 
   it('shows three years at 200% when six names no longer fit, and keeps all six in the table', () => {
@@ -357,25 +359,25 @@ describe('the payment split chart as the text grows', () => {
 });
 
 describe('the payment split chart on a phone', () => {
-  it('draws a narrower chart with six slimmer bars', () => {
+  it('draws a narrower chart with five slimmer bars, one a year', () => {
     browser.phone();
     const schedule = fiveYears();
     const c = chart(schedule);
     assert.equal(c.textSize, '14px');
     assert.equal(c.viewBox, '0 0 360 335');
-    assert.deepEqual(c.months, ['Year 1', 'Year 2', 'Year 3', 'Year 3', 'Year 4', 'Year 5']);
-    // The plot is 344 across from 8 and 210 tall. Six bars have room for
-    // (344 − 20) / 6 − 6 = 48 each, with seven gaps of 8.
-    checkBars(c, [1, 13, 25, 36, 48, 60].map((m) => schedule[m - 1]), { left: 8, right: 352, top: 56, height: 210 }, 48);
-    nearAll(c.bars.map((b) => b.interest.x), [16, 72, 128, 184, 240, 296], 'the bars start');
+    assert.deepEqual(c.months, ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5']);
+    // The plot is 344 across from 8 and 210 tall. Five bars have room for
+    // (344 − 20) / 5 − 6 = 58.8 each, with six gaps of (344 − 294) / 6.
+    checkBars(c, [1, 13, 36, 48, 60].map((m) => schedule[m - 1]), { left: 8, right: 352, top: 56, height: 210 }, 324 / 5 - 6);
+    nearAll(c.bars.map((b) => b.interest.x), [0, 1, 2, 3, 4].map((i) => 8 + 50 / 6 + i * (58.8 + 50 / 6)), 'the bars start');
     near(c.legendInterest.x, 8, 'the legend starts at the plot');
     near(c.legendPrincipal.x, 8, 'the legend starts at the plot');
     nearAll(c.legendPrincipal.lineX, [8], 'its line');
     near(c.legendPrincipal.y, 266 + 1.3 * 14, 'the principal legend');
     near(c.footnote.x, 180, 'the footnote is centred');
     assert.equal(c.unit, 'Amounts in €');
-    assert.deepEqual(c.interestLabels, ['300', '247', '191', '136', '73', '6']);
-    assert.deepEqual(c.principalLabels, ['860', '913', '969', '1,024', '1,087', '1,154']);
+    assert.deepEqual(c.interestLabels, ['300', '247', '136', '73', '6']);
+    assert.deepEqual(c.principalLabels, ['860', '913', '1,024', '1,087', '1,154']);
   });
 
   it('shows three years as soon as one of six names does not fit its column', () => {

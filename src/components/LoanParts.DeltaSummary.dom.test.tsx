@@ -281,6 +281,7 @@ describe('fewer than two offers to compare', () => {
   /** What the section shows in place of the table. */
   const emptied = (section: HTMLElement) => ({
     heading: section.querySelector('h2#lc-delta-h')?.textContent,
+    named: section.getAttribute('aria-labelledby'),
     focusable: section.querySelector('h2')?.getAttribute('tabindex'),
     message: section.querySelector('p.lc-deltaEmpty')?.textContent,
     tables: section.querySelectorAll('table').length,
@@ -288,6 +289,8 @@ describe('fewer than two offers to compare', () => {
   });
   const EMPTY = {
     heading: 'Side-by-side',
+    // The same landmark, named by its heading, as when it compares offers.
+    named: 'lc-delta-h',
     focusable: '-1',
     message: 'Enter valid inputs for at least two offers to see how they compare.',
     tables: 0,

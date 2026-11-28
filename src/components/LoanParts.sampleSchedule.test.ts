@@ -7,7 +7,7 @@
 import assert from 'node:assert/strict';
 import { describe, it } from 'node:test';
 import { loanComparisonEn, loanComparisonEs } from '../i18n/strings/tools/loanComparison.ts';
-import { formatYearLabel, sampleSchedule } from './LoanCompare.tsx';
+import { formatYearLabel, oneAYear, sampleSchedule } from './LoanCompare.tsx';
 
 // This tool's own strings, from the modules that define them: not the whole catalog,
 // which would tie this file to every tool's strings (#904).
@@ -65,33 +65,27 @@ describe('the months the balance table lists', () => {
 describe('what a sampled month is called', () => {
   const en = TOOL_STRINGS.en.loanComparison.island;
 
-  it('calls the first month the first year', () => {
-    assert.equal(formatYearLabel(1, en), 'Year 1');
+  it('keeps one sample a year, the first month and then the last sample in each later year', () => {
+    // A five-year loan: pickSplitSamples(60, 6) puts months 25 and 36 both in year 3.
+    assert.deepEqual(oneAYear([1, 13, 25, 36, 48, 60]), [1, 13, 36, 48, 60]);
+    assert.deepEqual(oneAYear([1, 6, 10, 15, 19, 24]), [1, 24]);
+    assert.deepEqual(oneAYear([1, 8, 15, 22, 29, 36]), [1, 22, 36]);
+    assert.deepEqual(oneAYear([1, 73, 145, 216, 288, 360]), [1, 73, 145, 216, 288, 360]);
+    assert.deepEqual(oneAYear([]), []);
   });
 
-  it('names the month itself through the first year, its last month included', () => {
-    assert.equal(formatYearLabel(2, en), 'Month 2');
-    assert.equal(formatYearLabel(7, en), 'Month 7');
-    assert.equal(formatYearLabel(12, en), 'Month 12');
+  it('names a bar by the year its month falls in, a month that ends a year in that year', () => {
+    assert.deepEqual([1, 12, 13, 24, 349, 360].map((m) => formatYearLabel(m, en, true)), ['Year 1', 'Year 1', 'Year 2', 'Year 2', 'Year 30', 'Year 30']);
   });
 
-  it('names the year a later month completes', () => {
-    assert.equal(formatYearLabel(24, en), 'Year 2');
-    assert.equal(formatYearLabel(60, en), 'Year 5');
-    assert.equal(formatYearLabel(360, en), 'Year 30');
-  });
-
-  it('names the year a later month falls in when it does not complete one', () => {
-    assert.equal(formatYearLabel(13, en), 'Year 2');
-    assert.equal(formatYearLabel(23, en), 'Year 2');
-    assert.equal(formatYearLabel(25, en), 'Year 3');
-    assert.equal(formatYearLabel(349, en), 'Year 30');
+  it('names a bar by its month on a loan of up to three years', () => {
+    assert.deepEqual([1, 2, 12].map((m) => formatYearLabel(m, en, false)), ['Month 1', 'Month 2', 'Month 12']);
   });
 
   it("uses the page's own words", () => {
     const es = TOOL_STRINGS.es.loanComparison.island;
-    assert.equal(formatYearLabel(1, es), es.balance.year.replace('{y}', '1'));
-    assert.equal(formatYearLabel(9, es), es.balance.month.replace('{m}', '9'));
-    assert.notEqual(formatYearLabel(9, es), formatYearLabel(9, en));
+    assert.equal(formatYearLabel(1, es, true), es.balance.year.replace('{y}', '1'));
+    assert.equal(formatYearLabel(9, es, false), es.balance.month.replace('{m}', '9'));
+    assert.notEqual(formatYearLabel(9, es, false), formatYearLabel(9, en, false));
   });
 });

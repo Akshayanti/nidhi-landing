@@ -28,8 +28,8 @@ describe('the payment split chart goes by what the browser draws', () => {
     assert.equal(c.unit, 'Amounts in thousands of €');
     // A figure above its bar has the whole column: the two thin interest
     // parts keep theirs.
-    assert.deepEqual(c.interestLabels, ['0.3', null, null, null, '0.07', '0.01']);
-    assert.deepEqual(c.principalLabels, [null, null, null, null, null, null]);
+    assert.deepEqual(c.interestLabels, ['0.3', null, null, '0.07', '0.01']);
+    assert.deepEqual(c.principalLabels, [null, null, null, null, null]);
   });
 
   it('keeps whole units when only the figures of the interest parts are wide in thousands', () => {
@@ -37,7 +37,7 @@ describe('the payment split chart goes by what the browser draws', () => {
     browser.drawn = (cls, text) => (cls === 'lc-splitValueInterest' && text.includes('.') ? 500 : undefined);
     const c = chart(fiveYears());
     assert.equal(c.unit, 'Amounts in €');
-    assert.deepEqual(c.interestLabels, ['300', '247', '191', '136', '73', '6']);
+    assert.deepEqual(c.interestLabels, ['300', '247', '136', '73', '6']);
   });
 
   it('keeps whole units when the widest figure is exactly its bar less the margin', () => {
@@ -49,12 +49,12 @@ describe('the payment split chart goes by what the browser draws', () => {
   it('draws a schedule that lacks a month it measures but does not show', () => {
     // Built by hand: a year of months with the seventh missing. Six bars
     // show months 1, 3, 5, 8, 10 and 12; the seventh is only a candidate
-    // for a drawing of three.
+    // for a drawing of three. A loan of a year is named by month.
     const year = loan(120000, 0.12, 12);
     const holed = [...year];
     delete holed[6];
     const c = chart(holed);
-    assert.deepEqual(c.months, ['Year 1', 'Month 3', 'Month 5', 'Month 8', 'Month 10', 'Month 12']);
+    assert.deepEqual(c.months, ['Month 1', 'Month 3', 'Month 5', 'Month 8', 'Month 10', 'Month 12']);
   });
 
   it('keeps a figure above its bar while it is no wider than the column, and one figure of two that would touch', () => {
@@ -179,38 +179,40 @@ describe('the payment split chart goes by what the browser draws', () => {
   });
 
   it('shows fewer years when their names are drawn wider than their letters suggest', () => {
-    // "Year" at 100: with its number and margins a name needs 121, and a
-    // sixth of the plot is 120.
-    browser.drawn = (cls, text) => (cls === 'lc-splitTickX' && text === 'Year' ? 100 : undefined);
+    // "Year" at 124: with its number and margins a name needs 145, and a
+    // fifth of the plot (one bar a year of a five-year loan) is 144.
+    browser.drawn = (cls, text) => (cls === 'lc-splitTickX' && text === 'Year' ? 124 : undefined);
     const c = chart(fiveYears());
     assert.deepEqual(c.months, ['Year 1', 'Year 3', 'Year 5']);
   });
 
-  it('keeps six years when their names are drawn exactly as wide as their columns', () => {
-    // At 125% text one unit of text is 17.5: "Year" at 99 and a number at
-    // 5.25, a space of 5.25 between them and a margin of 10.5 make 120.
+  it('keeps every year when their names are drawn exactly as wide as their columns', () => {
+    // At 125% text one unit of text is 17.5: "Year" at 123 and a number at
+    // 5.25, a space of 5.25 between them and a margin of 10.5 make 144, a
+    // fifth of the plot.
     browser.wide(1.25);
-    browser.drawn = (cls, text) => (cls === 'lc-splitTickX' ? (text === 'Year' ? 99 : 5.25) : undefined);
+    browser.drawn = (cls, text) => (cls === 'lc-splitTickX' ? (text === 'Year' ? 123 : 5.25) : undefined);
     const c = chart(fiveYears());
     assert.equal(c.textSize, '17.5px');
-    assert.equal(c.months.length, 6);
+    assert.equal(c.months.length, 5);
   });
 
   it('does not count a stray space in a translated name as a word', () => {
     // The same exact fit: a space too many before, inside or after the name
-    // adds no width, so six years still fit.
+    // adds no width, so every year still fits.
     browser.wide(1.25);
-    browser.drawn = (cls, text) => (cls === 'lc-splitTickX' ? (text === 'Year' ? 99 : 5.25) : undefined);
+    browser.drawn = (cls, text) => (cls === 'lc-splitTickX' ? (text === 'Year' ? 123 : 5.25) : undefined);
     const c = chart(fiveYears(), { ...island, balance: { ...island.balance, year: ' Year  {y} ' } });
-    assert.deepEqual(c.months, ['Year 1', 'Year 2', 'Year 3', 'Year 3', 'Year 4', 'Year 5']);
+    assert.deepEqual(c.months, ['Year 1', 'Year 2', 'Year 3', 'Year 4', 'Year 5']);
   });
 
   it('stacks a name wider than its column on two lines, drawn smaller when one word is still too wide', () => {
-    // Three columns of 197.5; a name gets that less 5.6. "Year" at 200 is
-    // too wide even alone.
-    browser.drawn = (cls, text) => (cls === 'lc-splitTickX' && text === 'Year' ? 200 : undefined);
+    // Three columns of 197.5; a name gets that less 5.6. The number "1" at
+    // 200 is too wide even alone; "Month" at 12 keeps the whole name inside a
+    // third of the plot, so the drawing still has three bars.
+    browser.drawn = (cls, text) => (cls === 'lc-splitTickX' ? ({ 1: 200, Month: 12 } as Record<string, number>)[text] : undefined);
     const c = chart(threeMonths());
-    assert.deepEqual(c.bars.map((b) => b.tick.lines), [['Year', '1'], ['Month 2'], ['Month 3']]);
+    assert.deepEqual(c.bars.map((b) => b.tick.lines), [['Month', '1'], ['Month 2'], ['Month 3']]);
     nearAll(c.bars[0].tick.dy, [0, 1.2 * 14], 'the number one line down');
     nearSize(c.bars[0].tick.size, 14 * (191.9 / 200), 'drawn smaller by just enough');
     assert.equal(c.bars[0].tick.hidden, false);
@@ -224,12 +226,12 @@ describe('the payment split chart goes by what the browser draws', () => {
     // A name this wide leaves two bars, 263.33 apart, and 257.73 of room for
     // each name. At 299 a word is drawn at 0.862 of its size, just above the
     // floor of 0.75 / 0.875; at 302 it would be under it.
-    browser.drawn = (cls, text) => (cls === 'lc-splitTickX' && text === 'Year' ? 299 : undefined);
+    browser.drawn = (cls, text) => (cls === 'lc-splitTickX' && text === '1' ? 299 : undefined);
     let c = chart(threeMonths());
-    assert.deepEqual(c.months, ['Year 1', 'Month 3']);
+    assert.deepEqual(c.months, ['Month 1', 'Month 3']);
     assert.deepEqual(c.bars.map((b) => b.tick.hidden), [false, false]);
     cleanup();
-    browser.drawn = (cls, text) => (cls === 'lc-splitTickX' && text === 'Year' ? 302 : undefined);
+    browser.drawn = (cls, text) => (cls === 'lc-splitTickX' && text === '1' ? 302 : undefined);
     c = chart(threeMonths());
     assert.deepEqual(c.bars.map((b) => b.tick.hidden), [true, false]);
     nearSize(c.bars[0].tick.size, 14 * ((580 / 3 + 70 - 5.6) / 302), 'its size');
