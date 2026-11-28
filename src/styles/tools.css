@@ -3801,6 +3801,26 @@ legend.lc-fieldLabel--required {
 }
 .lc-chartBox {
   border-radius: var(--radius-md);
+  /* The chart and its pinned amounts (.lc-yPin) share one cell. */
+  display: grid;
+}
+.lc-chartBox > svg {
+  grid-area: 1 / 1;
+}
+.lc-yPin {
+  display: none;
+  position: sticky;
+  left: 0;
+  align-self: start;
+  z-index: 1;
+}
+.lc-yPin text {
+  font-family: var(--font-body);
+  font-size: var(--chart-fs, 14px);
+  fill: var(--color-text-muted);
+}
+.lc-yPinBg {
+  fill: var(--color-bg-white);
 }
 .lc-chartBox:focus-visible {
   outline: 2px solid var(--color-teal);
@@ -3849,6 +3869,9 @@ legend.lc-fieldLabel--required {
 @media (width < 640px) {
   .lc-chart {
     min-width: 600px;
+  }
+  .lc-yPin {
+    display: block;
   }
 }
 

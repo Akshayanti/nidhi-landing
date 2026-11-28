@@ -636,6 +636,24 @@ function BalanceChart({ results, colors, vendorNames, currency, strings }: Chart
               </g>
             )}
           </svg>
+          {/* On a phone the chart scrolls sideways, and at a large text size
+              its amounts took most of what was in view: a copy of the
+              amounts stays at the left while the plot scrolls under it
+              (#758, owner, Nov 27 2026). Drawn to the chart's own scale;
+              the chart says the amounts to a screen reader, so this does not. */}
+          {!margin.inside && (
+            <svg
+              className="lc-yPin"
+              aria-hidden="true"
+              viewBox={`0 0 ${BPAD.left} ${Math.ceil(BH)}`}
+              style={{ width: `${(100 * BPAD.left) / BW}%`, '--chart-fs': `${fs}px` } as React.CSSProperties}
+            >
+              <rect className="lc-yPinBg" x={0} y={0} width={BPAD.left} height={Math.ceil(BH)} />
+              {yTicks.map((t) => (
+                <text key={`yp${t}`} className="lc-chartTick" x={BPAD.left - 0.75 * fs} y={y(t) + 0.35 * fs} textAnchor="end">{unit.tick(t)}</text>
+              ))}
+            </svg>
+          )}
           <span className="chart-srOnly" aria-live="polite">{announce}</span>
         </div>
       </div>
