@@ -1200,6 +1200,9 @@ legend.lc-fieldLabel--required {
   font-size: var(--text-small);
   font-variant-numeric: tabular-nums;
   min-width: 30rem; /* keeps columns legible; outer wrap scrolls if needed */
+  /* Its amounts are in the body font, at every width: with the heading
+     font's factor a long amount came out smaller than it needed to (#751). */
+  --amt-k: 0.57;
 }
 
 .lc-deltaTable th,
