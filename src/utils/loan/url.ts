@@ -51,9 +51,9 @@
  * `f` survives, and any older link that was cut, cannot be told from an older
  * link that arrived whole, and is read as one.
  *
- * Hard cutover: the previous `cur=`, `v{i}_principal=`-style keys are NOT
- * decoded. The tool is new (no shared URLs in the wild) and v5.2 of the
- * free-tools plan documents the rationale for skipping the alias layer.
+ * Hard cutover: the earlier `cur=`, `v{i}_principal=`-style keys, used only
+ * before the tool launched, are NOT decoded; v5.2 of the free-tools plan
+ * documents the rationale for skipping the alias layer.
  */
 
 import { CURRENCIES, DEFAULT_CURRENCY, MAX_TERM_MONTHS } from './math.ts';
